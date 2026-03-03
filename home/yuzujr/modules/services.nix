@@ -35,7 +35,7 @@
         RestartSec = "5s";
       };
 
-      Install.WantedBy = [ "graphical-session.target" ];
+      # Install.WantedBy = [ "graphical-session.target" ];
     };
 
     gold-price-watch = {
@@ -84,7 +84,7 @@
         RestartSec = 2;
       };
 
-      Install.WantedBy = [ "default.target" ];
+      # Install.WantedBy = [ "default.target" ];
     };
   };
 

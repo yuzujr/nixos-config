@@ -12,7 +12,6 @@
     enable = true;
     powerOnBoot = true;
   };
-  services.blueman.enable = true;
 
   services.power-profiles-daemon.enable = true;
 

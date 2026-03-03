@@ -74,9 +74,7 @@
     dolphin
     kate
     konsole
-    plasma-integration
     polkit-kde-agent-1
     qt6ct
-    qqc2-breeze-style
   ]);
 }
