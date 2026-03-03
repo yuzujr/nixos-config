@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 let
   dotfilesRoot = ../dotfiles;
@@ -46,10 +46,20 @@ in {
       ".local/share/dbus-1/services".source =
         dotfilesRoot + "/.local/share/dbus-1/services";
 
-      ".local/share/fcitx5/rime".source =
-        dotfilesRoot + "/.local/share/fcitx5/rime";
-
       ".local/share/konsole".source =
         dotfilesRoot + "/.local/share/konsole";
     };
+
+  # Copy rime config as writable files so rime can sync/deploy
+  home.activation.fcitx5Rime = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    rimeDir="$HOME/.local/share/fcitx5/rime"
+    $DRY_RUN_CMD mkdir -p "$rimeDir"
+    while IFS= read -r -d "" f; do
+      dest="$rimeDir/$(basename "$f")"
+      if [ ! -e "$dest" ]; then
+        $DRY_RUN_CMD cp "$f" "$dest"
+        $DRY_RUN_CMD chmod u+w "$dest"
+      fi
+    done < <(find ${dotfilesRoot + "/.local/share/fcitx5/rime"} -maxdepth 1 -type f -print0)
+  '';
 }
