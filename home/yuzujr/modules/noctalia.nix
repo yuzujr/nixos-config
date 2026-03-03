@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, ... }:
+{ inputs, pkgs, ... }:
 
 let
   noctaliaConfigDir = ../dotfiles/.config/noctalia;
@@ -9,18 +9,9 @@ in
   programs.noctalia-shell = {
     enable = true;
     package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    settings = noctaliaConfigDir + "/settings.json";
+    colors = noctaliaConfigDir + "/colors.json";
+    plugins = noctaliaConfigDir + "/plugins.json";
+    user-templates = noctaliaConfigDir + "/user-templates.toml";
   };
-
-  # Copy noctalia config as writable files so noctalia can change color schemes and apply templates
-  home.activation.noctaliaConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    configDir="$HOME/.config/noctalia"
-    $DRY_RUN_CMD mkdir -p "$configDir"
-    while IFS= read -r -d "" f; do
-      dest="$configDir/$(basename "$f")"
-      if [ ! -e "$dest" ]; then
-        $DRY_RUN_CMD cp "$f" "$dest"
-        $DRY_RUN_CMD chmod u+w "$dest"
-      fi
-    done < <(find ${noctaliaConfigDir} -maxdepth 1 -type f -print0)
-  '';
 }
