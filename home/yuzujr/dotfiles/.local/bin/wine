@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export WINEPREFIX="/home/yuzujr/Games/containers/local"
+export WINEARCH="win64"
+
+# wine 路径
+WINE="/home/yuzujr/.local/share/lutris/runners/wine/wine-ge-8-26-x86_64/bin/wine"
+
+# NVIDIA/Prime
+export DRI_PRIME="1"
+export __NV_PRIME_RENDER_OFFLOAD="1"
+export __VK_LAYER_NV_optimus="NVIDIA_only"
+export __GLX_VENDOR_LIBRARY_NAME="nvidia"
+if [[ -f /run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json ]]; then
+    export VK_ICD_FILENAMES="/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json"
+    export VK_DRIVER_FILES="$VK_ICD_FILENAMES"
+fi
+
+# ===== 日志配置 =====
+LOGDIR="${LOGDIR:-$WINEPREFIX/wine-ge-logs}"
+mkdir -p "$LOGDIR"
+LOGFILE="$LOGDIR/$(date +%F_%H-%M-%S)_$(basename "${0:-run}").log"
+
+# 同时输出到屏幕+写入文件（stdout+stderr）
+exec > >(tee -a "$LOGFILE") 2>&1
+
+pick_exe() {
+  if command -v zenity >/dev/null 2>&1; then
+    zenity --file-selection --title="选择要运行的 EXE" --file-filter="Windows EXE | *.exe"
+  elif command -v kdialog >/dev/null 2>&1; then
+    kdialog --getopenfilename "$HOME" "*.exe|Windows EXE"
+  else
+    echo "请传入 exe 路径：$0 /path/to/xxx.exe" >&2
+    exit 2
+  fi
+}
+
+EXE="${1:-}"
+if [[ -z "$EXE" ]]; then
+  EXE="$(pick_exe)"
+fi
+[[ -n "$EXE" ]] || exit 0
+
+EXE="$(readlink -f "$EXE")"
+EXE_DIR="$(dirname "$EXE")"
+
+cd "$EXE_DIR"
+
+# ===== 日志头信息 =====
+echo "============================================================"
+echo "[wine-ge-run] time:    $(date -Is)"
+echo "[wine-ge-run] script:  $0"
+echo "[wine-ge-run] logfile: $LOGFILE"
+echo "[wine-ge-run] pwd:     $PWD"
+echo "[wine-ge-run] exe:     $EXE"
+echo "[wine-ge-run] WINE:    $WINE"
+echo "[wine-ge-run] PREFIX:  $WINEPREFIX"
+echo "[wine-ge-run] ARCH:    $WINEARCH"
+echo "[wine-ge-run] GPU:     DRI_PRIME=${DRI_PRIME-} __NV_PRIME_RENDER_OFFLOAD=${__NV_PRIME_RENDER_OFFLOAD-} __VK_LAYER_NV_optimus=${__VK_LAYER_NV_optimus-}"
+echo "[wine-ge-run] Vulkan:  VK_ICD_FILENAMES=${VK_ICD_FILENAMES-}"
+echo "============================================================"
+echo
+
+pkill -9 -x wineserver 2>/dev/null || true
+pkill -9 -x winedevice.exe 2>/dev/null || true
+
+"$WINE" --version || true
+echo
+
+exec "$WINE" "$EXE" "${@:2}"

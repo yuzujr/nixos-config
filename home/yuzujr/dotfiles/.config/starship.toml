@@ -1,0 +1,64 @@
+"$schema" = "https://starship.rs/config-schema.json"
+
+format = """
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$character"""
+
+palette = "solarized"
+
+[directory]
+truncation_length = 4
+style = "bold blue"
+
+[character]
+success_symbol = "[[❯](green)](yellow)"
+error_symbol   = "[[❯](red)](yellow)"
+vimcmd_symbol  = "[❮](cyan)"
+
+[git_branch]
+style = "bold magenta"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](cyan) ($ahead_behind$stashed)]($style)"
+style = "blue"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
+
+# -------------------------
+# Solarized palettes
+# -------------------------
+[palettes.solarized]
+base03  = "#002b36"
+base02  = "#073642"
+base01  = "#586e75"
+base00  = "#657b83"
+base0   = "#839496"
+base1   = "#93a1a1"
+base2   = "#eee8d5"
+base3   = "#fdf6e3"
+yellow  = "#b58900"
+orange  = "#cb4b16"
+red     = "#dc322f"
+magenta = "#d33682"
+violet  = "#6c71c4"
+blue    = "#268bd2"
+cyan    = "#2aa198"
+green   = "#859900"

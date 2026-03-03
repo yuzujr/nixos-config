@@ -1,0 +1,330 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONFIG_FILE="${GOLD_HISTORY_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/gold-price/gold-price-history.conf}"
+DEFAULT_OUTPUT_FILE="${XDG_DATA_HOME:-$HOME/.local/share}/gold-price-history/daily.csv"
+
+API_URL="https://api.gold-api.com/history"
+API_KEY=""
+SYMBOL="XAU"
+GROUP_BY="day"
+AGGREGATION="avg"
+ORDER_BY="asc"
+OUTPUT_FILE="$DEFAULT_OUTPUT_FILE"
+START_DATE=""
+END_DATE=""
+FETCH_START=""
+FETCH_END=""
+CLI_OUTPUT_FILE=""
+CLI_API_KEY=""
+NO_SAVE=0
+
+MAX_EXISTING_DATE=""
+declare -A HAVE_DATE=()
+declare -A ROW_BY_DATE=()
+
+usage() {
+  cat <<'USAGE'
+Usage: gold-price-history-daily [options]
+
+Options:
+  --start-date YYYY-MM-DD  Start date (UTC). Default: last saved date + 1 day, or yesterday.
+  --end-date YYYY-MM-DD    End date (UTC). Default: yesterday.
+  --output FILE            CSV output file path.
+  --api-key KEY            API key override (otherwise read from config/API env).
+  --no-save                Print fetched rows only; do not write file.
+  --help                   Show this help.
+USAGE
+}
+
+require_cmd() {
+  local cmd="$1"
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "Missing required command: $cmd" >&2
+    exit 1
+  fi
+}
+
+is_valid_date() {
+  date -u -d "$1" +%F >/dev/null 2>&1
+}
+
+date_to_ts_start() { date -u -d "$1 00:00:00" +%s; }
+date_to_ts_end() { date -u -d "$1 23:59:59" +%s; }
+date_add_days() { date -u -d "$1 $2 day" +%F; }
+
+date_gt() {
+  local a b
+  a="$(date -u -d "$1" +%s)"
+  b="$(date -u -d "$2" +%s)"
+  (( a > b ))
+}
+
+csv_date_from_line() {
+  local line="$1" d
+  d="${line%%,*}"
+  d="${d%\"}"
+  d="${d#\"}"
+  printf '%s\n' "$d"
+}
+
+load_existing_rows() {
+  local line d
+
+  HAVE_DATE=()
+  ROW_BY_DATE=()
+  MAX_EXISTING_DATE=""
+
+  [[ -f "$OUTPUT_FILE" ]] || return 0
+
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    d="$(csv_date_from_line "$line")"
+    [[ "$d" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || continue
+    HAVE_DATE["$d"]=1
+    ROW_BY_DATE["$d"]="$line"
+    if [[ -z "$MAX_EXISTING_DATE" ]] || date_gt "$d" "$MAX_EXISTING_DATE"; then
+      MAX_EXISTING_DATE="$d"
+    fi
+  done < <(tail -n +2 "$OUTPUT_FILE")
+}
+
+load_config() {
+  if [[ -f "$CONFIG_FILE" ]]; then
+    # shellcheck source=/dev/null
+    source "$CONFIG_FILE"
+  fi
+
+  if [[ -n "$CLI_OUTPUT_FILE" ]]; then
+    OUTPUT_FILE="$CLI_OUTPUT_FILE"
+  fi
+  if [[ -n "$CLI_API_KEY" ]]; then
+    API_KEY="$CLI_API_KEY"
+  fi
+
+  API_KEY="${API_KEY:-${GOLD_API_KEY:-}}"
+
+  if [[ -z "$API_KEY" ]]; then
+    echo "API key is required. Set API_KEY in $CONFIG_FILE or GOLD_API_KEY env." >&2
+    exit 1
+  fi
+
+  if [[ "$GROUP_BY" != "day" ]]; then
+    echo "This CLI is for daily history, forcing GROUP_BY=day." >&2
+    GROUP_BY="day"
+  fi
+
+  if [[ "$AGGREGATION" != "avg" && "$AGGREGATION" != "max" && "$AGGREGATION" != "min" ]]; then
+    echo "AGGREGATION must be one of: avg, max, min." >&2
+    exit 1
+  fi
+
+  if [[ "$ORDER_BY" != "asc" && "$ORDER_BY" != "desc" ]]; then
+    echo "ORDER_BY must be asc or desc." >&2
+    exit 1
+  fi
+}
+
+ensure_output_file() {
+  local dir
+  dir="$(dirname "$OUTPUT_FILE")"
+  mkdir -p "$dir"
+  if [[ ! -f "$OUTPUT_FILE" ]]; then
+    printf 'date,symbol,%s_price,source_day,recorded_at_utc\n' "$AGGREGATION" >"$OUTPUT_FILE"
+  fi
+}
+
+infer_date_range() {
+  local yesterday
+  yesterday="$(date -u -d 'yesterday' +%F)"
+
+  if [[ -z "$END_DATE" ]]; then
+    END_DATE="$yesterday"
+  fi
+  if ! is_valid_date "$END_DATE"; then
+    echo "Invalid --end-date: $END_DATE" >&2
+    exit 1
+  fi
+
+  if [[ -n "$START_DATE" ]]; then
+    if ! is_valid_date "$START_DATE"; then
+      echo "Invalid --start-date: $START_DATE" >&2
+      exit 1
+    fi
+    return 0
+  fi
+
+  load_existing_rows
+  if [[ -n "$MAX_EXISTING_DATE" ]]; then
+    START_DATE="$(date_add_days "$MAX_EXISTING_DATE" +1)"
+  else
+    START_DATE="$yesterday"
+  fi
+}
+
+resolve_fetch_window_from_csv() {
+  local d first_missing last_missing
+
+  FETCH_START="$START_DATE"
+  FETCH_END="$END_DATE"
+
+  if [[ "$NO_SAVE" -eq 1 ]] || [[ ! -f "$OUTPUT_FILE" ]]; then
+    return 0
+  fi
+
+  load_existing_rows
+
+  first_missing=""
+  last_missing=""
+  d="$START_DATE"
+  while ! date_gt "$d" "$END_DATE"; do
+    if [[ -z "${HAVE_DATE[$d]+x}" ]]; then
+      if [[ -z "$first_missing" ]]; then
+        first_missing="$d"
+      fi
+      last_missing="$d"
+    fi
+    d="$(date_add_days "$d" +1)"
+  done
+
+  if [[ -z "$first_missing" ]]; then
+    FETCH_START=""
+    FETCH_END=""
+    return 0
+  fi
+
+  FETCH_START="$first_missing"
+  FETCH_END="$last_missing"
+}
+
+fetch_history() {
+  local start_ts end_ts
+  start_ts="$(date_to_ts_start "$FETCH_START")"
+  end_ts="$(date_to_ts_end "$FETCH_END")"
+
+  curl -fsS --get "$API_URL" \
+    -H "x-api-key: $API_KEY" \
+    --data-urlencode "symbol=$SYMBOL" \
+    --data-urlencode "startTimestamp=$start_ts" \
+    --data-urlencode "endTimestamp=$end_ts" \
+    --data-urlencode "groupBy=$GROUP_BY" \
+    --data-urlencode "aggregation=$AGGREGATION" \
+    --data-urlencode "orderBy=$ORDER_BY"
+}
+
+normalize_rows() {
+  local now_utc price_field
+  now_utc="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  price_field="${AGGREGATION}_price"
+
+  jq -r --arg symbol "$SYMBOL" --arg price_field "$price_field" --arg now "$now_utc" '
+    .[]?
+    | select(.day != null and .[$price_field] != null)
+    | [(.day | tostring | split(" ")[0]), $symbol, (.[$price_field] | tostring), (.day | tostring), $now]
+    | @csv
+  '
+}
+
+append_rows_sorted() {
+  local tmp_rows tmp_out line d key new_rows
+
+  tmp_rows="$(mktemp)"
+  cat >"$tmp_rows"
+
+  if [[ ! -s "$tmp_rows" ]]; then
+    rm -f "$tmp_rows"
+    echo "No daily rows returned for ${FETCH_START}..${FETCH_END}."
+    return 0
+  fi
+
+  if [[ "$NO_SAVE" -eq 1 ]]; then
+    cat "$tmp_rows"
+    rm -f "$tmp_rows"
+    return 0
+  fi
+
+  load_existing_rows
+  new_rows=0
+
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    d="$(csv_date_from_line "$line")"
+    [[ "$d" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || continue
+    if [[ -z "${HAVE_DATE[$d]+x}" ]]; then
+      new_rows=$((new_rows + 1))
+    fi
+    HAVE_DATE["$d"]=1
+    ROW_BY_DATE["$d"]="$line"
+  done <"$tmp_rows"
+
+  tmp_out="$(mktemp)"
+  printf 'date,symbol,%s_price,source_day,recorded_at_utc\n' "$AGGREGATION" >"$tmp_out"
+  if [[ "${#ROW_BY_DATE[@]}" -gt 0 ]]; then
+    while IFS= read -r key; do
+      [[ -n "$key" ]] && printf '%s\n' "${ROW_BY_DATE[$key]}" >>"$tmp_out"
+    done < <(printf '%s\n' "${!ROW_BY_DATE[@]}" | LC_ALL=C sort)
+  fi
+  mv "$tmp_out" "$OUTPUT_FILE"
+
+  rm -f "$tmp_rows"
+  echo "Saved ${new_rows} new row(s) to $OUTPUT_FILE (requested ${START_DATE}..${END_DATE}, fetched ${FETCH_START}..${FETCH_END})."
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --start-date)
+      START_DATE="${2:-}"
+      shift
+      ;;
+    --end-date)
+      END_DATE="${2:-}"
+      shift
+      ;;
+    --output)
+      CLI_OUTPUT_FILE="${2:-}"
+      shift
+      ;;
+    --api-key)
+      CLI_API_KEY="${2:-}"
+      shift
+      ;;
+    --no-save)
+      NO_SAVE=1
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+require_cmd curl
+require_cmd jq
+require_cmd awk
+require_cmd date
+
+load_config
+
+if [[ "$NO_SAVE" -eq 0 ]]; then
+  ensure_output_file
+fi
+infer_date_range
+
+if date_gt "$START_DATE" "$END_DATE"; then
+  echo "No new range to fetch (start ${START_DATE} is after end ${END_DATE})."
+  exit 0
+fi
+
+resolve_fetch_window_from_csv
+if [[ -z "$FETCH_START" || -z "$FETCH_END" ]]; then
+  echo "Requested range ${START_DATE}..${END_DATE} is already covered by $OUTPUT_FILE; skipping API call."
+  exit 0
+fi
+
+fetch_history | normalize_rows | append_rows_sorted

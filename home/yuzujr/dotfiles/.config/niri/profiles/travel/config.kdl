@@ -1,0 +1,13 @@
+debug {
+    render-drm-device "/dev/dri/by-path/pci-0000:06:00.0-render"
+    ignore-drm-device "/dev/dri/by-path/pci-0000:01:00.0-render"
+}
+
+environment {
+    VK_ICD_FILENAMES "/usr/share/vulkan/icd.d/radeon_icd.x86_64.json"
+    __EGL_VENDOR_LIBRARY_FILENAMES "/usr/share/glvnd/egl_vendor.d/50_mesa.json"
+}
+
+xwayland-satellite {
+    off
+}

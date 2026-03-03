@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+FCITX_DBUS="org.fcitx.Fcitx5"
+FCITX_CONTROLLER="/controller"
+FCITX_IFACE="org.fcitx.Fcitx.Controller1"
+NOTIFY_ID_FILE="${XDG_RUNTIME_DIR:-/tmp}/fcitx5-theme-toggle.notify-id"
+
+declare -a PRESET_ORDER=()
+declare -A PRESET_VERTICAL=()
+declare -A PRESET_THEME=()
+declare -A PRESET_PREEDIT=()
+declare -A PRESET_NOTIFY=()
+
+current_vertical=""
+current_theme=""
+current_preedit=""
+
+register_preset() {
+    local id="$1"
+    local vertical="$2"
+    local theme="$3"
+    local preedit="$4"
+    local notify_text="$5"
+
+    PRESET_ORDER+=("$id")
+    PRESET_VERTICAL["$id"]="$vertical"
+    PRESET_THEME["$id"]="$theme"
+    PRESET_PREEDIT["$id"]="$preedit"
+    PRESET_NOTIFY["$id"]="$notify_text"
+}
+
+# Add new preset by adding one more register_preset line.
+register_preset "sakura" "True" "mellow-sakura" "Composing text" "樱"
+register_preset "youlan" "False" "mellow-youlan" "Do not show" "幽兰"
+
+require_runtime() {
+    command -v busctl >/dev/null 2>&1 || {
+        printf 'busctl is required\n' >&2
+        exit 1
+    }
+    command -v fcitx5-remote >/dev/null 2>&1 || {
+        printf 'fcitx5-remote is required\n' >&2
+        exit 1
+    }
+    fcitx5-remote --check >/dev/null 2>&1 || {
+        printf 'fcitx5 is not running\n' >&2
+        exit 1
+    }
+}
+
+get_runtime_value() {
+    local config_path="$1"
+    local key="$2"
+    local raw
+
+    raw="$(busctl --user call "$FCITX_DBUS" "$FCITX_CONTROLLER" "$FCITX_IFACE" GetConfig s "$config_path")"
+
+    awk -v key="$key" '
+        {
+            if (match($0, "\"" key "\" s \"[^\"]*\"")) {
+                s = substr($0, RSTART, RLENGTH)
+                sub("^\"" key "\" s \"", "", s)
+                sub("\"$", "", s)
+                print s
+                found = 1
+                exit
+            }
+        }
+        END {
+            if (!found) exit 1
+        }
+    ' <<<"$raw"
+}
+
+load_current_values() {
+    current_vertical="$(get_runtime_value "fcitx://config/addon/classicui" "Vertical Candidate List")"
+    current_theme="$(get_runtime_value "fcitx://config/addon/classicui" "Theme")"
+    current_preedit="$(get_runtime_value "fcitx://config/addon/rime" "PreeditMode")"
+}
+
+preset_matches_current() {
+    local preset="$1"
+    [[
+        "$current_vertical" == "${PRESET_VERTICAL[$preset]}" &&
+            "$current_theme" == "${PRESET_THEME[$preset]}" &&
+            "$current_preedit" == "${PRESET_PREEDIT[$preset]}"
+    ]]
+}
+
+next_preset() {
+    local i
+    local preset
+    local count="${#PRESET_ORDER[@]}"
+
+    for i in "${!PRESET_ORDER[@]}"; do
+        preset="${PRESET_ORDER[$i]}"
+        if preset_matches_current "$preset"; then
+            echo "${PRESET_ORDER[$(((i + 1) % count))]}"
+            return
+        fi
+    done
+
+    # Unknown state: reset to the first preset.
+    echo "${PRESET_ORDER[0]}"
+}
+
+apply_preset() {
+    local preset="$1"
+
+    busctl --user call "$FCITX_DBUS" "$FCITX_CONTROLLER" "$FCITX_IFACE" SetConfig sv \
+        "fcitx://config/addon/classicui" a{sv} 2 \
+        "Vertical Candidate List" s "${PRESET_VERTICAL[$preset]}" \
+        "Theme" s "${PRESET_THEME[$preset]}" >/dev/null
+
+    busctl --user call "$FCITX_DBUS" "$FCITX_CONTROLLER" "$FCITX_IFACE" SetConfig sv \
+        "fcitx://config/addon/rime" a{sv} 1 \
+        "PreeditMode" s "${PRESET_PREEDIT[$preset]}" >/dev/null
+
+    busctl --user call "$FCITX_DBUS" "$FCITX_CONTROLLER" "$FCITX_IFACE" Save >/dev/null
+}
+
+send_notification() {
+    local preset="$1"
+    local body
+    local replace_id=0
+    local saved_id=""
+    local saved_ts=""
+    local now_ms
+    local age_ms
+    local output
+    local new_id
+    local replace_window_ms=3500
+
+    command -v gdbus >/dev/null 2>&1 || return 0
+
+    if [[ -r "$NOTIFY_ID_FILE" ]]; then
+        read -r saved_id saved_ts <"$NOTIFY_ID_FILE" || true
+        if [[ "$saved_id" =~ ^[0-9]+$ && "$saved_ts" =~ ^[0-9]+$ ]]; then
+            now_ms="$(date +%s%3N)"
+            age_ms=$((now_ms - saved_ts))
+            # Reuse ID only in a short active window; stale IDs can suppress new toasts.
+            if ((age_ms >= 0 && age_ms <= replace_window_ms)); then
+                replace_id="$saved_id"
+            fi
+        fi
+    fi
+
+    body="${PRESET_NOTIFY[$preset]}"
+    output="$(
+        gdbus call --session \
+            --dest org.freedesktop.Notifications \
+            --object-path /org/freedesktop/Notifications \
+            --method org.freedesktop.Notifications.Notify \
+            -- \
+            "输入法" \
+            "$replace_id" \
+            "" \
+            "预设" \
+            "$body" \
+            "[]" \
+            "{'transient': <true>, 'urgency': <byte 0>}" \
+            -1 2>/dev/null || true
+    )"
+
+    new_id="$(sed -n 's/^(uint32 \([0-9]\+\),)$/\1/p' <<<"$output")"
+    if [[ "$new_id" =~ ^[0-9]+$ ]]; then
+        printf '%s %s\n' "$new_id" "$(date +%s%3N)" >"$NOTIFY_ID_FILE"
+    fi
+}
+
+require_runtime
+load_current_values
+target_preset="$(next_preset)"
+apply_preset "$target_preset"
+send_notification "$target_preset"

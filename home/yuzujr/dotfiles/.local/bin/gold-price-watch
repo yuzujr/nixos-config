@@ -1,0 +1,406 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONFIG_FILE="${GOLD_WATCH_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/gold-price/gold-price-watch.conf}"
+STATE_DIR="${GOLD_WATCH_STATE_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/gold-price-watch}"
+STATE_FILE="$STATE_DIR/state.env"
+
+API_URL="https://api.gold-api.com/price/XAU"
+CHECK_INTERVAL=300
+ABS_HIGH=""
+ABS_LOW=""
+REL_CHANGE_PCT=""
+NOTIFY_TITLE="Gold Price Alert"
+WATCH_CSV_ENABLED=1
+WATCH_CSV_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/gold-price-history"
+
+MODE="once"
+NO_NOTIFY=0
+
+usage() {
+  cat <<'EOF'
+Usage: gold-price-watch [--once|--loop|--status] [--no-notify]
+
+Options:
+  --once       Run one check and exit (default)
+  --loop       Run forever and poll every CHECK_INTERVAL seconds
+  --status     Show local watcher status (no API call)
+  --no-notify  Print alerts to stdout instead of notify-send
+  --help       Show this help
+EOF
+}
+
+require_cmd() {
+  local cmd="$1"
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "Missing required command: $cmd" >&2
+    exit 1
+  fi
+}
+
+is_number() {
+  [[ "$1" =~ ^-?[0-9]+([.][0-9]+)?([eE][-+]?[0-9]+)?$ ]]
+}
+
+is_valid_price() {
+  is_number "$1" && float_gt "$1" 0
+}
+
+float_ge() { awk -v a="$1" -v b="$2" 'BEGIN { exit !((a+0) >= (b+0)) }'; }
+float_gt() { awk -v a="$1" -v b="$2" 'BEGIN { exit !((a+0) >  (b+0)) }'; }
+float_le() { awk -v a="$1" -v b="$2" 'BEGIN { exit !((a+0) <= (b+0)) }'; }
+float_lt() { awk -v a="$1" -v b="$2" 'BEGIN { exit !((a+0) <  (b+0)) }'; }
+
+fmt_price() { awk -v p="$1" 'BEGIN { printf "%.2f", p+0 }'; }
+
+abs_pct_change() {
+  awk -v curr="$1" -v base="$2" 'BEGIN {
+    b = base + 0
+    if (b == 0) { print "0"; exit 0 }
+    diff = curr - base
+    if (diff < 0) diff = -diff
+    if (b < 0) b = -b
+    printf "%.6f", (diff / b) * 100
+  }'
+}
+
+send_alert() {
+  local urgency="$1"
+  local message="$2"
+  if [[ "$NO_NOTIFY" -eq 1 ]]; then
+    printf '%s\n' "$message"
+    return 0
+  fi
+  notify-send -u "$urgency" "$NOTIFY_TITLE" "$message"
+}
+
+load_config() {
+  API_URL="https://api.gold-api.com/price/XAU"
+  CHECK_INTERVAL=300
+  ABS_HIGH=""
+  ABS_LOW=""
+  REL_CHANGE_PCT=""
+  NOTIFY_TITLE="Gold Price Alert"
+  WATCH_CSV_ENABLED=1
+  WATCH_CSV_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/gold-price-history"
+
+  if [[ -f "$CONFIG_FILE" ]]; then
+    # shellcheck source=/dev/null
+    source "$CONFIG_FILE"
+  fi
+
+  if ! [[ "$CHECK_INTERVAL" =~ ^[0-9]+$ ]] || (( CHECK_INTERVAL <= 0 )); then
+    echo "CHECK_INTERVAL must be a positive integer (seconds)." >&2
+    exit 1
+  fi
+
+  if [[ -n "$ABS_HIGH" ]] && ! is_number "$ABS_HIGH"; then
+    echo "ABS_HIGH must be numeric." >&2
+    exit 1
+  fi
+
+  if [[ -n "$ABS_LOW" ]] && ! is_number "$ABS_LOW"; then
+    echo "ABS_LOW must be numeric." >&2
+    exit 1
+  fi
+
+  if [[ -n "$REL_CHANGE_PCT" ]] && ! is_number "$REL_CHANGE_PCT"; then
+    echo "REL_CHANGE_PCT must be numeric." >&2
+    exit 1
+  fi
+
+  if [[ -n "$ABS_HIGH" && -n "$ABS_LOW" ]] && float_le "$ABS_HIGH" "$ABS_LOW"; then
+    echo "ABS_HIGH must be greater than ABS_LOW when both are set." >&2
+    exit 1
+  fi
+
+  if [[ "$WATCH_CSV_ENABLED" != "0" && "$WATCH_CSV_ENABLED" != "1" ]]; then
+    echo "WATCH_CSV_ENABLED must be 0 or 1." >&2
+    exit 1
+  fi
+
+  if [[ -z "$WATCH_CSV_DIR" ]]; then
+    echo "WATCH_CSV_DIR must not be empty." >&2
+    exit 1
+  fi
+}
+
+load_state() {
+  mkdir -p "$STATE_DIR"
+  if [[ -f "$STATE_FILE" ]]; then
+    # shellcheck source=/dev/null
+    source "$STATE_FILE"
+  fi
+
+  LAST_PRICE="${LAST_PRICE:-}"
+  ANCHOR_PRICE="${ANCHOR_PRICE:-}"
+  LAST_UPDATED_AT="${LAST_UPDATED_AT:-}"
+
+  if [[ -n "$LAST_PRICE" ]] && ! is_valid_price "$LAST_PRICE"; then
+    LAST_PRICE=""
+  fi
+  if [[ -n "$ANCHOR_PRICE" ]] && ! is_valid_price "$ANCHOR_PRICE"; then
+    ANCHOR_PRICE=""
+  fi
+}
+
+save_state() {
+  local tmp_file
+  tmp_file="$(mktemp "$STATE_DIR/state.XXXXXX")"
+  {
+    printf 'LAST_PRICE=%q\n' "$LAST_PRICE"
+    printf 'ANCHOR_PRICE=%q\n' "$ANCHOR_PRICE"
+    printf 'LAST_UPDATED_AT=%q\n' "$LAST_UPDATED_AT"
+  } >"$tmp_file"
+  mv "$tmp_file" "$STATE_FILE"
+}
+
+fetch_price() {
+  local response
+  FETCH_ERROR=""
+
+  if ! response="$(curl -fsS "$API_URL" 2>&1)"; then
+    FETCH_ERROR="Network/API request failed: ${response}"
+    return 1
+  fi
+
+  CURRENT_PRICE="$(jq -r '.price // empty' <<<"$response")"
+  CURRENT_UPDATED_AT="$(jq -r '.updatedAt // empty' <<<"$response")"
+
+  if [[ -z "$CURRENT_PRICE" ]] || ! is_valid_price "$CURRENT_PRICE"; then
+    FETCH_ERROR="Unable to parse valid positive price from API response."
+    return 1
+  fi
+}
+
+append_watch_csv() {
+  local today_file today_link now_local now_utc
+
+  if [[ "$WATCH_CSV_ENABLED" -ne 1 ]]; then
+    return 0
+  fi
+
+  mkdir -p "$WATCH_CSV_DIR"
+
+  today_file="$WATCH_CSV_DIR/$(date +%F).csv"
+  today_link="$WATCH_CSV_DIR/today.csv"
+  now_local="$(date '+%Y-%m-%d %H:%M:%S %Z')"
+  now_utc="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+
+  if [[ ! -f "$today_file" ]]; then
+    printf 'timestamp_local,timestamp_utc,price_usd_oz,api_updated_at\n' >"$today_file"
+  fi
+
+  printf '"%s","%s","%s","%s"\n' \
+    "$now_local" \
+    "$now_utc" \
+    "$(fmt_price "$CURRENT_PRICE")" \
+    "${CURRENT_UPDATED_AT:-}" \
+    >>"$today_file"
+
+  ln -sfn "$(basename "$today_file")" "$today_link"
+}
+
+check_thresholds() {
+  local current_fmt last_fmt high_fmt low_fmt anchor_fmt pct pct_fmt delta direction
+  current_fmt="$(fmt_price "$CURRENT_PRICE")"
+
+  if [[ -n "$ABS_HIGH" ]]; then
+    high_fmt="$(fmt_price "$ABS_HIGH")"
+    if [[ -z "$LAST_PRICE" ]]; then
+      if float_ge "$CURRENT_PRICE" "$ABS_HIGH"; then
+        send_alert "critical" "Gold is ${current_fmt} USD/oz (>= ${high_fmt})."
+      fi
+    elif float_lt "$LAST_PRICE" "$ABS_HIGH" && float_ge "$CURRENT_PRICE" "$ABS_HIGH"; then
+      last_fmt="$(fmt_price "$LAST_PRICE")"
+      send_alert "critical" "Gold crossed above ${high_fmt} USD/oz (${last_fmt} -> ${current_fmt})."
+    fi
+  fi
+
+  if [[ -n "$ABS_LOW" ]]; then
+    low_fmt="$(fmt_price "$ABS_LOW")"
+    if [[ -z "$LAST_PRICE" ]]; then
+      if float_le "$CURRENT_PRICE" "$ABS_LOW"; then
+        send_alert "critical" "Gold is ${current_fmt} USD/oz (<= ${low_fmt})."
+      fi
+    elif float_gt "$LAST_PRICE" "$ABS_LOW" && float_le "$CURRENT_PRICE" "$ABS_LOW"; then
+      last_fmt="$(fmt_price "$LAST_PRICE")"
+      send_alert "critical" "Gold crossed below ${low_fmt} USD/oz (${last_fmt} -> ${current_fmt})."
+    fi
+  fi
+
+  if [[ -n "$REL_CHANGE_PCT" ]]; then
+    if [[ -z "$ANCHOR_PRICE" ]]; then
+      ANCHOR_PRICE="$CURRENT_PRICE"
+    else
+      pct="$(abs_pct_change "$CURRENT_PRICE" "$ANCHOR_PRICE")"
+      if float_ge "$pct" "$REL_CHANGE_PCT"; then
+        pct_fmt="$(awk -v p="$pct" 'BEGIN { printf "%.2f", p }')"
+        anchor_fmt="$(fmt_price "$ANCHOR_PRICE")"
+        delta="$(awk -v c="$CURRENT_PRICE" -v a="$ANCHOR_PRICE" 'BEGIN { printf "%.2f", c-a }')"
+        direction="changed"
+        if float_gt "$CURRENT_PRICE" "$ANCHOR_PRICE"; then
+          direction="up"
+        elif float_lt "$CURRENT_PRICE" "$ANCHOR_PRICE"; then
+          direction="down"
+        fi
+        send_alert "normal" "Gold moved ${direction} ${pct_fmt}% (${delta} USD/oz) from ${anchor_fmt} to ${current_fmt}."
+        ANCHOR_PRICE="$CURRENT_PRICE"
+      fi
+    fi
+  else
+    ANCHOR_PRICE="$CURRENT_PRICE"
+  fi
+}
+
+run_once() {
+  if ! fetch_price; then
+    # send_alert "critical" "Gold price fetch failed. Keeping last known state. ${FETCH_ERROR}"
+    echo "gold-price-watch: ${FETCH_ERROR}" >&2
+    return 1
+  fi
+  if ! append_watch_csv; then
+    echo "gold-price-watch: failed to update watcher CSV in $WATCH_CSV_DIR" >&2
+  fi
+  check_thresholds
+
+  LAST_PRICE="$CURRENT_PRICE"
+  LAST_UPDATED_AT="$CURRENT_UPDATED_AT"
+  if [[ -z "$ANCHOR_PRICE" ]]; then
+    ANCHOR_PRICE="$CURRENT_PRICE"
+  fi
+  save_state
+
+  printf 'Gold: %s USD/oz (updated: %s)\n' "$(fmt_price "$CURRENT_PRICE")" "${CURRENT_UPDATED_AT:-unknown}"
+}
+
+print_status() {
+  local config_exists state_exists last_price_text anchor_price_text
+  local csv_today_file csv_today_link csv_today_exists csv_today_rows csv_today_last_line csv_today_link_target csv_today_link_exists
+
+  config_exists="no"
+  state_exists="no"
+  [[ -f "$CONFIG_FILE" ]] && config_exists="yes"
+  [[ -f "$STATE_FILE" ]] && state_exists="yes"
+
+  last_price_text="unset"
+  if [[ -n "${LAST_PRICE:-}" ]]; then
+    if is_number "$LAST_PRICE"; then
+      last_price_text="$(fmt_price "$LAST_PRICE") USD/oz"
+    else
+      last_price_text="$LAST_PRICE"
+    fi
+  fi
+
+  anchor_price_text="unset"
+  if [[ -n "${ANCHOR_PRICE:-}" ]]; then
+    if is_number "$ANCHOR_PRICE"; then
+      anchor_price_text="$(fmt_price "$ANCHOR_PRICE") USD/oz"
+    else
+      anchor_price_text="$ANCHOR_PRICE"
+    fi
+  fi
+
+  csv_today_file="$WATCH_CSV_DIR/$(date +%F).csv"
+  csv_today_link="$WATCH_CSV_DIR/today.csv"
+  csv_today_exists="no"
+  csv_today_link_exists="no"
+  csv_today_rows="0"
+  csv_today_last_line="none"
+  csv_today_link_target="missing"
+  [[ -f "$csv_today_file" ]] && csv_today_exists="yes"
+  [[ -L "$csv_today_link" ]] && csv_today_link_exists="yes"
+  if [[ "$csv_today_link_exists" == "yes" ]]; then
+    csv_today_link_target="$(readlink "$csv_today_link")"
+  fi
+  if [[ "$csv_today_exists" == "yes" ]]; then
+    csv_today_rows="$(awk 'END{ if (NR>1) print NR-1; else print 0 }' "$csv_today_file")"
+    if (( csv_today_rows > 0 )); then
+      csv_today_last_line="$(tail -n 1 "$csv_today_file")"
+    fi
+  fi
+
+  cat <<EOF
+[Config]
+Config file: $CONFIG_FILE (exists: $config_exists)
+State file: $STATE_FILE (exists: $state_exists)
+API URL: $API_URL
+Check interval: ${CHECK_INTERVAL}s
+Notify title: ${NOTIFY_TITLE}
+
+[Thresholds]
+ABS_HIGH: ${ABS_HIGH:-disabled}
+ABS_LOW: ${ABS_LOW:-disabled}
+REL_CHANGE_PCT: ${REL_CHANGE_PCT:-disabled}
+
+[Runtime State]
+Last price: $last_price_text
+Anchor price: $anchor_price_text
+Last API updatedAt: ${LAST_UPDATED_AT:-unset}
+
+[Watcher CSV]
+Enabled: ${WATCH_CSV_ENABLED}
+Directory: $WATCH_CSV_DIR
+Today file: $csv_today_file (exists: $csv_today_exists)
+Today rows: $csv_today_rows
+Today last row: $csv_today_last_line
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --once)
+      MODE="once"
+      ;;
+    --loop|--daemon)
+      MODE="loop"
+      ;;
+    --status)
+      MODE="status"
+      ;;
+    --no-notify)
+      NO_NOTIFY=1
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+require_cmd awk
+
+if [[ "$MODE" == "status" ]]; then
+  load_config
+  load_state
+  print_status
+  exit 0
+fi
+
+require_cmd curl
+require_cmd jq
+if [[ "$NO_NOTIFY" -eq 0 ]]; then
+  require_cmd notify-send
+fi
+
+load_state
+
+if [[ "$MODE" == "once" ]]; then
+  load_config
+  run_once
+  exit 0
+fi
+
+while true; do
+  load_config
+  if ! run_once; then
+    echo "gold-price-watch: check failed, retrying in ${CHECK_INTERVAL}s" >&2
+  fi
+  sleep "$CHECK_INTERVAL"
+done

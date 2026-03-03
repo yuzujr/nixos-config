@@ -1,0 +1,7 @@
+# wheel = zoom
+zoom_in 4
+zoom_out 5
+
+# side/extra = prev/next
+prev_img 8
+next_img 9

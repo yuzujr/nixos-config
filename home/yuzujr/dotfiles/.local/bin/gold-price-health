@@ -1,0 +1,214 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+WATCH_UNIT="${GOLD_HEALTH_WATCH_UNIT:-gold-price-watch.service}"
+HISTORY_SERVICE_UNIT="${GOLD_HEALTH_HISTORY_SERVICE_UNIT:-gold-price-history-daily.service}"
+HISTORY_TIMER_UNIT="${GOLD_HEALTH_HISTORY_TIMER_UNIT:-gold-price-history-daily.timer}"
+
+WATCH_CONFIG="${GOLD_WATCH_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/gold-price/gold-price-watch.conf}"
+WATCH_STATE="${GOLD_WATCH_STATE_FILE:-${XDG_STATE_HOME:-$HOME/.local/state}/gold-price-watch/state.env}"
+HISTORY_CSV="${GOLD_HISTORY_OUTPUT_FILE:-${XDG_DATA_HOME:-$HOME/.local/share}/gold-price-history/daily.csv}"
+
+require_cmd() {
+  local cmd="$1"
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "Missing required command: $cmd" >&2
+    exit 1
+  fi
+}
+
+prop() {
+  local unit="$1" key="$2"
+  systemctl --user show "$unit" -p "$key" --value 2>/dev/null || true
+}
+
+strip_quotes() {
+  local s="${1:-}"
+  s="${s%\"}"
+  s="${s#\"}"
+  printf '%s' "$s"
+}
+
+is_number() {
+  [[ "$1" =~ ^-?[0-9]+([.][0-9]+)?([eE][-+]?[0-9]+)?$ ]]
+}
+
+is_positive_price() {
+  is_number "$1" && awk -v n="$1" 'BEGIN { exit !((n+0) > 0) }'
+}
+
+load_watch_config() {
+  API_URL="https://api.gold-api.com/price/XAU"
+  CHECK_INTERVAL=300
+  ABS_HIGH=""
+  ABS_LOW=""
+  REL_CHANGE_PCT=""
+  NOTIFY_TITLE="Gold Price Alert"
+  WATCH_CSV_ENABLED=1
+  WATCH_CSV_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/gold-price-history"
+
+  if [[ -f "$WATCH_CONFIG" ]]; then
+    # shellcheck source=/dev/null
+    source "$WATCH_CONFIG"
+  fi
+}
+
+load_watch_state() {
+  LAST_PRICE=""
+  ANCHOR_PRICE=""
+  LAST_UPDATED_AT=""
+
+  if [[ -f "$WATCH_STATE" ]]; then
+    # shellcheck source=/dev/null
+    source "$WATCH_STATE"
+  fi
+
+  LAST_PRICE="${LAST_PRICE:-}"
+  ANCHOR_PRICE="${ANCHOR_PRICE:-}"
+  LAST_UPDATED_AT="${LAST_UPDATED_AT:-}"
+
+  if [[ -n "$LAST_PRICE" ]] && ! is_positive_price "$LAST_PRICE"; then
+    LAST_PRICE=""
+  fi
+  if [[ -n "$ANCHOR_PRICE" ]] && ! is_positive_price "$ANCHOR_PRICE"; then
+    ANCHOR_PRICE=""
+  fi
+}
+
+watch_last_log_line() {
+  journalctl --user -u "$WATCH_UNIT" -n 200 --no-pager -o short-iso 2>/dev/null \
+    | awk '/Gold: / {line=$0} END{print line}'
+}
+
+history_last_log_line() {
+  journalctl --user -u "$HISTORY_SERVICE_UNIT" -n 200 --no-pager -o short-iso 2>/dev/null \
+    | awk 'NF {line=$0} END{print line}'
+}
+
+print_history_csv_summary() {
+  local row_count line d symbol price source_day recorded_at
+
+  if [[ ! -f "$HISTORY_CSV" ]]; then
+    echo "History CSV: missing ($HISTORY_CSV)"
+    return 0
+  fi
+
+  row_count="$(awk 'END{print NR}' "$HISTORY_CSV")"
+  if [[ -z "$row_count" || "$row_count" -le 1 ]]; then
+    echo "History CSV: $HISTORY_CSV (0 rows)"
+    return 0
+  fi
+
+  line="$(tail -n 1 "$HISTORY_CSV")"
+  IFS=, read -r d symbol price source_day recorded_at _ <<<"$line"
+  d="$(strip_quotes "$d")"
+  symbol="$(strip_quotes "$symbol")"
+  price="$(strip_quotes "$price")"
+  source_day="$(strip_quotes "$source_day")"
+  recorded_at="$(strip_quotes "$recorded_at")"
+
+  echo "History CSV: $HISTORY_CSV"
+  echo "  Rows: $((row_count - 1))"
+  echo "  Last row: date=${d} symbol=${symbol} price=${price} source_day='${source_day}' recorded_at='${recorded_at}'"
+}
+
+print_watcher_csv_summary() {
+  local today_file today_link today_exists link_exists link_target rows last_line
+
+  today_file="$WATCH_CSV_DIR/$(date +%F).csv"
+  today_link="$WATCH_CSV_DIR/today.csv"
+  today_exists="no"
+  link_exists="no"
+  link_target="missing"
+  rows="0"
+  last_line="none"
+
+  [[ -f "$today_file" ]] && today_exists="yes"
+  [[ -L "$today_link" ]] && link_exists="yes"
+  if [[ "$link_exists" == "yes" ]]; then
+    link_target="$(readlink "$today_link")"
+  fi
+
+  if [[ "$today_exists" == "yes" ]]; then
+    rows="$(awk 'END{ if (NR>1) print NR-1; else print 0 }' "$today_file")"
+    if (( rows > 0 )); then
+      last_line="$(tail -n 1 "$today_file")"
+    fi
+  fi
+
+  echo "[Watcher CSV]"
+  echo "Enabled: ${WATCH_CSV_ENABLED}"
+  echo "Directory: ${WATCH_CSV_DIR}"
+  echo "Today file: ${today_file} (exists: ${today_exists})"
+  echo "Today rows: ${rows}"
+  echo "Today last row: ${last_line}"
+}
+
+require_cmd systemctl
+require_cmd awk
+require_cmd journalctl
+require_cmd tail
+require_cmd date
+
+watch_load="$(prop "$WATCH_UNIT" LoadState)"
+watch_active="$(prop "$WATCH_UNIT" ActiveState)"
+watch_sub="$(prop "$WATCH_UNIT" SubState)"
+watch_enabled="$(prop "$WATCH_UNIT" UnitFileState)"
+watch_pid="$(prop "$WATCH_UNIT" MainPID)"
+watch_started="$(prop "$WATCH_UNIT" ExecMainStartTimestamp)"
+
+timer_load="$(prop "$HISTORY_TIMER_UNIT" LoadState)"
+timer_active="$(prop "$HISTORY_TIMER_UNIT" ActiveState)"
+timer_enabled="$(prop "$HISTORY_TIMER_UNIT" UnitFileState)"
+timer_next="$(prop "$HISTORY_TIMER_UNIT" NextElapseUSecRealtime)"
+timer_last="$(prop "$HISTORY_TIMER_UNIT" LastTriggerUSec)"
+
+history_load="$(prop "$HISTORY_SERVICE_UNIT" LoadState)"
+history_active="$(prop "$HISTORY_SERVICE_UNIT" ActiveState)"
+history_sub="$(prop "$HISTORY_SERVICE_UNIT" SubState)"
+history_status="$(prop "$HISTORY_SERVICE_UNIT" ExecMainStatus)"
+history_start="$(prop "$HISTORY_SERVICE_UNIT" ExecMainStartTimestamp)"
+history_exit="$(prop "$HISTORY_SERVICE_UNIT" ExecMainExitTimestamp)"
+
+load_watch_config
+load_watch_state
+
+watch_last_log="$(watch_last_log_line)"
+history_last_log="$(history_last_log_line)"
+
+[[ -z "$timer_last" ]] && timer_last="never"
+[[ -z "$timer_next" ]] && timer_next="unknown"
+[[ -z "$watch_pid" ]] && watch_pid="0"
+[[ -z "$watch_started" ]] && watch_started="unknown"
+[[ -z "$history_start" ]] && history_start="unknown"
+[[ -z "$history_exit" ]] && history_exit="unknown"
+[[ -z "$history_status" ]] && history_status="unknown"
+[[ -z "$watch_last_log" ]] && watch_last_log="no watcher journal entries"
+[[ -z "$history_last_log" ]] && history_last_log="no history-service journal entries"
+
+printf '[Watcher]\n'
+printf 'Unit: %s\n' "$WATCH_UNIT"
+printf 'State: load=%s active=%s sub=%s enabled=%s pid=%s\n' "$watch_load" "$watch_active" "$watch_sub" "$watch_enabled" "$watch_pid"
+printf 'Started: %s\n' "$watch_started"
+printf 'Config: interval=%ss abs_high=%s abs_low=%s rel_change_pct=%s\n' \
+  "$CHECK_INTERVAL" "${ABS_HIGH:-disabled}" "${ABS_LOW:-disabled}" "${REL_CHANGE_PCT:-disabled}"
+printf 'State: last_price=%s anchor_price=%s last_api_updatedAt=%s\n' \
+  "${LAST_PRICE:-unset}" "${ANCHOR_PRICE:-unset}" "${LAST_UPDATED_AT:-unset}"
+printf 'Last log: %s\n\n' "$watch_last_log"
+
+print_watcher_csv_summary
+printf '\n'
+
+printf '[History Timer]\n'
+printf 'Unit: %s\n' "$HISTORY_TIMER_UNIT"
+printf 'State: load=%s active=%s enabled=%s\n' "$timer_load" "$timer_active" "$timer_enabled"
+printf 'Next trigger: %s\n' "$timer_next"
+printf 'Last trigger: %s\n\n' "$timer_last"
+
+printf '[History Service]\n'
+printf 'Unit: %s\n' "$HISTORY_SERVICE_UNIT"
+printf 'State: load=%s active=%s sub=%s exec_status=%s\n' "$history_load" "$history_active" "$history_sub" "$history_status"
+printf 'Last start: %s\n' "$history_start"
+printf 'Last exit: %s\n' "$history_exit"
+printf 'Last log: %s\n' "$history_last_log"
+print_history_csv_summary

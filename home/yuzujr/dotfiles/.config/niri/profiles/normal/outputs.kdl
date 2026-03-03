@@ -1,0 +1,23 @@
+// school
+//output "BOE NE160QDM-NZL Unknown" { 
+//    //off
+//    mode "2560x1600@240.000"
+//    scale 1.3
+//}
+//output "HDMI-A-1"{
+//    mode "3840x2160@143.999"
+//    scale 1.5
+//}
+
+// home
+output "BOE NE160QDM-NZL Unknown" { 
+    off
+    mode "2560x1600@240.000"
+    scale 2.04
+    position x=1920 y=62
+}
+output "SKYDATA S.P.A. F24G30F 0x01010101"{
+    mode "1920x1080@179.998"
+    scale 1
+    position x=0 y=0
+}

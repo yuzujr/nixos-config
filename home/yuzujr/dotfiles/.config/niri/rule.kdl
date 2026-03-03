@@ -1,0 +1,71 @@
+// 整体设置
+window-rule {
+    geometry-corner-radius 20
+    clip-to-geometry true
+    opacity 0.97
+    draw-border-with-background false
+}
+
+// 全屏打开
+window-rule {
+    match app-id="google-chrome"
+    open-maximized true
+}
+
+// 不透明
+window-rule {
+    match app-id="SPlayer"
+    match app-id="google-chrome"
+    match app-id="feh"
+    match app-id="mpv"
+    match title="图片查看器"
+    match title="画中画"
+    match title="图片和视频"
+    match title="视频播放器"
+    opacity 1.0
+}
+
+// 浮动打开
+window-rule {
+    match app-id="nm-connection-editor"
+    match app-id="steam" title="Friends List"
+    match app-id="blueman-manager" title="蓝牙设备"
+    match app-id="org.pulseaudio.pavucontrol" title="音量控制"
+    match app-id="fcitx" title="Fcitx5 Input Window"
+    match app-id="waypaper"
+    match app-id="clipse-gui"
+    match title="群聊的聊天记录"
+    match title="聊天记录"
+    match title="日历"
+    match title="重命名"
+    match title="打开文件"
+    match app-id="zen" title="我的足迹"
+    match app-id="nmtui"    
+    match app-id="feh"
+    match app-id="yad"
+    match app-id="satty"
+    match title="图片查看器"
+    match title="画中画"
+    match title="图片和视频"
+    match title="视频播放器"
+    match app-id="mpv"
+    open-floating true
+}
+
+// noctalia overview壁纸
+layer-rule{
+    match namespace="^noctalia-overview*"
+     place-within-backdrop true
+}
+
+// steam通知右下角
+window-rule {
+    match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
+    default-floating-position x=10 y=10 relative-to="bottom-right"
+}
+
+// steam好友列表
+window-rule {
+    match title="好友列表"
+     max-width 450
+}

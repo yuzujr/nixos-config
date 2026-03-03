@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ====== 配置区（按需改）======
+PREFIX="${PREFIX:-/home/yuzujr/Games/containers/local}"
+PROTONPATH="${PROTONPATH:-/home/yuzujr/.local/share/lutris/runners/proton/ge-proton}"
+PROTON_BIN="$PROTONPATH/proton"
+
+# 可选：把安装器/工具的日志收集到这里
+LOGDIR="${LOGDIR:-$PREFIX/ge-run-logs}"
+mkdir -p "$LOGDIR"
+LOGFILE="$LOGDIR/$(date +%F_%H-%M-%S).log"
+
+# ====== 参数处理 ======
+if [[ $# -lt 1 ]]; then
+  echo "Usage：ge-run /path/to/something.exe [exe arguments...]"
+  exit 1
+fi
+
+EXE="$1"
+shift || true
+if [[ ! -f "$EXE" ]]; then
+  echo "找不到 EXE：$EXE"
+  exit 1
+fi
+
+# ====== 常用环境（按需增删）======
+export WINEPREFIX="$PREFIX"
+export STEAM_COMPAT_DATA_PATH="$PREFIX"
+export STEAM_COMPAT_CLIENT_INSTALL_PATH=""
+export STEAM_COMPAT_APP_ID="${STEAM_COMPAT_APP_ID:-0}"
+
+# 常见：避免安装器焦点切走最小化等（可选）
+export SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS=0
+
+# 你日志里有这些（可选，不需要也能跑）
+export __NV_PRIME_RENDER_OFFLOAD="${__NV_PRIME_RENDER_OFFLOAD:-1}"
+export __GLX_VENDOR_LIBRARY_NAME="${__GLX_VENDOR_LIBRARY_NAME:-nvidia}"
+export __VK_LAYER_NV_optimus="${__VK_LAYER_NV_optimus:-NVIDIA_only}"
+
+# ====== 执行 ======
+echo "[ge-run] PREFIX=$WINEPREFIX" | tee -a "$LOGFILE"
+echo "[ge-run] PROTONPATH=$PROTONPATH" | tee -a "$LOGFILE"
+echo "[ge-run] EXE=$EXE $*" | tee -a "$LOGFILE"
+
+# Proton 的 run 负责真正执行 exe
+exec "$PROTON_BIN" run "$EXE" "$@" 2>&1 | tee -a "$LOGFILE"
