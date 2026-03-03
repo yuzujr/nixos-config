@@ -46,8 +46,10 @@ in {
       ".local/share/dbus-1/services".source =
         dotfilesRoot + "/.local/share/dbus-1/services";
 
-      ".local/share/fcitx5/rime".source =
-        dotfilesRoot + "/.local/share/fcitx5/rime";
+      ".local/share/fcitx5/rime" = {
+        source = dotfilesRoot + "/.local/share/fcitx5/rime";
+        recursive = true;
+      };
 
       ".local/share/konsole".source =
         dotfilesRoot + "/.local/share/konsole";
