@@ -13,7 +13,7 @@ local specs = {
   { src = "https://github.com/nvim-lualine/lualine.nvim" },
 
   -- Completion
-  { src = "https://github.com/Saghen/blink.cmp", version = "v1.*" },
+  { src = "https://github.com/Saghen/blink.cmp" },
   { src = "https://github.com/L3MON4D3/LuaSnip" },
   { src = "https://github.com/rafamadriz/friendly-snippets" },
 

@@ -24,6 +24,9 @@
         ("\\.vert\\'" . glsl-mode)
         ("\\.frag\\'" . glsl-mode))
 
+(use-package nix-mode
+  :mode "\\.nix\\'")
+
 (defun rc/markdown-live-preview-temp-file (&rest _)
   "Return a temporary HTML file path for markdown live preview."
   (expand-file-name

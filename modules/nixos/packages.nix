@@ -51,6 +51,7 @@
     ninja
     nodejs
     openssh
+    python3
     libnotify
     nwg-look
     obs-studio
@@ -67,6 +68,7 @@
     telegram-desktop
     tree
     typora
+    unzip
     vim
     vscode
     wechat
