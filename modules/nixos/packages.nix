@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -19,6 +19,7 @@
     codex
     csvlens
     curl
+    ddcutil
     delta
     duf
     dust
@@ -31,11 +32,12 @@
     fzf
     gamescope
     git
+    glib
     gparted
     google-chrome
     gpu-screen-recorder
     inetutils
-    inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+    noctalia-shell
     jq
     kitty
     lutris
@@ -79,6 +81,7 @@
     zoxide
   ] ++ (with pkgs.kdePackages; [
     ark
+    breeze
     dolphin
     kate
     konsole

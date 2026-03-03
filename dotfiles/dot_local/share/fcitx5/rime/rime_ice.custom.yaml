@@ -1,4 +1,2 @@
 patch:
-  switches:
-    - name: ascii_punct
-      reset: 1
+  "switches/@1/reset": 1

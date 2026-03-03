@@ -1,4 +1,5 @@
 patch:
+  __include: rime_ice_suggestion:/
   schema_list:
     - schema: rime_ice                 # 雾凇拼音
     - schema: double_pinyin_flypy      # 小鹤双拼

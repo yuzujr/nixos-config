@@ -2,11 +2,6 @@
 
 {
   # ==========================================
-  # Hardware & Security
-  # ==========================================
-
-
-  # ==========================================
   # Core System Services
   # ==========================================
   services.dbus.enable = true;
@@ -58,7 +53,7 @@
   # Desktop Environment & Display Manager
   # ==========================================
   programs.niri.enable = true;
-  services.displayManager.sessionPackages = [ pkgs.niri ];
+  services.desktopManager.plasma6.enable = true;
 
   services.greetd = {
     enable = true;

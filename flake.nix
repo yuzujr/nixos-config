@@ -4,27 +4,29 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
+    nur = {
+      url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.noctalia-qs.follows = "noctalia-qs";
     };
 
-    noctalia-qs = {
-      url = "github:noctalia-dev/noctalia-qs";
+    neovim-nightly = {
+      url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, ... }@inputs:
+  outputs = { nixpkgs, nur, neovim-nightly, ... }:
     let
       system = "x86_64-linux";
       host = "nixos";
     in {
       nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit inputs; };
         modules = [
+          nur.modules.nixos.default
+          ({ ... }: {
+            nixpkgs.overlays = [ neovim-nightly.overlays.default ];
+          })
           ./hosts/default/configuration.nix
         ];
       };
