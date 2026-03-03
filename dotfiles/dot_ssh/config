@@ -1,0 +1,15 @@
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/keys/github
+Host gitee.com
+    HostName gitee.com
+    User git
+    IdentityFile ~/.ssh/keys/gitee
+Host server
+    HostName 47.94.142.31
+    User root
+    IdentityFile ~/.ssh/keys/server
+Host aur.archlinux.org
+  IdentityFile ~/.ssh/keys/aur
+  User aur

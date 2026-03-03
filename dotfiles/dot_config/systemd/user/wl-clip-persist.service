@@ -1,0 +1,13 @@
+[Unit]
+Description=Wayland clipboard persistence
+PartOf=niri.service
+After=niri.service
+BindsTo=niri.service
+
+[Service]
+ExecStart=/usr/bin/wl-clip-persist --clipboard regular
+Restart=on-failure
+
+[Install]
+WantedBy=niri.service
+

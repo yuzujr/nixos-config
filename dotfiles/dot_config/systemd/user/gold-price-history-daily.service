@@ -1,0 +1,8 @@
+[Unit]
+Description=Fetch and store daily gold price history (USD/oz)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/gold-price-history-daily

@@ -1,12 +1,88 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
     alsa-firmware
     alsa-ucm-conf
+    bibata-cursors
+    bluetui
     bluez
+    btop
+    brightnessctl
     btrfs-progs
+    cava
+    chezmoi
+    clang
+    cliphist
+    cmake
+    cmatrix
+    codex
+    csvlens
+    curl
+    delta
+    duf
+    dust
+    emacs-pgtk
     efibootmgr
+    eza
     exfatprogs
-  ];
+    fastfetch
+    fd
+    fzf
+    gamescope
+    git
+    gparted
+    google-chrome
+    gpu-screen-recorder
+    inetutils
+    inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+    jq
+    kitty
+    lutris
+    mangohud
+    meson
+    mpv
+    neovim
+    ninja
+    nodejs
+    openssh
+    libnotify
+    nwg-look
+    obs-studio
+    onlyoffice-desktopeditors
+    pavucontrol
+    playerctl
+    qq
+    ripgrep
+    satty
+    splayer
+    starship
+    steam
+    sunshine
+    tela-circle-icon-theme
+    telegram-desktop
+    todesk
+    tree
+    typora
+    vim
+    vscode
+    wechat
+    wev
+    wget
+    wl-clipboard
+    wl-clip-persist
+    xmake
+    xwayland-satellite
+    yazi
+    zathura
+    zathuraPkgs.zathura_pdf_poppler
+    zoxide
+  ] ++ (with pkgs.kdePackages; [
+    ark
+    dolphin
+    kate
+    konsole
+    polkit-kde-agent-1
+    qt6ct
+  ]);
 }
