@@ -5,8 +5,8 @@ binds {
     Mod+E hotkey-overlay-title="文件管理器（Dolphin）" { spawn "dolphin"; }
     Mod+B hotkey-overlay-title="浏览器（Chrome）" { spawn "google-chrome-stable"; }
     Alt+Shift+W hotkey-overlay-title="Coomer聚焦" { spawn "coomer" "--overlay" "--monitor" "all"; }
-    Alt+Space hotkey-overlay-title="应用启动器" { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
-    Super+Shift+XF86TouchpadOff hotkey-overlay-title="Microslop键的唯一用处" { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+    Alt+Space hotkey-overlay-title="应用启动器" { spawn "fuzzel"; }
+    Super+Shift+XF86TouchpadOff hotkey-overlay-title="Microslop键的唯一用处" { spawn "fuzzel"; }
     Mod+Alt+V hotkey-overlay-title="剪贴板" { spawn "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
 
     // #"截图与录屏"

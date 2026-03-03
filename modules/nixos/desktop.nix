@@ -11,6 +11,20 @@
   services.power-profiles-daemon.enable = true;
   services.gnome.gnome-keyring.enable = true;
   security.polkit.enable = true;
+  systemd.user.services.polkit-gnome-authentication-agent-1 = {
+    description = "Polkit GNOME Authentication Agent";
+    partOf = [ "niri.service" ];
+    after = [ "niri.service" ];
+    bindsTo = [ "niri.service" ];
+    wantedBy = [ "niri.service" ];
+
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
+  };
 
   services.logind.settings.Login = {
     HandlePowerKey = "ignore";
@@ -81,12 +95,8 @@
     ];
   };
 
-  # ==========================================
-  # Programs
-  # ==========================================
-  programs.steam = {
-    enable = true;
-    gamescopeSession.enable = true;
+  xdg.mime.defaultApplications = {
+  "inode/directory" = "org.kde.dolphin.desktop";
   };
 
   # ==========================================
@@ -96,6 +106,7 @@
     NO_AT_BRIDGE = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
     XDG_ICON_THEME = "Tela-circle";
+    XDG_MENU_PREFIX = "plasma-";
     XMODIFIERS = "@im=fcitx";
     XCURSOR_THEME = "Bibata-Modern-Ice";
     XCURSOR_SIZE = "28";

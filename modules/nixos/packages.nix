@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 {
+  programs.steam.enable = true;
   environment.systemPackages = with pkgs; [
     alsa-firmware
     alsa-ucm-conf
@@ -30,6 +31,8 @@
     fastfetch
     fd
     fzf
+    feh
+    fuzzel
     gamescope
     git
     glib
@@ -51,7 +54,7 @@
     libnotify
     nwg-look
     obs-studio
-    onlyoffice-desktopeditors
+    parted
     pavucontrol
     playerctl
     qq
@@ -59,11 +62,9 @@
     satty
     splayer
     starship
-    steam
     sunshine
     tela-circle-icon-theme
     telegram-desktop
-    todesk
     tree
     typora
     vim
@@ -85,7 +86,6 @@
     dolphin
     kate
     konsole
-    polkit-kde-agent-1
     qt6ct
   ]);
 }

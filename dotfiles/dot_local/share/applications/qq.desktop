@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=QQ
-Exec=qq %U
+Exec=env __EGL_VENDOR_LIBRARY_FILENAMES=/run/opengl-driver/share/glvnd/egl_vendor.d/10_nvidia.json qq %U
 Terminal=false
 Type=Application
 Icon=qq

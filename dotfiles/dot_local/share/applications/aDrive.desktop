@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=阿里云盘
-Comment=aliyunpan
-Exec=/home/yuzujr/.local/bin/wine /home/yuzujr/Games/containers/local/drive_c/users/steamuser/AppData/Local/Programs/aDrive/aDrive.exe
-Categories=Utility;
-Keywords=aliyunpan;adrive;
-Icon=/home/yuzujr/.local/share/applications/logo/aDrive.ico
-

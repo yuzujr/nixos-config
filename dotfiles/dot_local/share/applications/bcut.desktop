@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=必剪
-Comment=Bcut
-Exec=/home/yuzujr/.local/bin/ge-run /home/yuzujr/Games/containers/local/drive_c/users/steamuser/AppData/Local/BcutBilibili/BCUT.exe
-Categories=Utility;
-Icon=/home/yuzujr/Games/containers/local/drive_c/users/steamuser/AppData/Local/BcutBilibili/BCUT_Deskpic.ico
-
