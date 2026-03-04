@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772617776,
-        "narHash": "sha256-SdVnwJk63+LpL08bwjvxYnrMhuFqTpI9m1RlCRZdCqI=",
+        "lastModified": 1772619328,
+        "narHash": "sha256-WD+nOKCWv8N7hK/XQBwTSuWGSGMOJKkl7TavIrLeJVY=",
         "ref": "refs/heads/main",
-        "rev": "1841bb6cd891df0519d8a66f11652e6219f3ac29",
-        "revCount": 45,
+        "rev": "84d0991649da7fdd8fc2df8fcb1fb74a85025962",
+        "revCount": 46,
         "type": "git",
         "url": "ssh://git@github.com/yuzujr/ani2xcursor"
       },
@@ -27,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772618933,
-        "narHash": "sha256-qZra4gQ7D7wlVoweeSunEYR03hQf8FoWf8qXO1z7yNY=",
+        "lastModified": 1772619336,
+        "narHash": "sha256-F/4KLZSXam0+/1MTcT2MlCFZrfHtwFzK0rP0GLdlPX0=",
         "ref": "refs/heads/main",
-        "rev": "2e5cf348bdfba26c84e2c478ab714d0dbcef0ba7",
-        "revCount": 17,
+        "rev": "268aad1043940cbd7950ff2b9507ab3fb8a810e3",
+        "revCount": 18,
         "type": "git",
         "url": "ssh://git@github.com/yuzujr/coomer"
       },
