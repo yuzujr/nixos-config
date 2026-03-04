@@ -20,10 +20,7 @@
   nixpkgs.config.allowUnfree = true;
 
   programs.fish.enable = true;
-
-  # Declarative SSH config — replaces ~/.ssh/config entirely.
-  # Absolute path for github.com so root (sudo nixos-rebuild) can also authenticate.
-  # ~ in IdentityFile expands to the connecting user's home for all other hosts.
+  
   programs.ssh.extraConfig = ''
     Host github.com
       User git
@@ -42,21 +39,6 @@
       User aur
       IdentityFile ~/.ssh/keys/aur
   '';
-
-  programs.ssh.knownHosts = {
-    "github.com" = {
-      hostNames = [ "github.com" ];
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
-    };
-    "gitee.com" = {
-      hostNames = [ "gitee.com" ];
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKxHSJ7084RmkJ4YdEi5tngynE8aZe2uEoVVsB/OvYN";
-    };
-    "aur.archlinux.org" = {
-      hostNames = [ "aur.archlinux.org" ];
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuBKrPzbawxA/k2g6NcyV5jmqwJ2s+zpgZGZ7tpLIcN";
-    };
-  };
 
   users.users.yuzujr = {
     isNormalUser = true;
