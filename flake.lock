@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772616097,
-        "narHash": "sha256-OwhqMtexTsuv8XyAVoGmpeycq/kMgs3yWK4CJe0uVpg=",
+        "lastModified": 1772616696,
+        "narHash": "sha256-xcKF1F/mP7q7bqA0kfXwFrhp25QjP3KdfHPX5Bnl6z0=",
         "ref": "refs/heads/main",
-        "rev": "fd161af35879bb88ced58fe744d05d3381eb87b4",
-        "revCount": 14,
+        "rev": "943356a02f61dcfb03e08098e3f4ea30996dbcdb",
+        "revCount": 15,
         "type": "git",
         "url": "ssh://git@github.com/yuzujr/coomer"
       },
