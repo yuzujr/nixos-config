@@ -13,7 +13,6 @@
     btrfs-progs
     cava
     chezmoi
-    clang
     cliphist
     cmake
     cmatrix
@@ -34,6 +33,8 @@
     feh
     fuzzel
     gamescope
+    libgcc
+    llvmPackages_20.clang-unwrapped
     git
     glib
     gparted
@@ -44,6 +45,7 @@
     jq
     kitty
     lutris
+    gnumake
     mangohud
     meson
     mpv
