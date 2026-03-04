@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, coomerPkg, drcomClientPkg, ... }:
 
 {
   programs.steam.enable = true;
@@ -82,6 +82,9 @@
     zathura
     zathuraPkgs.zathura_pdf_poppler
     zoxide
+    # ── Local projects packaged via their own flake.nix ──
+    coomerPkg
+    drcomClientPkg
   ] ++ (with pkgs.kdePackages; [
     ark
     breeze

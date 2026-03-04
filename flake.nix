@@ -13,15 +13,29 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    coomer = {
+      url = "git+ssh://git@github.com/yuzujr/coomer";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    drcom-client-cpp = {
+      url = "git+ssh://git@github.com/yuzujr/drcom-client-cpp";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, nur, neovim-nightly, ... }:
+  outputs = { nixpkgs, nur, neovim-nightly, coomer, drcom-client-cpp, ... }:
     let
       system = "x86_64-linux";
       host = "nixos";
     in {
       nixosConfigurations.${host} = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = {
+          coomerPkg      = coomer.packages.${system}.default;
+          drcomClientPkg = drcom-client-cpp.packages.${system}.default;
+        };
         modules = [
           nur.modules.nixos.default
           ({ ... }: {

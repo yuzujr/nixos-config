@@ -1,5 +1,45 @@
 {
   "nodes": {
+    "coomer": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772614631,
+        "narHash": "sha256-dzkx720VQalMplinM1+r4owemF0/QSKpRnurhaakgJM=",
+        "ref": "refs/heads/main",
+        "rev": "89f34ddfc721025edf604e89c5b34ad296002c54",
+        "revCount": 12,
+        "type": "git",
+        "url": "ssh://git@github.com/yuzujr/coomer"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/yuzujr/coomer"
+      }
+    },
+    "drcom-client-cpp": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772614615,
+        "narHash": "sha256-ms+ISPtVAuvx537kBAt8sXedZ35Kta7t84Mhakw8RfA=",
+        "ref": "refs/heads/main",
+        "rev": "8022143ea4d84b26ea6ad30f9d5aaf69c888f9a7",
+        "revCount": 23,
+        "type": "git",
+        "url": "ssh://git@github.com/yuzujr/drcom-client-cpp"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/yuzujr/drcom-client-cpp"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": [
@@ -119,6 +159,8 @@
     },
     "root": {
       "inputs": {
+        "coomer": "coomer",
+        "drcom-client-cpp": "drcom-client-cpp",
         "neovim-nightly": "neovim-nightly",
         "nixpkgs": "nixpkgs",
         "nur": "nur"
