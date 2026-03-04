@@ -34,14 +34,6 @@
     ];
   };
 
-  programs.nix-ld = {
-    enable = true;
-    libraries = [
-      # Required by drcom_client ELF binary.
-      pkgs.stdenv.cc.cc.lib
-    ];
-  };
-
   time.timeZone = "Asia/Shanghai";
 
   i18n.defaultLocale = "en_US.UTF-8";

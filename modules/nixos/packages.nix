@@ -82,7 +82,6 @@
     zathura
     zathuraPkgs.zathura_pdf_poppler
     zoxide
-    # ── Local projects packaged via their own flake.nix ──
     coomerPkg
     drcomClientPkg
     ani2xcursorPkg
