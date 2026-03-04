@@ -30,6 +30,12 @@
       IdentityFile /home/yuzujr/.ssh/keys/github
   '';
 
+  # Persist GitHub's host key so ssh never asks "are you sure?" interactively.
+  programs.ssh.knownHosts."github.com" = {
+    hostNames = [ "github.com" ];
+    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+  };
+
   users.users.yuzujr = {
     isNormalUser = true;
     description = "yuzujr";
