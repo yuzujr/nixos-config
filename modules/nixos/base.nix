@@ -21,19 +21,41 @@
 
   programs.fish.enable = true;
 
-  # Allow root (sudo nixos-rebuild) to fetch private repos via SSH using
-  # yuzujr's GitHub key.  /etc/ssh/ssh_config is used as fallback for root
-  # since root has no ~/.ssh/config of its own.
+  # Declarative SSH config — replaces ~/.ssh/config entirely.
+  # Absolute path for github.com so root (sudo nixos-rebuild) can also authenticate.
+  # ~ in IdentityFile expands to the connecting user's home for all other hosts.
   programs.ssh.extraConfig = ''
     Host github.com
       User git
       IdentityFile /home/yuzujr/.ssh/keys/github
+
+    Host gitee.com
+      User git
+      IdentityFile ~/.ssh/keys/gitee
+
+    Host server
+      HostName 47.94.142.31
+      User root
+      IdentityFile ~/.ssh/keys/server
+
+    Host aur.archlinux.org
+      User aur
+      IdentityFile ~/.ssh/keys/aur
   '';
 
-  # Persist GitHub's host key so ssh never asks "are you sure?" interactively.
-  programs.ssh.knownHosts."github.com" = {
-    hostNames = [ "github.com" ];
-    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+  programs.ssh.knownHosts = {
+    "github.com" = {
+      hostNames = [ "github.com" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+    };
+    "gitee.com" = {
+      hostNames = [ "gitee.com" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEKxHSJ7084RmkJ4YdEi5tngynE8aZe2uEoVVsB/OvYN";
+    };
+    "aur.archlinux.org" = {
+      hostNames = [ "aur.archlinux.org" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuBKrPzbawxA/k2g6NcyV5jmqwJ2s+zpgZGZ7tpLIcN";
+    };
   };
 
   users.users.yuzujr = {
