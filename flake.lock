@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "ani2xcursor": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772616105,
+        "narHash": "sha256-IhFHWNmT3svasAgnRot9kjRuA2pv4m1UwmRScXOGIJE=",
+        "ref": "refs/heads/main",
+        "rev": "73f034f478579c7f7cadadc27d6ea2ec3c59560d",
+        "revCount": 44,
+        "type": "git",
+        "url": "ssh://git@github.com/yuzujr/ani2xcursor"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/yuzujr/ani2xcursor"
+      }
+    },
     "coomer": {
       "inputs": {
         "nixpkgs": [
@@ -159,6 +179,7 @@
     },
     "root": {
       "inputs": {
+        "ani2xcursor": "ani2xcursor",
         "coomer": "coomer",
         "drcom-client-cpp": "drcom-client-cpp",
         "neovim-nightly": "neovim-nightly",

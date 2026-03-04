@@ -23,9 +23,14 @@
       url = "git+ssh://git@github.com/yuzujr/drcom-client-cpp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    ani2xcursor = {
+      url = "git+ssh://git@github.com/yuzujr/ani2xcursor";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, nur, neovim-nightly, coomer, drcom-client-cpp, ... }:
+  outputs = { nixpkgs, nur, neovim-nightly, coomer, drcom-client-cpp, ani2xcursor, ... }:
     let
       system = "x86_64-linux";
       host = "nixos";
@@ -35,6 +40,7 @@
         specialArgs = {
           coomerPkg      = coomer.packages.${system}.default;
           drcomClientPkg = drcom-client-cpp.packages.${system}.default;
+          ani2xcursorPkg = ani2xcursor.packages.${system}.default;
         };
         modules = [
           nur.modules.nixos.default

@@ -1,4 +1,4 @@
-{ pkgs, coomerPkg, drcomClientPkg, ... }:
+{ pkgs, coomerPkg, drcomClientPkg, ani2xcursorPkg, ... }:
 
 {
   programs.steam.enable = true;
@@ -85,6 +85,7 @@
     # ── Local projects packaged via their own flake.nix ──
     coomerPkg
     drcomClientPkg
+    ani2xcursorPkg
   ] ++ (with pkgs.kdePackages; [
     ark
     breeze
