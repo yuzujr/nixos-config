@@ -21,6 +21,15 @@
 
   programs.fish.enable = true;
 
+  # Allow root (sudo nixos-rebuild) to fetch private repos via SSH using
+  # yuzujr's GitHub key.  /etc/ssh/ssh_config is used as fallback for root
+  # since root has no ~/.ssh/config of its own.
+  programs.ssh.extraConfig = ''
+    Host github.com
+      User git
+      IdentityFile /home/yuzujr/.ssh/keys/github
+  '';
+
   users.users.yuzujr = {
     isNormalUser = true;
     description = "yuzujr";
