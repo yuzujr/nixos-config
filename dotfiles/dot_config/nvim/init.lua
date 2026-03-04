@@ -6,7 +6,6 @@ require("core.packages").setup()
 
 require("modules.ui").setup()
 require("modules.completion").setup()
-require("modules.lsp").setup()
 require("modules.programming").setup()
 require("modules.tools").setup()
 require("modules.navigation").setup()

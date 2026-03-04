@@ -23,6 +23,7 @@
     delta
     duf
     dust
+    dconf
     emacs-pgtk
     efibootmgr
     eza
@@ -59,6 +60,7 @@
     obs-studio
     parted
     pavucontrol
+    pciutils
     playerctl
     qq
     ripgrep

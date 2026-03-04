@@ -12,8 +12,8 @@
   "display": {
     "separator": " ",
     "color": {
-      "title": "#e6e1ff",
-      "output": "#d8d3f0"
+      "title": "#b8b5c9",
+      "output": "#a8a5ba"
     }
   },
   "modules": [
@@ -21,84 +21,84 @@
     {
       "type": "os",
       "key": "OS",
-      "keyColor": "#bfc1ff"
+      "keyColor": "#9da2c2"
     },
     {
       "type": "kernel",
       "key": " ├   KER ",
-      "keyColor": "#bfc1ff"
+      "keyColor": "#9da2c2"
     },
     {
       "type": "packages",
       "key": " ├   PAK ",
       "format": "{all}",
-      "keyColor": "#bfc1ff"
+      "keyColor": "#9da2c2"
     },
     {
       "type": "title",
       "key": " └   USR ",
-      "keyColor": "#bfc1ff"
+      "keyColor": "#9da2c2"
     },
     "break",
     "break",
     {
       "type": "wm",
       "key": "WM",
-      "keyColor": "#e8b9d4"
+      "keyColor": "#b79bab"
     },
     {
       "type": "de",
       "key": " ├ 󱈹  DES ",
-      "keyColor": "#e8b9d4"
+      "keyColor": "#b79bab"
     },
     {
       "type": "shell",
       "key": " ├   SHE ",
-      "keyColor": "#e8b9d4"
+      "keyColor": "#b79bab"
     },
     {
       "type": "terminal",
       "key": " ├   TER ",
-      "keyColor": "#e8b9d4"
+      "keyColor": "#b79bab"
     },
     {
       "type": "terminalfont",
       "key": " └   TFO ",
-      "keyColor": "#e8b9d4"
+      "keyColor": "#b79bab"
     },
     "break",
     "break",
     {
       "type": "host",
       "key": "PC ",
-      "keyColor": "#e1e0f9"
+      "keyColor": "#aaa8bc"
     },
     {
       "type": "cpu",
       "key": " ├   CPU ",
-      "keyColor": "#e1e0f9"
+      "keyColor": "#aaa8bc"
     },
     {
       "type": "memory",
       "key": " ├   MEM ",
-      "keyColor": "#e1e0f9"
+      "keyColor": "#aaa8bc"
     },
     {
       "type": "gpu",
       "key": " ├ 󰢮  GPU ",
       "format": "{1} {2}",
-      "keyColor": "#e1e0f9"
+      "keyColor": "#aaa8bc"
     },
     {
       "type": "display",
       "key": " ├   MON ",
       "format": "{name} {width}x{height}@{refresh-rate} ",
-      "keyColor": "#e1e0f9"
+      "keyColor": "#aaa8bc"
     },
     {
       "type": "disk",
       "key": " └ 󰋊  DIS ",
-      "keyColor": "#e1e0f9"
+      "keyColor": "#aaa8bc"
     },
     "break",
     "break",

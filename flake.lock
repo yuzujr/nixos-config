@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772624376,
-        "narHash": "sha256-fMj4aKCP6dym1DLRzpo63P6mfcj7bftLjj+fMd9tbZQ=",
+        "lastModified": 1772627908,
+        "narHash": "sha256-MTXIh6qMTqyB1tUAGioXpXnj80J+5zAmn6XS+/NGfRY=",
         "ref": "refs/heads/main",
-        "rev": "938bda0563799da4bbd406cb27e27393a5ea0cc5",
-        "revCount": 52,
+        "rev": "3c91ac6836dd91a1f826386f3fdfd761f1a8d851",
+        "revCount": 53,
         "type": "git",
         "url": "ssh://git@github.com/yuzujr/ani2xcursor"
       },
@@ -47,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772622488,
-        "narHash": "sha256-1cE4gob6pEY+OoXkeFSTS/VdLeo4iFzCQOK3Q69DER0=",
+        "lastModified": 1772628157,
+        "narHash": "sha256-xYbzr1KO//LBLc5IwpuVuqKy0+KFYOewu1W6gqOICjE=",
         "ref": "refs/heads/main",
-        "rev": "ccc3ed16641365c0915e125a9e5747d8549a9df1",
-        "revCount": 25,
+        "rev": "d784b07e6cf8e819f2b6db14cc736937154e6f0f",
+        "revCount": 26,
         "type": "git",
         "url": "ssh://git@github.com/yuzujr/drcom-client-cpp"
       },
@@ -164,11 +164,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772623356,
-        "narHash": "sha256-h4A1FGBEQaAgfsHwQnLRh5sws92M9RNwHwWAP9QywUI=",
+        "lastModified": 1772631696,
+        "narHash": "sha256-Ul7y5d0r6dogvR2gBndnYCwThr2tUbF4nEK7J30BbSk=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "3dccd5c1a41acc2074cc1c628f7a33796cd013ef",
+        "rev": "1b2348d0af8a0b92c9bf8f2e82e46884d898bcce",
         "type": "github"
       },
       "original": {

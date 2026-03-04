@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   zramSwap.enable = true;
@@ -9,9 +9,9 @@
   };
   boot.loader.systemd-boot.configurationLimit = 10;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.extraModulePackages = [
-    pkgs.linuxPackages_latest.yt6801
+  boot.kernelPackages = pkgs.linuxPackages_6_18;
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    yt6801
   ];
 
   security.rtkit.enable = true;
@@ -29,9 +29,11 @@
 
   hardware.nvidia = {
     open = true;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
     modesetting.enable = true;
     powerManagement.enable = true;
     dynamicBoost.enable = true;
+    nvidiaSettings = false;
   };
 
   boot.extraModprobeConfig = ''

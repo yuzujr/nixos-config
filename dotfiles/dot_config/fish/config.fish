@@ -18,7 +18,7 @@ if status is-interactive
     alias cd="z"
     alias diff="delta"
     alias code="code --ozone-platform-hint=auto &> /dev/null"
-    alias dot="chezmoi --source=$HOME/nixos-config/dotfiles --destination=$HOME"
+    alias dot="chezmoi --source=$HOME/nixos-config/dotfiles --destination=$HOME --no-pager"
 
     # Functions
     function y
@@ -46,7 +46,7 @@ if status is-interactive
         set -l light ~/.config/fastfetch/config-light.jsonc
         set -l dark ~/.config/fastfetch/config-dark.jsonc
 
-        set -l cs (gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null)
+        set -l cs (dconf read /org/gnome/desktop/interface/color-scheme 2>/dev/null)
 
         if string match -q "*prefer-dark*" -- $cs
             command fastfetch --config $dark

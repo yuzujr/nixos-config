@@ -104,13 +104,13 @@
   # ==========================================
   environment.sessionVariables = {
     NO_AT_BRIDGE = "1";
-    ELECTRON_OZONE_PLATFORM_HINT = "auto";
     XDG_ICON_THEME = "Tela-circle";
     XDG_MENU_PREFIX = "plasma-";
     XMODIFIERS = "@im=fcitx";
     XCURSOR_THEME = "Bibata-Modern-Ice";
     XCURSOR_SIZE = "28";
     EDITOR = "nvim";
+    NIXOS_OZONE_WL = "1";
   };
 
   # ==========================================

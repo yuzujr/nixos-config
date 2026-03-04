@@ -40,15 +40,13 @@ function M.setup()
       preset = "luasnip",
     },
     sources = {
-      default = { "lsp", "path", "snippets", "buffer" },
+      default = { "path", "snippets", "buffer" },
     },
     fuzzy = {
       -- Stable on systems without cargo/prebuilt fuzzy library.
       implementation = "lua",
     },
-    signature = {
-      enabled = true,
-    },
+    signature = { enabled = false },
   })
 end
 

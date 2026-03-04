@@ -57,7 +57,7 @@ local function setup_conform()
   local ok_conform, conform = pcall(require, "conform")
   if not ok_conform then
     map("n", "<leader>cf", function()
-      vim.lsp.buf.format({ async = true })
+      vim.notify("conform.nvim is not available.", vim.log.levels.WARN)
     end, vim.tbl_extend("force", opts, { desc = "Format buffer" }))
     return
   end
@@ -66,7 +66,7 @@ local function setup_conform()
     notify_on_error = true,
     format_on_save = {
       timeout_ms = 800,
-      lsp_fallback = true,
+      lsp_fallback = false,
     },
     formatters_by_ft = {
       lua = { "stylua" },
@@ -84,7 +84,7 @@ local function setup_conform()
   })
 
   local function format_buffer()
-    conform.format({ async = true, lsp_fallback = true })
+    conform.format({ async = true, lsp_fallback = false })
   end
 
   map("n", "<leader>cf", format_buffer, vim.tbl_extend("force", opts, { desc = "Format buffer" }))
