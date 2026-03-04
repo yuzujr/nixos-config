@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772619328,
-        "narHash": "sha256-WD+nOKCWv8N7hK/XQBwTSuWGSGMOJKkl7TavIrLeJVY=",
+        "lastModified": 1772619541,
+        "narHash": "sha256-M9vLPBQGrVEWBWeO7GjUE2HB5ezHEe/VwFpHNuAXlcU=",
         "ref": "refs/heads/main",
-        "rev": "84d0991649da7fdd8fc2df8fcb1fb74a85025962",
-        "revCount": 46,
+        "rev": "b1d396297657e0fb690923d51b25069533b7eb0a",
+        "revCount": 47,
         "type": "git",
         "url": "ssh://git@github.com/yuzujr/ani2xcursor"
       },
