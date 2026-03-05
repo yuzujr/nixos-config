@@ -46,7 +46,7 @@
   networking.firewall.enable = false;
 
   services.openssh.enable = true;
-  
+
   services.mihomo = {
     enable = true;
     tunMode = true;
@@ -97,7 +97,11 @@
   };
 
   xdg.mime.defaultApplications = {
-  "inode/directory" = "org.kde.dolphin.desktop";
+    "inode/directory" = "org.kde.dolphin.desktop";
+    "image/jpg" = "feh.desktop";
+    "image/png" = "feh.desktop";
+    "image/jpeg" = "feh.desktop";
+    "image/webp" = "feh.desktop";
   };
 
   # ==========================================
@@ -127,9 +131,18 @@
     ];
 
     fontconfig.defaultFonts = {
-      monospace = [ "Maple Mono NF CN" "Noto Color Emoji" ];
-      sansSerif = [ "Noto Sans CJK SC" "Noto Color Emoji" ];
-      serif = [ "Noto Serif CJK SC" "Noto Color Emoji" ];
+      monospace = [
+        "Maple Mono NF CN"
+        "Noto Color Emoji"
+      ];
+      sansSerif = [
+        "Noto Sans CJK SC"
+        "Noto Color Emoji"
+      ];
+      serif = [
+        "Noto Serif CJK SC"
+        "Noto Color Emoji"
+      ];
       emoji = [ "Noto Color Emoji" ];
     };
   };
