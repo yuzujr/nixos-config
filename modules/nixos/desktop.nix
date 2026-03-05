@@ -11,6 +11,8 @@
   services.power-profiles-daemon.enable = true;
   services.gnome.gnome-keyring.enable = true;
   security.polkit.enable = true;
+  services.orca.enable = false;
+  services.speechd.enable = false;
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "Polkit GNOME Authentication Agent";
     partOf = [ "niri.service" ];
@@ -67,7 +69,6 @@
   # Desktop Environment & Display Manager
   # ==========================================
   programs.niri.enable = true;
-  services.desktopManager.plasma6.enable = true;
 
   services.greetd = {
     enable = true;

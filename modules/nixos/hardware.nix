@@ -21,6 +21,8 @@
     powerOnBoot = true;
   };
 
+  hardware.i2c.enable = true;
+
   hardware.steam-hardware.enable = true;
 
   hardware.graphics.enable = true;

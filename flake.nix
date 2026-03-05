@@ -15,17 +15,17 @@
     };
 
     coomer = {
-      url = "git+ssh://git@github.com/yuzujr/coomer";
+      url = "github:yuzujr/coomer";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     drcom-client-cpp = {
-      url = "git+ssh://git@github.com/yuzujr/drcom-client-cpp";
+      url = "github:yuzujr/drcom-client-cpp";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     ani2xcursor = {
-      url = "git+ssh://git@github.com/yuzujr/ani2xcursor";
+      url = "github:yuzujr/ani2xcursor";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

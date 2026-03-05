@@ -50,6 +50,7 @@
     mangohud
     meson
     mpv
+    nh
     neovim
     ninja
     nodejs
