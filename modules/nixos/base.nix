@@ -12,6 +12,8 @@
     ];
   };
 
+  nix.channel.enable = false;
+
   nix.gc = {
     automatic = true;
     dates = "weekly";

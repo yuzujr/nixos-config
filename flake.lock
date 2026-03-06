@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772627908,
-        "narHash": "sha256-MTXIh6qMTqyB1tUAGioXpXnj80J+5zAmn6XS+/NGfRY=",
+        "lastModified": 1772725248,
+        "narHash": "sha256-UWfjIum+EkNamO4zJOVmdsOvqPyr4LPWyYLkLEH3/FE=",
         "owner": "yuzujr",
         "repo": "ani2xcursor",
-        "rev": "3c91ac6836dd91a1f826386f3fdfd761f1a8d851",
+        "rev": "2d3266b0d212578a08956782ea0b372476a47f49",
         "type": "github"
       },
       "original": {
@@ -27,34 +27,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1772622483,
-        "narHash": "sha256-5JxjJAS1e8/UOJYOz88gXNcX0U1WE+Wm214gw702FY0=",
+        "lastModified": 1772724926,
+        "narHash": "sha256-XO7jvV5DoZlmHW7vNmomrmkFQYqWxXQyjN6A3UJYPYA=",
         "owner": "yuzujr",
         "repo": "coomer",
-        "rev": "7b1368ba1ab4750192bd568963d9ce98f2c02a12",
+        "rev": "07d01e309658b8606c85b03b6748e221585e3ed6",
         "type": "github"
       },
       "original": {
         "owner": "yuzujr",
         "repo": "coomer",
-        "type": "github"
-      }
-    },
-    "dolphin-overlay": {
-      "inputs": {
-        "nixpkgs": "nixpkgs"
-      },
-      "locked": {
-        "lastModified": 1743892246,
-        "narHash": "sha256-AHeavUWjnDPT/hffE5hM8RIew+mZJSSr9tUEiSvZW30=",
-        "owner": "rumboon",
-        "repo": "dolphin-overlay",
-        "rev": "55fec3268972876890d6081d3d76a701c37c01d7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rumboon",
-        "repo": "dolphin-overlay",
         "type": "github"
       }
     },
@@ -65,11 +47,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772628157,
-        "narHash": "sha256-xYbzr1KO//LBLc5IwpuVuqKy0+KFYOewu1W6gqOICjE=",
+        "lastModified": 1772725546,
+        "narHash": "sha256-/72jR63bYS7iUq9eSnq/OjYj3ngwpjv2UjGeke+aLwo=",
         "owner": "yuzujr",
         "repo": "drcom-client-cpp",
-        "rev": "d784b07e6cf8e819f2b6db14cc736937154e6f0f",
+        "rev": "246ddb636abcac8a8b345731365a22cab1ba485d",
         "type": "github"
       },
       "original": {
@@ -129,11 +111,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772669086,
-        "narHash": "sha256-w11FPYngGvHJ+F1c+SJ/lAa2lsEzSlIiYNd0s6rLxVQ=",
+        "lastModified": 1772755493,
+        "narHash": "sha256-+LM56fjXkZqx7IXMq4eWJeDW4d93/UWgrif6c9TOlvo=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "76f571b9189d954b39b75fcf95b77029a59b8372",
+        "rev": "c5ec84c53a477099c10a33d20e3702d2ccf7b856",
         "type": "github"
       },
       "original": {
@@ -145,11 +127,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1772668450,
-        "narHash": "sha256-YGYnYdm2DYbHTb6OZmLExUY/6/ZVC6IUAM3Ydcne8zM=",
+        "lastModified": 1772752529,
+        "narHash": "sha256-KdHMemEfY5XO1MsmRKlRG95YWTsw3B47eOripGTeazc=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "843bc1aa8d1596d8665f36b52ab0447f956016b8",
+        "rev": "7a8d31687940b40ab82081ffe2fac90bbb6e4e19",
         "type": "github"
       },
       "original": {
@@ -159,21 +141,6 @@
       }
     },
     "nixpkgs": {
-      "locked": {
-        "lastModified": 1743890059,
-        "narHash": "sha256-QQLhHHGNtAW8qRpseb40zqZlhZUeRRUg2SGmXjfE+so=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "58a813438464b5295170efe38d8bd5f40fcc1d23",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_2": {
       "locked": {
         "lastModified": 1772624091,
         "narHash": "sha256-QKyJ0QGWBn6r0invrMAK8dmJoBYWoOWy7lN+UHzW1jc=",
@@ -197,11 +164,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772710836,
-        "narHash": "sha256-L+ZzbjvL4ez9zzHJLEz1yaJZ+vtyosvb0g/QQCBgioA=",
+        "lastModified": 1772781014,
+        "narHash": "sha256-4J7AzqkkP8ScCE9vrxh5mLS90nvgP576IlIuy8IRXmU=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "6e62102bc76256894ed3c7fbebe6eed226e3cb57",
+        "rev": "d89c675686e5a6dfe10b72d268c1d9b12f8a4499",
         "type": "github"
       },
       "original": {
@@ -214,10 +181,9 @@
       "inputs": {
         "ani2xcursor": "ani2xcursor",
         "coomer": "coomer",
-        "dolphin-overlay": "dolphin-overlay",
         "drcom-client-cpp": "drcom-client-cpp",
         "neovim-nightly": "neovim-nightly",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
         "nur": "nur"
       }
     }

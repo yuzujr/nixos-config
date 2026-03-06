@@ -16,10 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    dolphin-overlay = {
-      url = "github:rumboon/dolphin-overlay";
-    };
-
     coomer = {
       url = "github:yuzujr/coomer";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,7 +37,6 @@
       nixpkgs,
       nur,
       neovim-nightly,
-      dolphin-overlay,
       coomer,
       drcom-client-cpp,
       ani2xcursor,
@@ -64,7 +59,6 @@
           {
             nixpkgs.overlays = [
               neovim-nightly.overlays.default
-              dolphin-overlay.overlays.default
             ];
           }
           ./hosts/default/configuration.nix

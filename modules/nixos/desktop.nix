@@ -69,6 +69,7 @@
   # Desktop Environment & Display Manager
   # ==========================================
   programs.niri.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   services.greetd = {
     enable = true;
@@ -98,10 +99,7 @@
 
   xdg.mime.defaultApplications = {
     "inode/directory" = "org.kde.dolphin.desktop";
-    "image/jpg" = "feh.desktop";
-    "image/png" = "feh.desktop";
-    "image/jpeg" = "feh.desktop";
-    "image/webp" = "feh.desktop";
+    "image/*" = "feh.desktop";
   };
 
   # ==========================================

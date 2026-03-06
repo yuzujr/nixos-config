@@ -5,7 +5,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ai-code benchmark-init consult-dir corfu-prescient eldoc-box
+   '(ai-code benchmark-init consult-dir corfu-prescient direnv eldoc-box
              embark-consult glsl-mode helpful kdl-mode marginalia
              markdown-mode move-text multiple-cursors nix-mode
              orderless solarized-theme sudo-edit treemacs-nerd-icons

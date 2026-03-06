@@ -54,6 +54,7 @@
       noctalia-shell
       nh
       nixd
+      nix-tree
       nixfmt
       jq
       kitty
@@ -64,7 +65,7 @@
       openssh
       libnotify
       nwg-look
-      obs-studio
+      (obs-studio.override { browserSupport = false; })
       parted
       pavucontrol
       pciutils
@@ -76,7 +77,6 @@
       starship
       sunshine
       tela-circle-icon-theme
-      telegram-desktop
       tree
       typora
       unzip

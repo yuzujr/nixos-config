@@ -239,7 +239,7 @@
         ]
     },
     "colorSchemes": {
-        "darkMode": true,
+        "darkMode": false,
         "generationMethod": "content",
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
@@ -341,7 +341,7 @@
         "animationDisabled": true,
         "animationSpeed": 1,
         "autoStartAuth": false,
-        "avatarImage": "/home/yuzujr/Pictures/Beluga.webp",
+        "avatarImage": "/home/yuzujr/Pictures/Wallpapers/明日香.png",
         "boxRadiusRatio": 1,
         "clockFormat": "hh\\nmm",
         "clockStyle": "digital",
@@ -614,7 +614,7 @@
         "bluetoothDetailsViewMode": "grid",
         "bluetoothHideUnnamedDevices": false,
         "boxBorderEnabled": false,
-        "fontDefault": "Maple Mono NF CN Medium",
+        "fontDefault": "Maple Mono NF CN",
         "fontDefaultScale": 1,
         "fontFixed": "Maple Mono NF CN",
         "fontFixedScale": 1,

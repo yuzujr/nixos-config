@@ -14,6 +14,7 @@
 ;; Terminal - VTerm
 ;; ----------------------------
 (use-package vterm
+  :ensure nil
   :bind (("C-c v" . vterm-other-window)))
 
 ;; ----------------------------
@@ -202,5 +203,14 @@
     "C-c l" "lsp-extra"
     "C-c y" "snippets"
     "C-c ?" "cheatsheet"))
+
+;; ----------------------------
+;; direnv - Manage Environment
+;; ----------------------------
+(use-package direnv
+  :custom
+  (setq direnv-always-show-summary nil)
+  :config
+  (direnv-mode))
 
 ;;; tools.el ends here
