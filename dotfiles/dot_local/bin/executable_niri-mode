@@ -146,18 +146,12 @@ apply_mode() {
   if [[ "$profile" == "normal" ]]; then
     set_power_profile balanced
 
-    enable_system_units \
-      nvidia-powerd.service
-
     enable_units \
       wl-clip-persist.service \
       sunshine.service
 
   elif [[ "$profile" == "travel" ]]; then
     set_power_profile power-saver
-
-    disable_system_units \
-      nvidia-powerd.service
 
     disable_units \
       wl-clip-persist.service \

@@ -106,11 +106,11 @@ padding=4
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
 [Wayland]
-InputMethod[$e]=/usr/share/applications/fcitx5-wayland-launcher.desktop
+InputMethod[$e]=/run/current-system/sw/share/applications/fcitx5-wayland-launcher.desktop
 VirtualKeyboardEnabled=true
 
 [Xwayland]
-Scale=1
+Scale=1.25
 
 [org.kde.kdecoration2]
 ButtonsOnRight=IAX

@@ -9,7 +9,7 @@
   };
   boot.loader.systemd-boot.configurationLimit = 10;
 
-  boot.kernelPackages = pkgs.linuxPackages_6_18;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.extraModulePackages = with config.boot.kernelPackages; [
     yt6801
   ];
