@@ -59,6 +59,7 @@ input {
 
     keyboard {
         xkb {
+            options "ctrl:nocaps" // Sets Caps to Ctrl, Caps Lock becomes nothing
         }
 
         // Enable numlock on startup, omitting this setting disables it.

@@ -56,6 +56,7 @@
       nixd
       nix-tree
       nixfmt
+      nvtopPackages.full
       jq
       kitty
       lutris
@@ -65,6 +66,7 @@
       openssh
       libnotify
       nwg-look
+      networkmanagerapplet
       (obs-studio.override { browserSupport = false; })
       parted
       pavucontrol

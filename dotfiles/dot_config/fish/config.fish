@@ -55,6 +55,29 @@ if status is-interactive
         end
     end
 
+    function fixqtperm --description "Make Qt Creator generated source files writable"
+        set -l target "."
+    
+        if test (count $argv) -ge 1
+            set target $argv[1]
+        end
+    
+        if not test -e $target
+            echo "fixqtperm: path not found: $target" >&2
+            return 1
+        end
+    
+        find $target -type f \( \
+            -name '*.cpp' -o \
+            -name '*.cc' -o \
+            -name '*.cxx' -o \
+            -name '*.h' -o \
+            -name '*.hpp' -o \
+            -name '*.ui' -o \
+            -name 'CMakeLists.txt' \
+        \) -exec chmod u+w {} +
+    end
+
     # Keybindings
     bind \cs 'for cmd in sudo doas please; if command -q $cmd; fish_commandline_prepend $cmd; break; end; end'
 end
