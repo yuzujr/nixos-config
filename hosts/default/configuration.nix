@@ -4,10 +4,10 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../../modules/nixos/base.nix
-    ../../modules/nixos/hardware.nix
-    ../../modules/nixos/desktop.nix
-    ../../modules/nixos/packages.nix
+    ../../modules/base.nix
+    ../../modules/hardware.nix
+    ../../modules/desktop.nix
+    ../../modules/packages.nix
   ];
 
   networking.hostName = "nixos";
