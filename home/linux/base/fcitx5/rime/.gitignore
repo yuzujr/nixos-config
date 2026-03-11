@@ -1,0 +1,6 @@
+# Rime runtime/cache/state files generated locally by fcitx5
+/build/
+/sync/
+/*.userdb/
+/installation.yaml
+/user.yaml
