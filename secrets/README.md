@@ -13,6 +13,12 @@ sudo nixos-rebuild switch \
   --flake .#nixos
 ```
 
+To bootstrap a private repo quickly:
+
+```bash
+./scripts/security/bootstrap-private-secrets.sh /home/yuzujr/nix-secrets
+```
+
 ## Expected files in the private `nix-secrets` repo
 
 - `ssh-key-github.age`

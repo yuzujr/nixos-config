@@ -24,7 +24,7 @@ Full private target:
 
 ```bash
 sudo nixos-rebuild build \
-  --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1 \
+  --override-input mysecrets git+ssh://git@github.com/yuzujr/nix-secrets.git?shallow=1 \
   --flake .#nixos
 ```
 
@@ -32,7 +32,7 @@ Switch full private target:
 
 ```bash
 sudo nixos-rebuild switch \
-  --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1 \
+  --override-input mysecrets git+ssh://git@github.com/yuzujr/nix-secrets.git?shallow=1 \
   --flake .#nixos
 ```
 
@@ -44,6 +44,12 @@ See `secrets/README.md`.
 
 1. Rotate all previously tracked secrets (SSH keys, mihomo token/config, FCITX private data).
 2. Rewrite Git history to remove secret paths, then force-push.
+
+Quick checks:
+
+```bash
+./scripts/security/check-secret-history.sh
+```
 
 Example `git filter-repo` path purge:
 
