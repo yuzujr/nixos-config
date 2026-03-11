@@ -51,7 +51,7 @@
     enable = true;
     tunMode = true;
     webui = pkgs.metacubexd;
-    configFile = ../../dotfiles/dot_config/mihomo/config.yaml;
+    configFile = ../dotfiles/dot_config/mihomo/config.yaml;
   };
 
   # ==========================================

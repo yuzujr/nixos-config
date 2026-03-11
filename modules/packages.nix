@@ -60,6 +60,7 @@
       jq
       kitty
       lutris
+      libreoffice-fresh
       mangohud
       mpv
       neovim
@@ -70,6 +71,7 @@
       (obs-studio.override { browserSupport = false; })
       parted
       pavucontrol
+      pandoc
       pciutils
       playerctl
       qq
