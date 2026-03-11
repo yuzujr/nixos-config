@@ -1,20 +1,2 @@
-# Generated state files
-**/fish_variables
-**/db.zo
-home/dotfiles/niri/conf/profiles/current-*.kdl
-home/dotfiles/nvim/nvim-pack-lock.json
-home/dotfiles/local/applications/mimeapps.list
-
-# Home Manager backup artifacts
-**/*.home-manager.backup
-
-# Defensive local plaintext paths (normally absent; keep ignored for safety)
-home/dotfiles/drcom-client-cpp/drcom_jlu.conf
-home/dotfiles/gold-price/gold-price-history.conf
-home/dotfiles/nix/nix.conf
-
-# Private flake overrides or local helper files
-flake.local.nix
-
 # Nix build outputs
 result

@@ -70,7 +70,6 @@
       (obs-studio.override { browserSupport = false; })
       parted
       pavucontrol
-      pandoc
       pciutils
       playerctl
       qq
