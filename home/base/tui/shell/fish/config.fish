@@ -18,7 +18,6 @@ if status is-interactive
     alias cd="z"
     alias diff="delta"
     alias code="code --ozone-platform-hint=auto &> /dev/null"
-    alias dot="chezmoi --source=$HOME/nixos-config/dotfiles --destination=$HOME --no-pager"
 
     # Functions
     function y

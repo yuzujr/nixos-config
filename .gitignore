@@ -1,0 +1,18 @@
+# Generated state files
+**/fish_variables
+**/db.zo
+
+# Home Manager backup artifacts
+**/*.home-manager.backup
+
+# Legacy sensitive files from pre-agenix layout
+dotfiles/dot_ssh/keys/private_*
+dotfiles/dot_config/mihomo/config.yaml
+dotfiles/dot_config/fcitx5/private_*
+dotfiles/dot_config/fcitx5/conf/private_*.conf
+
+# Private flake overrides or local helper files
+flake.local.nix
+
+# Nix build outputs
+result
