@@ -10,8 +10,8 @@ let
 in
 {
   xdg.configFile = {
-    "fcitx5/conf/clipboard.conf".source = ./fcitx5/conf/clipboard.conf;
-    "fcitx5/conf/quickphrase.conf".source = ./fcitx5/conf/quickphrase.conf;
+    "fcitx5/conf/clipboard.conf".source = ../files/fcitx5/conf/clipboard.conf;
+    "fcitx5/conf/quickphrase.conf".source = ../files/fcitx5/conf/quickphrase.conf;
   } // lib.optionalAttrs secretsEnabled {
     "fcitx5/config".source = mkSymlink "/etc/agenix/fcitx5-config";
     "fcitx5/profile" = {

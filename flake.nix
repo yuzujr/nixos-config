@@ -64,8 +64,13 @@
     }:
     let
       system = "x86_64-linux";
-      mylib = import ./lib { lib = nixpkgs.lib; };
-      myvars = import ./vars/default.nix;
+      myvars = {
+        username = "yuzujr";
+        userfullname = "yuzujr";
+        useremail = "15568103056@163.com";
+        hostname = "nixos";
+        repoRoot = "/home/yuzujr/nixos-config";
+      };
 
       mkHost =
         {
@@ -76,7 +81,6 @@
         let
           specialArgs = {
             inherit
-              mylib
               myvars
               agenix
               mysecrets
@@ -112,8 +116,7 @@
               home-manager.backupFileExtension = "home-manager.backup";
               home-manager.extraSpecialArgs = specialArgs;
               home-manager.users.${myvars.username}.imports = [
-                ./home/linux/gui.nix
-                ./hosts/default/home.nix
+                ./home/default.nix
               ];
             }
           ];

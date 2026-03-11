@@ -1,72 +1,104 @@
-# nixos-config
+# NixOS Config
 
-Single-host NixOS flake with:
+Single-host NixOS + Home Manager + agenix.
 
-- Home Manager integrated into `nixos-rebuild`
-- Writable dotfiles via `mkOutOfStoreSymlink`
-- agenix-based secret wiring
-- Public-safe default (`nixos-public`) and private full target (`nixos`)
-- Legacy `dotfiles/` content migrated into `home/linux/...` modules
+This repo is intentionally kept simple for public sharing:
+- one flake
+- one host (`hosts/default`)
+- one Home Manager entry (`home/default.nix`)
+- one README (this file)
 
-## Targets
+## Main targets
 
-- `.#nixos-public`: public-evaluable fallback (secrets disabled)
-- `.#nixos`: full desktop target (expects private secrets input override)
+- `.#nixos-public`: public-evaluable build (no private secrets required)
+- `.#nixos`: full private build (expects private `mysecrets` override)
 
-## Build
+## Repo layout
 
-Public fallback:
+- `flake.nix`: entrypoint and host outputs
+- `hosts/default/`: host hardware + host-level imports
+- `modules/`: NixOS modules (`base`, `desktop`, `hardware`, `packages`)
+- `home/default.nix`: Home Manager entry for user config
+- `home/modules/`: Home Manager module logic
+- `home/files/`: plain-text dotfiles and app configs
+- `secrets/nixos.nix`: agenix decryption + `/etc/agenix/*` wiring
+- `secrets/placeholder/`: public-safe fallback input for `mysecrets`
+
+## Build and switch
+
+Public build:
 
 ```bash
 sudo nixos-rebuild build --flake .#nixos-public
 ```
 
-Full private target:
+Private build:
 
 ```bash
 sudo nixos-rebuild build \
-  --override-input mysecrets git+ssh://git@github.com/yuzujr/nix-secrets.git?shallow=1 \
+  --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1 \
   --flake .#nixos
 ```
 
-Switch full private target:
+Private switch:
 
 ```bash
 sudo nixos-rebuild switch \
-  --override-input mysecrets git+ssh://git@github.com/yuzujr/nix-secrets.git?shallow=1 \
+  --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1 \
   --flake .#nixos
 ```
 
-## Secrets
+## Update workflow
 
-See `secrets/README.md`.
-
-## Security cleanup before publishing
-
-1. Rotate all previously tracked secrets (SSH keys, mihomo token/config, FCITX private data).
-2. Rewrite Git history to remove secret paths, then force-push.
-
-Quick checks:
+1. Update flake inputs:
 
 ```bash
-./scripts/security/check-secret-history.sh
+nix flake update
 ```
 
-Example `git filter-repo` path purge:
+2. Validate:
 
 ```bash
-git filter-repo \
-  --path dotfiles/dot_ssh/keys/private_aur --invert-paths \
-  --path dotfiles/dot_ssh/keys/private_gitee --invert-paths \
-  --path dotfiles/dot_ssh/keys/private_github --invert-paths \
-  --path dotfiles/dot_ssh/keys/private_server --invert-paths \
-  --path dotfiles/dot_config/mihomo/config.yaml --invert-paths \
-  --path dotfiles/dot_config/fcitx5/private_config --invert-paths \
-  --path dotfiles/dot_config/fcitx5/private_profile --invert-paths \
-  --path dotfiles/dot_config/fcitx5/conf/private_classicui.conf --invert-paths \
-  --path dotfiles/dot_config/fcitx5/conf/private_notifications.conf --invert-paths \
-  --path dotfiles/dot_config/fcitx5/conf/private_rime.conf --invert-paths \
-  --path dotfiles/dot_config/drcom-client-cpp/drcom_jlu.conf --invert-paths \
-  --path dotfiles/dot_config/gold-price/gold-price-history.conf --invert-paths \
-  --path dotfiles/dot_config/nix/nix.conf --invert-paths
+nix flake check
+sudo nixos-rebuild build --flake .#nixos-public
+sudo nixos-rebuild build \
+  --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1 \
+  --flake .#nixos
+```
+
+3. Switch when ready.
+
+## Add a new public dotfile
+
+1. Put the real file under this repo, usually in `home/files/...`.
+2. Add a symlink mapping in `home/modules/dotfiles.nix` using `mkOutOfStoreSymlink`.
+3. Rebuild and confirm with `readlink` that `~/.config/...` points to your repo file.
+4. If the app generates runtime/cache files in that directory, add ignore rules (local `.gitignore` preferred).
+
+## Add a new private secret file
+
+1. In your private `nix-secrets` repo, add `./<name>.age`.publicKeys entry to `secrets.nix`.
+2. Encrypt content:
+
+```bash
+EDITOR='cp /path/to/plaintext' agenix -e ./<name>.age
+```
+
+3. Wire it in this repo:
+- add `age.secrets.<name>` in `secrets/nixos.nix`
+- add `/etc/agenix/<name>` mapping in `environment.etc`
+- reference `/etc/agenix/<name>` from the consumer (service or Home Manager link)
+
+4. Rebuild `.#nixos` with `--override-input mysecrets ...`.
+
+## Public repo safety checklist
+
+- Never commit plaintext credentials/tokens/keys.
+- Keep only encrypted `.age` files in the private repo.
+- Before pushing, run:
+
+```bash
+git status
+nix flake check
+sudo nixos-rebuild build --flake .#nixos-public
 ```
