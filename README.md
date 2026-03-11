@@ -19,8 +19,8 @@ This repo is intentionally kept simple for public sharing:
 - `hosts/default/`: host hardware + host-level imports
 - `modules/`: NixOS modules (`base`, `desktop`, `hardware`, `packages`)
 - `home/default.nix`: Home Manager entry for user config
-- `home/modules/`: Home Manager module logic
-- `home/files/`: plain-text dotfiles and app configs
+- `home/dotfiles/dotfiles.nix`: Home Manager symlink wiring
+- `home/dotfiles/`: plain-text dotfiles and app configs
 - `secrets/nixos.nix`: agenix decryption + `/etc/agenix/*` wiring
 - `secrets/placeholder/`: public-safe fallback input for `mysecrets`
 
@@ -70,8 +70,8 @@ sudo nixos-rebuild build \
 
 ## Add a new public dotfile
 
-1. Put the real file under this repo, usually in `home/files/...`.
-2. Add a symlink mapping in `home/modules/dotfiles.nix` using `mkOutOfStoreSymlink`.
+1. Put the real file under this repo, usually in `home/dotfiles/...`.
+2. Add a symlink mapping in `home/dotfiles/dotfiles.nix` using `mkOutOfStoreSymlink`.
 3. Rebuild and confirm with `readlink` that `~/.config/...` points to your repo file.
 4. If the app generates runtime/cache files in that directory, add ignore rules (local `.gitignore` preferred).
 

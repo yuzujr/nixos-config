@@ -1,0 +1,109 @@
+{
+  config,
+  lib,
+  myvars,
+  osConfig ? { },
+  ...
+}:
+let
+  repoRoot = myvars.repoRoot;
+  mkSymlink = config.lib.file.mkOutOfStoreSymlink;
+  hasSecret = name: lib.hasAttrByPath [
+    "age"
+    "secrets"
+    name
+  ] osConfig;
+in
+{
+  xdg.configFile = {
+    "fish".source = mkSymlink "${repoRoot}/home/dotfiles/fish";
+    "nvim".source = mkSymlink "${repoRoot}/home/dotfiles/nvim";
+    "emacs".source = mkSymlink "${repoRoot}/home/dotfiles/emacs";
+    "starship.toml".source = mkSymlink "${repoRoot}/home/dotfiles/starship.toml";
+
+    "niri".source = mkSymlink "${repoRoot}/home/dotfiles/niri/conf";
+    "noctalia".source = mkSymlink "${repoRoot}/home/dotfiles/noctalia/config";
+    "kitty".source = mkSymlink "${repoRoot}/home/dotfiles/kitty";
+    "fuzzel".source = mkSymlink "${repoRoot}/home/dotfiles/fuzzel";
+    "fastfetch".source = mkSymlink "${repoRoot}/home/dotfiles/fastfetch";
+    "autostart".source = mkSymlink "${repoRoot}/home/dotfiles/autostart";
+    "btop".source = mkSymlink "${repoRoot}/home/dotfiles/btop";
+    "cava".source = mkSymlink "${repoRoot}/home/dotfiles/cava";
+    "chrome-flags.conf".source = mkSymlink "${repoRoot}/home/dotfiles/chrome-flags.conf";
+    "feh".source = mkSymlink "${repoRoot}/home/dotfiles/feh";
+    "gold-price/gold-price-watch.conf".source =
+      mkSymlink "${repoRoot}/home/dotfiles/gold-price/gold-price-watch.conf";
+    "kwinrc".source = mkSymlink "${repoRoot}/home/dotfiles/kwinrc";
+    "nwg-look".source = mkSymlink "${repoRoot}/home/dotfiles/nwg-look";
+    "qt6ct".source = mkSymlink "${repoRoot}/home/dotfiles/qt6ct";
+    "zathura".source = mkSymlink "${repoRoot}/home/dotfiles/zathura";
+
+    "fcitx5/config".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/config";
+    "fcitx5/profile".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/profile";
+    "fcitx5/conf/clipboard.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/clipboard.conf";
+    "fcitx5/conf/quickphrase.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/quickphrase.conf";
+    "fcitx5/conf/classicui.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/classicui.conf";
+    "fcitx5/conf/notifications.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/notifications.conf";
+    "fcitx5/conf/rime.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/rime.conf";
+
+    "systemd/user/drcom.service".source =
+      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/drcom.service";
+    "systemd/user/gold-price-history-daily.service".source =
+      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/gold-price-history-daily.service";
+    "systemd/user/gold-price-history-daily.timer".source =
+      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/gold-price-history-daily.timer";
+    "systemd/user/gold-price-watch.service".source =
+      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/gold-price-watch.service";
+    "systemd/user/sunshine.service".source =
+      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/sunshine.service";
+    "systemd/user/wl-clip-persist.service".source =
+      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/wl-clip-persist.service";
+  }
+  // lib.optionalAttrs (hasSecret "drcom-jlu.conf") {
+    "drcom-client-cpp/drcom_jlu.conf" = {
+      source = mkSymlink "/etc/agenix/drcom-jlu.conf";
+      force = true;
+    };
+  }
+  // lib.optionalAttrs (hasSecret "gold-price-history.conf") {
+    "gold-price/gold-price-history.conf" = {
+      source = mkSymlink "/etc/agenix/gold-price-history.conf";
+      force = true;
+    };
+  }
+  // lib.optionalAttrs (hasSecret "nix-user.conf") {
+    "nix/nix.conf" = {
+      source = mkSymlink "/etc/agenix/nix-user.conf";
+      force = true;
+    };
+  };
+
+  xdg.dataFile = {
+    "applications".source = mkSymlink "${repoRoot}/home/dotfiles/local/applications";
+    "konsole".source = mkSymlink "${repoRoot}/home/dotfiles/konsole";
+    "fcitx5/rime".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/rime";
+  };
+
+  home.file = {
+    ".gitconfig".source = mkSymlink "${repoRoot}/home/dotfiles/gitconfig";
+    ".local/bin".source = mkSymlink "${repoRoot}/home/dotfiles/local/bin";
+  };
+
+  home.activation.niriProfileLinks = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    profiles_dir="$HOME/.config/niri/profiles"
+    mkdir -p "$profiles_dir"
+
+    create_if_missing() {
+      local target="$1"
+      local link="$2"
+      if [ -e "$link" ] || [ -L "$link" ]; then
+        return 0
+      fi
+      ln -s "$target" "$link"
+    }
+
+    create_if_missing "normal/config.kdl" "$profiles_dir/current-config.kdl"
+    create_if_missing "normal/outputs.kdl" "$profiles_dir/current-outputs.kdl"
+    create_if_missing "normal/startup.kdl" "$profiles_dir/current-startup.kdl"
+  '';
+}

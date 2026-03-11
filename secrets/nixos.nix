@@ -56,26 +56,6 @@ in
         "mihomo-config.yaml" = {
           file = "${mysecrets}/mihomo-config.yaml.age";
         } // rootSecret;
-
-        "fcitx5-config" = {
-          file = "${mysecrets}/fcitx5-config.age";
-        } // userSecret;
-
-        "fcitx5-profile" = {
-          file = "${mysecrets}/fcitx5-profile.age";
-        } // userSecret;
-
-        "fcitx5-classicui.conf" = {
-          file = "${mysecrets}/fcitx5-classicui.conf.age";
-        } // userSecret;
-
-        "fcitx5-notifications.conf" = {
-          file = "${mysecrets}/fcitx5-notifications.conf.age";
-        } // userSecret;
-
-        "fcitx5-rime.conf" = {
-          file = "${mysecrets}/fcitx5-rime.conf.age";
-        } // userSecret;
       }
       // lib.optionalAttrs (hasEncryptedFile "drcom-jlu.conf.age") {
         "drcom-jlu.conf" = {
@@ -123,36 +103,6 @@ in
           source = config.age.secrets."mihomo-config.yaml".path;
           mode = "0400";
           user = "root";
-        };
-
-        "agenix/fcitx5-config" = {
-          source = config.age.secrets."fcitx5-config".path;
-          mode = "0400";
-          user = myvars.username;
-        };
-
-        "agenix/fcitx5-profile" = {
-          source = config.age.secrets."fcitx5-profile".path;
-          mode = "0400";
-          user = myvars.username;
-        };
-
-        "agenix/fcitx5-classicui.conf" = {
-          source = config.age.secrets."fcitx5-classicui.conf".path;
-          mode = "0400";
-          user = myvars.username;
-        };
-
-        "agenix/fcitx5-notifications.conf" = {
-          source = config.age.secrets."fcitx5-notifications.conf".path;
-          mode = "0400";
-          user = myvars.username;
-        };
-
-        "agenix/fcitx5-rime.conf" = {
-          source = config.age.secrets."fcitx5-rime.conf".path;
-          mode = "0400";
-          user = myvars.username;
         };
       }
       // lib.optionalAttrs (lib.hasAttrByPath [ "drcom-jlu.conf" ] config.age.secrets) {
