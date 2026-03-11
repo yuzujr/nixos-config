@@ -9,6 +9,7 @@
 }:
 let
   cfg = config.modules.secrets;
+  hasEncryptedFile = name: builtins.pathExists "${mysecrets}/${name}";
   userSecret = {
     mode = "0400";
     owner = myvars.username;
@@ -34,108 +35,146 @@ in
       "/etc/ssh/ssh_host_ed25519_key"
     ];
 
-    age.secrets = {
-      "ssh-key-github" = {
-        file = "${mysecrets}/ssh-key-github.age";
-      } // userSecret;
+    age.secrets =
+      {
+        "ssh-key-github" = {
+          file = "${mysecrets}/ssh-key-github.age";
+        } // userSecret;
 
-      "ssh-key-gitee" = {
-        file = "${mysecrets}/ssh-key-gitee.age";
-      } // userSecret;
+        "ssh-key-gitee" = {
+          file = "${mysecrets}/ssh-key-gitee.age";
+        } // userSecret;
 
-      "ssh-key-server" = {
-        file = "${mysecrets}/ssh-key-server.age";
-      } // userSecret;
+        "ssh-key-server" = {
+          file = "${mysecrets}/ssh-key-server.age";
+        } // userSecret;
 
-      "ssh-key-aur" = {
-        file = "${mysecrets}/ssh-key-aur.age";
-      } // userSecret;
+        "ssh-key-aur" = {
+          file = "${mysecrets}/ssh-key-aur.age";
+        } // userSecret;
 
-      "mihomo-config.yaml" = {
-        file = "${mysecrets}/mihomo-config.yaml.age";
-      } // rootSecret;
+        "mihomo-config.yaml" = {
+          file = "${mysecrets}/mihomo-config.yaml.age";
+        } // rootSecret;
 
-      "fcitx5-config" = {
-        file = "${mysecrets}/fcitx5-config.age";
-      } // userSecret;
+        "fcitx5-config" = {
+          file = "${mysecrets}/fcitx5-config.age";
+        } // userSecret;
 
-      "fcitx5-profile" = {
-        file = "${mysecrets}/fcitx5-profile.age";
-      } // userSecret;
+        "fcitx5-profile" = {
+          file = "${mysecrets}/fcitx5-profile.age";
+        } // userSecret;
 
-      "fcitx5-classicui.conf" = {
-        file = "${mysecrets}/fcitx5-classicui.conf.age";
-      } // userSecret;
+        "fcitx5-classicui.conf" = {
+          file = "${mysecrets}/fcitx5-classicui.conf.age";
+        } // userSecret;
 
-      "fcitx5-notifications.conf" = {
-        file = "${mysecrets}/fcitx5-notifications.conf.age";
-      } // userSecret;
+        "fcitx5-notifications.conf" = {
+          file = "${mysecrets}/fcitx5-notifications.conf.age";
+        } // userSecret;
 
-      "fcitx5-rime.conf" = {
-        file = "${mysecrets}/fcitx5-rime.conf.age";
-      } // userSecret;
-    };
-
-    environment.etc = {
-      "agenix/ssh-key-github" = {
-        source = config.age.secrets."ssh-key-github".path;
-        mode = "0600";
-        user = myvars.username;
+        "fcitx5-rime.conf" = {
+          file = "${mysecrets}/fcitx5-rime.conf.age";
+        } // userSecret;
+      }
+      // lib.optionalAttrs (hasEncryptedFile "drcom-jlu.conf.age") {
+        "drcom-jlu.conf" = {
+          file = "${mysecrets}/drcom-jlu.conf.age";
+        } // userSecret;
+      }
+      // lib.optionalAttrs (hasEncryptedFile "gold-price-history.conf.age") {
+        "gold-price-history.conf" = {
+          file = "${mysecrets}/gold-price-history.conf.age";
+        } // userSecret;
+      }
+      // lib.optionalAttrs (hasEncryptedFile "nix-user.conf.age") {
+        "nix-user.conf" = {
+          file = "${mysecrets}/nix-user.conf.age";
+        } // userSecret;
       };
 
-      "agenix/ssh-key-gitee" = {
-        source = config.age.secrets."ssh-key-gitee".path;
-        mode = "0600";
-        user = myvars.username;
-      };
+    environment.etc =
+      {
+        "agenix/ssh-key-github" = {
+          source = config.age.secrets."ssh-key-github".path;
+          mode = "0600";
+          user = myvars.username;
+        };
 
-      "agenix/ssh-key-server" = {
-        source = config.age.secrets."ssh-key-server".path;
-        mode = "0600";
-        user = myvars.username;
-      };
+        "agenix/ssh-key-gitee" = {
+          source = config.age.secrets."ssh-key-gitee".path;
+          mode = "0600";
+          user = myvars.username;
+        };
 
-      "agenix/ssh-key-aur" = {
-        source = config.age.secrets."ssh-key-aur".path;
-        mode = "0600";
-        user = myvars.username;
-      };
+        "agenix/ssh-key-server" = {
+          source = config.age.secrets."ssh-key-server".path;
+          mode = "0600";
+          user = myvars.username;
+        };
 
-      "agenix/mihomo-config.yaml" = {
-        source = config.age.secrets."mihomo-config.yaml".path;
-        mode = "0400";
-        user = "root";
-      };
+        "agenix/ssh-key-aur" = {
+          source = config.age.secrets."ssh-key-aur".path;
+          mode = "0600";
+          user = myvars.username;
+        };
 
-      "agenix/fcitx5-config" = {
-        source = config.age.secrets."fcitx5-config".path;
-        mode = "0400";
-        user = myvars.username;
-      };
+        "agenix/mihomo-config.yaml" = {
+          source = config.age.secrets."mihomo-config.yaml".path;
+          mode = "0400";
+          user = "root";
+        };
 
-      "agenix/fcitx5-profile" = {
-        source = config.age.secrets."fcitx5-profile".path;
-        mode = "0400";
-        user = myvars.username;
-      };
+        "agenix/fcitx5-config" = {
+          source = config.age.secrets."fcitx5-config".path;
+          mode = "0400";
+          user = myvars.username;
+        };
 
-      "agenix/fcitx5-classicui.conf" = {
-        source = config.age.secrets."fcitx5-classicui.conf".path;
-        mode = "0400";
-        user = myvars.username;
-      };
+        "agenix/fcitx5-profile" = {
+          source = config.age.secrets."fcitx5-profile".path;
+          mode = "0400";
+          user = myvars.username;
+        };
 
-      "agenix/fcitx5-notifications.conf" = {
-        source = config.age.secrets."fcitx5-notifications.conf".path;
-        mode = "0400";
-        user = myvars.username;
-      };
+        "agenix/fcitx5-classicui.conf" = {
+          source = config.age.secrets."fcitx5-classicui.conf".path;
+          mode = "0400";
+          user = myvars.username;
+        };
 
-      "agenix/fcitx5-rime.conf" = {
-        source = config.age.secrets."fcitx5-rime.conf".path;
-        mode = "0400";
-        user = myvars.username;
+        "agenix/fcitx5-notifications.conf" = {
+          source = config.age.secrets."fcitx5-notifications.conf".path;
+          mode = "0400";
+          user = myvars.username;
+        };
+
+        "agenix/fcitx5-rime.conf" = {
+          source = config.age.secrets."fcitx5-rime.conf".path;
+          mode = "0400";
+          user = myvars.username;
+        };
+      }
+      // lib.optionalAttrs (lib.hasAttrByPath [ "drcom-jlu.conf" ] config.age.secrets) {
+        "agenix/drcom-jlu.conf" = {
+          source = config.age.secrets."drcom-jlu.conf".path;
+          mode = "0400";
+          user = myvars.username;
+        };
+      }
+      // lib.optionalAttrs (lib.hasAttrByPath [ "gold-price-history.conf" ] config.age.secrets) {
+        "agenix/gold-price-history.conf" = {
+          source = config.age.secrets."gold-price-history.conf".path;
+          mode = "0400";
+          user = myvars.username;
+        };
+      }
+      // lib.optionalAttrs (lib.hasAttrByPath [ "nix-user.conf" ] config.age.secrets) {
+        "agenix/nix-user.conf" = {
+          source = config.age.secrets."nix-user.conf".path;
+          mode = "0400";
+          user = myvars.username;
+        };
       };
-    };
   };
 }

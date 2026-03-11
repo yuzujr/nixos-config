@@ -39,6 +39,9 @@ in
   "./ssh-key-aur.age".publicKeys = recipients;
 
   "./mihomo-config.yaml.age".publicKeys = recipients;
+  "./drcom-jlu.conf.age".publicKeys = recipients;
+  "./gold-price-history.conf.age".publicKeys = recipients;
+  "./nix-user.conf.age".publicKeys = recipients;
 
   "./fcitx5-config.age".publicKeys = recipients;
   "./fcitx5-profile.age".publicKeys = recipients;
@@ -77,6 +80,9 @@ Repeat for all required files:
 - ssh-key-server.age
 - ssh-key-aur.age
 - mihomo-config.yaml.age
+- drcom-jlu.conf.age
+- gold-price-history.conf.age
+- nix-user.conf.age
 - fcitx5-config.age
 - fcitx5-profile.age
 - fcitx5-classicui.conf.age

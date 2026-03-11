@@ -6,6 +6,7 @@ Single-host NixOS flake with:
 - Writable dotfiles via `mkOutOfStoreSymlink`
 - agenix-based secret wiring
 - Public-safe default (`nixos-public`) and private full target (`nixos`)
+- Legacy `dotfiles/` content migrated into `home/linux/...` modules
 
 ## Targets
 
@@ -64,5 +65,8 @@ git filter-repo \
   --path dotfiles/dot_config/fcitx5/private_profile --invert-paths \
   --path dotfiles/dot_config/fcitx5/conf/private_classicui.conf --invert-paths \
   --path dotfiles/dot_config/fcitx5/conf/private_notifications.conf --invert-paths \
-  --path dotfiles/dot_config/fcitx5/conf/private_rime.conf --invert-paths
+  --path dotfiles/dot_config/fcitx5/conf/private_rime.conf --invert-paths \
+  --path dotfiles/dot_config/drcom-client-cpp/drcom_jlu.conf --invert-paths \
+  --path dotfiles/dot_config/gold-price/gold-price-history.conf --invert-paths \
+  --path dotfiles/dot_config/nix/nix.conf --invert-paths
 ```

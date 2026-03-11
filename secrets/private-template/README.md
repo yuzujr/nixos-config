@@ -9,3 +9,9 @@ Example:
 ```
 
 Then create a private GitHub repository and push it (for example `git@github.com:yuzujr/nix-secrets.git`).
+
+Phase 2 adds additional optional secret files:
+
+- `drcom-jlu.conf.age`
+- `gold-price-history.conf.age`
+- `nix-user.conf.age`

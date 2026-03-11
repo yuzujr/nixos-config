@@ -9,6 +9,9 @@ patterns=(
   'dotfiles/dot_config/mihomo/config.yaml'
   'dotfiles/dot_config/fcitx5/private_'
   'dotfiles/dot_config/fcitx5/conf/private_'
+  'dotfiles/dot_config/drcom-client-cpp/drcom_jlu.conf'
+  'dotfiles/dot_config/gold-price/gold-price-history.conf'
+  'dotfiles/dot_config/nix/nix.conf'
 )
 
 echo "Checking Git history object names for removed secret paths..."

@@ -1,15 +1,24 @@
 # Generated state files
 **/fish_variables
 **/db.zo
+home/linux/gui/niri/conf/profiles/current-*.kdl
 
 # Home Manager backup artifacts
 **/*.home-manager.backup
+
+# Sensitive plaintext that should never be committed
+home/linux/gui/drcom-client-cpp/drcom_jlu.conf
+home/linux/gui/gold-price/gold-price-history.conf
+home/linux/base/nix/nix.conf
 
 # Legacy sensitive files from pre-agenix layout
 dotfiles/dot_ssh/keys/private_*
 dotfiles/dot_config/mihomo/config.yaml
 dotfiles/dot_config/fcitx5/private_*
 dotfiles/dot_config/fcitx5/conf/private_*.conf
+dotfiles/dot_config/drcom-client-cpp/drcom_jlu.conf
+dotfiles/dot_config/gold-price/gold-price-history.conf
+dotfiles/dot_config/nix/nix.conf
 
 # Private flake overrides or local helper files
 flake.local.nix

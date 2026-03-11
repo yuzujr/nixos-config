@@ -26,6 +26,9 @@ To bootstrap a private repo quickly:
 - `ssh-key-server.age`
 - `ssh-key-aur.age`
 - `mihomo-config.yaml.age`
+- `drcom-jlu.conf.age` (if you use `drcom.service`)
+- `gold-price-history.conf.age` (if you use Gold API history collection)
+- `nix-user.conf.age` (if you use per-user `~/.config/nix/nix.conf` access tokens)
 - `fcitx5-config.age`
 - `fcitx5-profile.age`
 - `fcitx5-classicui.conf.age`
