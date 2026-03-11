@@ -63,16 +63,16 @@ in
         file = "${mysecrets}/fcitx5-profile.age";
       } // userSecret;
 
-      "fcitx5-private-classicui.conf" = {
-        file = "${mysecrets}/fcitx5-private-classicui.conf.age";
+      "fcitx5-classicui.conf" = {
+        file = "${mysecrets}/fcitx5-classicui.conf.age";
       } // userSecret;
 
-      "fcitx5-private-notifications.conf" = {
-        file = "${mysecrets}/fcitx5-private-notifications.conf.age";
+      "fcitx5-notifications.conf" = {
+        file = "${mysecrets}/fcitx5-notifications.conf.age";
       } // userSecret;
 
-      "fcitx5-private-rime.conf" = {
-        file = "${mysecrets}/fcitx5-private-rime.conf.age";
+      "fcitx5-rime.conf" = {
+        file = "${mysecrets}/fcitx5-rime.conf.age";
       } // userSecret;
     };
 
@@ -119,20 +119,20 @@ in
         user = myvars.username;
       };
 
-      "agenix/fcitx5-private-classicui.conf" = {
-        source = config.age.secrets."fcitx5-private-classicui.conf".path;
+      "agenix/fcitx5-classicui.conf" = {
+        source = config.age.secrets."fcitx5-classicui.conf".path;
         mode = "0400";
         user = myvars.username;
       };
 
-      "agenix/fcitx5-private-notifications.conf" = {
-        source = config.age.secrets."fcitx5-private-notifications.conf".path;
+      "agenix/fcitx5-notifications.conf" = {
+        source = config.age.secrets."fcitx5-notifications.conf".path;
         mode = "0400";
         user = myvars.username;
       };
 
-      "agenix/fcitx5-private-rime.conf" = {
-        source = config.age.secrets."fcitx5-private-rime.conf".path;
+      "agenix/fcitx5-rime.conf" = {
+        source = config.age.secrets."fcitx5-rime.conf".path;
         mode = "0400";
         user = myvars.username;
       };

@@ -42,9 +42,9 @@ in
 
   "./fcitx5-config.age".publicKeys = recipients;
   "./fcitx5-profile.age".publicKeys = recipients;
-  "./fcitx5-private-classicui.conf.age".publicKeys = recipients;
-  "./fcitx5-private-notifications.conf.age".publicKeys = recipients;
-  "./fcitx5-private-rime.conf.age".publicKeys = recipients;
+  "./fcitx5-classicui.conf.age".publicKeys = recipients;
+  "./fcitx5-notifications.conf.age".publicKeys = recipients;
+  "./fcitx5-rime.conf.age".publicKeys = recipients;
 }
 SECRETSNIX
 
@@ -79,9 +79,9 @@ Repeat for all required files:
 - mihomo-config.yaml.age
 - fcitx5-config.age
 - fcitx5-profile.age
-- fcitx5-private-classicui.conf.age
-- fcitx5-private-notifications.conf.age
-- fcitx5-private-rime.conf.age
+- fcitx5-classicui.conf.age
+- fcitx5-notifications.conf.age
+- fcitx5-rime.conf.age
 
 ## 3. Use with nixos-config
 

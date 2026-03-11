@@ -19,11 +19,11 @@ in
       force = true;
     };
 
-    "fcitx5/conf/private_classicui.conf".source =
-      mkSymlink "/etc/agenix/fcitx5-private-classicui.conf";
-    "fcitx5/conf/private_notifications.conf".source =
-      mkSymlink "/etc/agenix/fcitx5-private-notifications.conf";
-    "fcitx5/conf/private_rime.conf".source =
-      mkSymlink "/etc/agenix/fcitx5-private-rime.conf";
+    "fcitx5/conf/classicui.conf".source =
+      mkSymlink "/etc/agenix/fcitx5-classicui.conf";
+    "fcitx5/conf/notifications.conf".source =
+      mkSymlink "/etc/agenix/fcitx5-notifications.conf";
+    "fcitx5/conf/rime.conf".source =
+      mkSymlink "/etc/agenix/fcitx5-rime.conf";
   };
 }

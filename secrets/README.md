@@ -28,8 +28,8 @@ To bootstrap a private repo quickly:
 - `mihomo-config.yaml.age`
 - `fcitx5-config.age`
 - `fcitx5-profile.age`
-- `fcitx5-private-classicui.conf.age`
-- `fcitx5-private-notifications.conf.age`
-- `fcitx5-private-rime.conf.age`
+- `fcitx5-classicui.conf.age`
+- `fcitx5-notifications.conf.age`
+- `fcitx5-rime.conf.age`
 
 Use host SSH key `/etc/ssh/ssh_host_ed25519_key` + an offline recovery key for encryption recipients.
