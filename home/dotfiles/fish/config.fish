@@ -20,6 +20,18 @@ if status is-interactive
     alias code="code --ozone-platform-hint=auto &> /dev/null"
 
     # Functions
+    function nhs --description "nh with secret inputs: nhs [switch|build|test|boot]"
+        set -l mode switch
+        switch $argv[1]
+            case switch build test boot
+                set mode $argv[1]
+                set -e argv[1]
+        end
+
+        nh os $mode $argv /home/yuzujr/nixos-config#nixos \
+            -- --override-input mysecrets path:/home/yuzujr/nix-secrets
+    end
+
     function y
         set tmp (mktemp -t "yazi-cwd.XXXXXX")
         yazi $argv --cwd-file="$tmp"

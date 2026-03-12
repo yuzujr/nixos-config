@@ -42,6 +42,7 @@
       fd
       fzf
       feh
+      ffmpeg
       fuzzel
       gamescope
       git
