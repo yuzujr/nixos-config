@@ -21,8 +21,8 @@ binds {
     XF86AudioRaiseVolume allow-when-locked=true hotkey-overlay-title="音量提高" { spawn "noctalia-shell" "ipc" "call" "volume" "increase"; }
     XF86AudioMute allow-when-locked=true hotkey-overlay-title="静音输出" { spawn "noctalia-shell" "ipc" "call" "volume" "muteOutput"; }
     XF86AudioMicMute allow-when-locked=true hotkey-overlay-title="静音麦克风" { spawn "noctalia-shell" "ipc" "call" "volume" "muteInput"; }
-    XF86MonBrightnessUp allow-when-locked=true hotkey-overlay-title="亮度提高" { spawn-sh "brightnessctl --device=amdgpu_bl2 set 5%+"; }
-    XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="亮度降低" { spawn-sh "brightnessctl --device=amdgpu_bl2 set 5%-"; }
+    XF86MonBrightnessUp allow-when-locked=true hotkey-overlay-title="亮度提高" { spawn "noctalia-shell" "ipc" "call" "brightness" "increase"; }
+    XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="亮度降低" { spawn "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
     Mod+Alt+L hotkey-overlay-title="锁屏" { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
     Mod+Alt+I hotkey-overlay-title="切换输入法主题预设" { spawn "/home/yuzujr/.local/bin/fcitx5-theme-toggle"; }
 

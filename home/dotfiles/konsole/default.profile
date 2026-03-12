@@ -1,5 +1,5 @@
 [Appearance]
-ColorScheme=Solarized
+ColorScheme=SolarizedLight
 Font=Maple Mono NF CN,12
 
 [General]

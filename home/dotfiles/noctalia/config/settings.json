@@ -218,7 +218,7 @@
         }
     },
     "brightness": {
-        "brightnessStep": 4,
+        "brightnessStep": 5,
         "enableDdcSupport": true,
         "enforceMinimum": true
     },
@@ -239,7 +239,7 @@
         ]
     },
     "colorSchemes": {
-        "darkMode": false,
+        "darkMode": true,
         "generationMethod": "content",
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
@@ -429,7 +429,7 @@
         "bluetoothRssiPollingEnabled": false,
         "disableDiscoverability": true,
         "wifiDetailsViewMode": "grid",
-        "wifiEnabled": true
+        "wifiEnabled": false
     },
     "nightLight": {
         "autoSchedule": true,
@@ -618,7 +618,7 @@
         "fontDefaultScale": 1,
         "fontFixed": "Maple Mono NF CN",
         "fontFixedScale": 1,
-        "networkPanelView": "wifi",
+        "networkPanelView": "ethernet",
         "panelBackgroundOpacity": 1,
         "panelsAttachedToBar": true,
         "settingsPanelMode": "attached",

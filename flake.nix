@@ -21,7 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Public-safe default. Override this input for real deployments:
+    # Public-safe default. Override this input for real deployments:assets/
     # --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1
     mysecrets = {
       url = "path:./secrets/placeholder";
@@ -64,13 +64,7 @@
     }:
     let
       system = "x86_64-linux";
-      myvars = {
-        username = "yuzujr";
-        userfullname = "yuzujr";
-        useremail = "15568103056@163.com";
-        hostname = "nixos";
-        repoRoot = "/home/yuzujr/nixos-config";
-      };
+      myvars = import ./vars;
 
       mkHost =
         {
@@ -131,7 +125,7 @@
         };
 
         nixos-public = mkHost {
-          hostname = "${myvars.hostname}-public";
+          hostname = myvars.hostname;
           secretsEnabled = false;
           mihomoEnabled = false;
         };

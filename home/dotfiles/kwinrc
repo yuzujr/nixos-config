@@ -64,6 +64,10 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 [Tiling][ec18b871-4b92-452a-a670-a3e913e02511][09dbd05c-3a54-4cdf-a54f-8d59b45f2c09]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
+[Tiling][ec18b871-4b92-452a-a670-a3e913e02511][21a0b446-a6e5-42c4-bdce-26e4c662ed53]
+padding=4
+tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
+
 [Tiling][ec18b871-4b92-452a-a670-a3e913e02511][2475063b-5d55-4d60-b118-a501df4ef380]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
 
@@ -110,9 +114,7 @@ InputMethod[$e]=/run/current-system/sw/share/applications/fcitx5-wayland-launche
 VirtualKeyboardEnabled=true
 
 [Xwayland]
-Scale=1.25
+Scale=1.7
 
 [org.kde.kdecoration2]
 ButtonsOnRight=IAX
-library=org.kde.breeze
-theme=Breeze 微风

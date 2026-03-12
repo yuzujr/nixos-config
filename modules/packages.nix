@@ -16,6 +16,7 @@
     [
       alsa-firmware
       alsa-ucm-conf
+      adw-gtk3
       bibata-cursors
       bluetui
       bluez
@@ -64,6 +65,7 @@
       mangohud
       mpv
       neovim
+      nyancat
       openssh
       libnotify
       nwg-look
@@ -95,16 +97,12 @@
       zathura
       zathuraPkgs.zathura_pdf_poppler
       zoxide
+      zip
       coomerPkg
       drcomClientPkg
       ani2xcursorPkg
     ]
     ++ (with pkgs.kdePackages; [
-      ark
-      breeze
-      dolphin
-      kate
-      konsole
       qt6ct
     ]);
 }
