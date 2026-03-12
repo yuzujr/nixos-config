@@ -1,104 +1,82 @@
-# NixOS Config
+# nixos-config
 
-Single-host NixOS + Home Manager + agenix.
+NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps, and dotfiles.
 
-This repo is intentionally kept simple for public sharing:
-- one flake
-- one host (`hosts/default`)
-- one Home Manager entry (`home/default.nix`)
-- one README (this file)
+## What this flake provides
 
-## Main targets
+- `nixosConfigurations.nixos`
+  - Personal full setup (private profile).
+- `nixosConfigurations.nixos-public`
+  - Public-safe setup intended for sharing/reuse.
 
-- `.#nixos-public`: public-evaluable build (no private secrets required)
-- `.#nixos`: full private build (expects private `mysecrets` override)
+## Repository layout
 
-## Repo layout
+```text
+.
+├── flake.nix                # Inputs, outputs, host variants
+├── hosts/default/           # Host entrypoint + generated hardware config
+├── modules/                 # System modules (base/desktop/hardware/packages)
+├── home/                    # Home Manager entrypoint + dotfiles wiring
+├── secrets/                 # agenix module + placeholder secrets directory
+├── vars/default.nix         # username/hostname/repoRoot
+└── dev/                     # Standalone dev shells (gcc-cpp-env, qt-env)
+```
 
-- `flake.nix`: entrypoint and host outputs
-- `hosts/default/`: host hardware + host-level imports
-- `modules/`: NixOS modules (`base`, `desktop`, `hardware`, `packages`)
-- `home/default.nix`: Home Manager entry for user config
-- `home/dotfiles/dotfiles.nix`: Home Manager symlink wiring
-- `home/dotfiles/`: plain-text dotfiles and app configs
-- `secrets/nixos.nix`: agenix decryption + `/etc/agenix/*` wiring
-- `secrets/placeholder/`: public-safe fallback input for `mysecrets`
+## Prerequisites
+
+- NixOS with flakes enabled.
+- `git`.
+
+## Setup
+
+1. Clone this repo to the same path used by `repoRoot` in `vars/default.nix`.
+2. If your clone path differs, update `repoRoot` in `vars/default.nix`.
+3. Optionally adjust `username`, `userfullname`, `useremail`, and `hostname` in `vars/default.nix`.
+
+`repoRoot` matters because Home Manager uses out-of-store symlinks to files in this repository.
 
 ## Build and switch
 
-Public build:
+### Public profile
 
 ```bash
-sudo nixos-rebuild build --flake .#nixos-public
+sudo nixos-rebuild switch --flake .#nixos-public
 ```
 
-Private build:
+### Personal full profile
 
 ```bash
-sudo nixos-rebuild build \
-  --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1 \
-  --flake .#nixos
+sudo nixos-rebuild switch --flake .#nixos
 ```
 
-Private switch:
+You can also build without switching:
 
 ```bash
-sudo nixos-rebuild switch \
-  --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1 \
-  --flake .#nixos
+nix build .#nixosConfigurations.nixos.config.system.build.toplevel
+nix build .#nixosConfigurations.nixos-public.config.system.build.toplevel
 ```
 
-## Update workflow
+## Private profile note
 
-1. Update flake inputs:
+`.#nixos` is my personal profile and depends on private inputs/config.
+For most users, start with `.#nixos-public`.
+
+## Development shells
+
+- GNU C/C++ environment:
+
+```bash
+nix develop ./dev/gcc-cpp-env
+```
+
+- Qt environment (Qt Creator + Qt6 toolchain):
+
+```bash
+nix develop ./dev/qt-env
+```
+
+## Updating inputs
 
 ```bash
 nix flake update
-```
-
-2. Validate:
-
-```bash
-nix flake check
-sudo nixos-rebuild build --flake .#nixos-public
-sudo nixos-rebuild build \
-  --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1 \
-  --flake .#nixos
-```
-
-3. Switch when ready.
-
-## Add a new public dotfile
-
-1. Put the real file under this repo, usually in `home/dotfiles/...`.
-2. Add a symlink mapping in `home/dotfiles/dotfiles.nix` using `mkOutOfStoreSymlink`.
-3. Rebuild and confirm with `readlink` that `~/.config/...` points to your repo file.
-4. If the app generates runtime/cache files in that directory, add ignore rules (local `.gitignore` preferred).
-
-## Add a new private secret file
-
-1. In your private `nix-secrets` repo, add `./<name>.age`.publicKeys entry to `secrets.nix`.
-2. Encrypt content:
-
-```bash
-EDITOR='cp /path/to/plaintext' agenix -e ./<name>.age
-```
-
-3. Wire it in this repo:
-- add `age.secrets.<name>` in `secrets/nixos.nix`
-- add `/etc/agenix/<name>` mapping in `environment.etc`
-- reference `/etc/agenix/<name>` from the consumer (service or Home Manager link)
-
-4. Rebuild `.#nixos` with `--override-input mysecrets ...`.
-
-## Public repo safety checklist
-
-- Never commit plaintext credentials/tokens/keys.
-- Keep only encrypted `.age` files in the private repo.
-- Before pushing, run:
-
-```bash
-git status
-nix flake check
-sudo nixos-rebuild build --flake .#nixos-public
 ```

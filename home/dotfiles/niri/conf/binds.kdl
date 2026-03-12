@@ -24,7 +24,7 @@ binds {
     XF86MonBrightnessUp allow-when-locked=true hotkey-overlay-title="亮度提高" { spawn "noctalia-shell" "ipc" "call" "brightness" "increase"; }
     XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="亮度降低" { spawn "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
     Mod+Alt+L hotkey-overlay-title="锁屏" { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
-    Mod+Alt+I hotkey-overlay-title="切换输入法主题预设" { spawn "/home/yuzujr/.local/bin/fcitx5-theme-toggle"; }
+    Mod+Alt+I hotkey-overlay-title="切换输入法主题预设" { spawn "~/.local/bin/fcitx5-theme-toggle"; }
 
     // #"壁纸"
     Mod+Ctrl+W hotkey-overlay-title="打开壁纸选择" { spawn "noctalia-shell" "ipc" "call" "wallpaper" "toggle"; }
