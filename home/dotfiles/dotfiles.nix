@@ -8,11 +8,13 @@
 let
   repoRoot = myvars.repoRoot;
   mkSymlink = config.lib.file.mkOutOfStoreSymlink;
-  hasSecret = name: lib.hasAttrByPath [
-    "age"
-    "secrets"
-    name
-  ] osConfig;
+  hasSecret =
+    name:
+    lib.hasAttrByPath [
+      "age"
+      "secrets"
+      name
+    ] osConfig;
 in
 {
   xdg.configFile = {
@@ -40,10 +42,14 @@ in
 
     "fcitx5/config".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/config";
     "fcitx5/profile".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/profile";
-    "fcitx5/conf/clipboard.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/clipboard.conf";
-    "fcitx5/conf/quickphrase.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/quickphrase.conf";
-    "fcitx5/conf/classicui.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/classicui.conf";
-    "fcitx5/conf/notifications.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/notifications.conf";
+    "fcitx5/conf/clipboard.conf".source =
+      mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/clipboard.conf";
+    "fcitx5/conf/quickphrase.conf".source =
+      mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/quickphrase.conf";
+    "fcitx5/conf/classicui.conf".source =
+      mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/classicui.conf";
+    "fcitx5/conf/notifications.conf".source =
+      mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/notifications.conf";
     "fcitx5/conf/rime.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/rime.conf";
 
     "systemd/user/drcom.service".source =

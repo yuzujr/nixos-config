@@ -17,12 +17,20 @@ TopLeft=ShowDesktop
 
 [Plugins]
 fadingpopupsEnabled=false
-magiclampEnabled=true
+fullscreenEnabled=false
+loginEnabled=false
+logoutEnabled=false
+maximizeEnabled=false
+scaleEnabled=false
 shakecursorEnabled=false
+slideEnabled=false
+slidingpopupsEnabled=false
 squashEnabled=false
+windowapertureEnabled=false
 
 [TabBox]
 HighlightWindows=false
+LayoutName=AquaMediumIcons
 
 [Tiling][03f7cd35-711d-5678-b70e-6977ddc0ea71]
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}
@@ -114,7 +122,7 @@ InputMethod[$e]=/run/current-system/sw/share/applications/fcitx5-wayland-launche
 VirtualKeyboardEnabled=true
 
 [Xwayland]
-Scale=1.7
+Scale=1.75
 
 [org.kde.kdecoration2]
 ButtonsOnRight=IAX

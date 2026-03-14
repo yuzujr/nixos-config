@@ -1,4 +1,10 @@
-{ config, pkgs, lib, myvars, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  myvars,
+  ...
+}:
 let
   cfg = config.modules.desktop.mihomo;
 in
@@ -121,6 +127,7 @@ in
         XCURSOR_SIZE = "28";
         EDITOR = "nvim";
         NIXOS_OZONE_WL = "1";
+        KWIN_DRM_DEVICES = "/dev/dri/card0:/dev/dri/card1";
       };
 
       # ==========================================

@@ -34,7 +34,9 @@
          (js-mode . eglot-ensure)
          (js-ts-mode . eglot-ensure)
          (typescript-mode . eglot-ensure)
-         (typescript-ts-mode . eglot-ensure))
+         (typescript-ts-mode . eglot-ensure)
+         (nix-mode . eglot-ensure)
+         (nix-ts-mode . eglot-ensure))
   :bind (("C-c a" . eglot-code-actions)
          ("C-c d" . xref-find-definitions)
          ("C-c u" . xref-find-references)
@@ -55,7 +57,9 @@
   (eglot-autoshutdown t)
   (eglot-sync-connect nil)
   (eglot-send-changes-idle-time 0.1)
-  (eglot-events-buffer-size 0))
+  (eglot-events-buffer-size 0)
+  :config
+  (add-to-list 'eglot-server-programs '((nix-mode nix-ts-mode) . ("nixd"))))
 
 (use-package eldoc-box
   :after eglot

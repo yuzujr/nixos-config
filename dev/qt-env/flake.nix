@@ -3,21 +3,30 @@
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-  outputs = { self, nixpkgs }:
+  outputs =
+    { self, nixpkgs }:
     let
-      systems = [ "x86_64-linux" "aarch64-linux" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
-    in {
-      devShells = forAllSystems (system:
+    in
+    {
+      devShells = forAllSystems (
+        system:
         let
           pkgs = import nixpkgs { inherit system; };
-          qtEnv = with pkgs.qt6; env "qt6-env" [
-            qtbase
-            qtdeclarative
-            qttools
-            qtwayland
-          ];
-        in {
+          qtEnv =
+            with pkgs.qt6;
+            env "qt6-env" [
+              qtbase
+              qtdeclarative
+              qttools
+              qtwayland
+            ];
+        in
+        {
           default = pkgs.mkShell {
             packages = [
               qtEnv
@@ -38,6 +47,7 @@
               echo "CXX=$CXX"
             '';
           };
-        });
+        }
+      );
     };
 }

@@ -3,6 +3,10 @@ Description=Wayland clipboard persistence
 PartOf=default.target
 After=default.target
 BindsTo=default.target
+ConditionEnvironment=!XDG_CURRENT_DESKTOP=KDE
+ConditionEnvironment=!XDG_CURRENT_DESKTOP=Plasma
+ConditionEnvironment=!XDG_SESSION_DESKTOP=KDE
+ConditionEnvironment=!XDG_SESSION_DESKTOP=plasma
 
 [Service]
 ExecStart=/run/current-system/sw/bin/wl-clip-persist --clipboard regular
