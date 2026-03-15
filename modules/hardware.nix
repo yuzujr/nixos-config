@@ -25,7 +25,10 @@
 
   hardware.steam-hardware.enable = true;
 
-  hardware.graphics.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
   services.xserver.videoDrivers = [ "nvidia" ];
 

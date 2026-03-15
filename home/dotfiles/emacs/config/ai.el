@@ -2,6 +2,8 @@
 
 (provide 'ai)
 
+(declare-function rc/context-treemacs-directory "context" ())
+
 ;; ----------------------------
 ;; AI Agent Coding - ai-code-interface.el + Codex CLI
 ;; ----------------------------
@@ -33,10 +35,13 @@
    (expand-file-name "~")))
 
 (defun rc/ai--project-root (&optional dir)
-  "Return a stable project root for AI session lookup."
-  (let* ((start-dir (expand-file-name (or dir (rc/ai--context-directory))))
+  "Return a stable Treemacs-aware root for AI session lookup."
+  (let* ((treemacs-dir (rc/context-treemacs-directory))
+         (start-dir (expand-file-name
+                     (or treemacs-dir dir (rc/ai--context-directory))))
          (start-truename (ignore-errors (file-truename start-dir))))
     (or
+     treemacs-dir
      ;; Prefer git root, including symlink-resolved path.
      (locate-dominating-file start-dir ".git")
      (and start-truename (locate-dominating-file start-truename ".git"))
@@ -58,18 +63,11 @@
     (ai-code-set-backend 'codex)))
 
 (defun rc/ai-resume ()
-  "Resume Codex session using project root as lookup key."
+  "Resume Codex session using the current command context as lookup key."
   (interactive)
   (rc/ai--ensure-codex)
   (let ((default-directory (expand-file-name (rc/ai--project-root))))
     (call-interactively #'ai-code-cli-resume)))
-
-(defun rc/ai-switch ()
-  "Switch to Codex session buffer using project root as lookup key."
-  (interactive)
-  (rc/ai--ensure-codex)
-  (let ((default-directory (expand-file-name (rc/ai--project-root))))
-    (call-interactively #'ai-code-cli-switch-to-buffer)))
 
 (defun rc/ai--session-working-directory-advice (orig-fn &rest _args)
   "Return stable project root for ai-code sessions, fallback to ORIG-FN."
@@ -78,42 +76,9 @@
         (expand-file-name root)
       (funcall orig-fn))))
 
-(defun rc/ai-hide ()
-  "Hide all visible AI session windows."
-  (interactive)
-  (require 'ai-code-backends-infra)
-  (let ((hidden nil))
-    (dolist (win (window-list))
-      (let ((buf (window-buffer win)))
-        (when (ai-code-backends-infra--session-buffer-p buf)
-          (setq hidden t)
-          (quit-window nil win))))
-    (unless hidden
-      (message "No visible AI window to hide"))))
-
-(defvar rc/ai-session-text-scale 0
-  "Text scale for ai-code session buffers.")
-
-(defvar rc/ai-prompt-text-scale 0
-  "Text scale for ai-code prompt buffers.")
-
-(defun rc/ai--apply-session-text-scale ()
-  "Apply `rc/ai-session-text-scale' in ai-code session buffers."
-  (when (and (numberp rc/ai-session-text-scale)
-             (fboundp 'ai-code-backends-infra--session-buffer-p)
-             (ai-code-backends-infra--session-buffer-p (current-buffer)))
-    (text-scale-set rc/ai-session-text-scale)))
-
-(defun rc/ai--apply-prompt-text-scale ()
-  "Apply `rc/ai-prompt-text-scale' in ai-code prompt buffers."
-  (when (numberp rc/ai-prompt-text-scale)
-    (text-scale-set rc/ai-prompt-text-scale)))
-
 (use-package ai-code
   :bind (("C-c C-a" . ai-code-menu)
-         ("C-c C-z" . rc/ai-resume)
-         ("C-c z" . rc/ai-switch)
-         ("C-c q" . rc/ai-hide))
+         ("C-c C-z" . rc/ai-resume))
   :custom
   ;; Use Codex CLI as backend runtime.
   (ai-code-codex-cli-program "codex")
@@ -124,10 +89,6 @@
   :config
   (ai-code-set-backend 'codex)
   (ai-code-prompt-filepath-completion-mode 1)
-  (with-eval-after-load 'vterm
-    (add-hook 'vterm-mode-hook #'rc/ai--apply-session-text-scale))
-  (with-eval-after-load 'ai-code-prompt-mode
-    (add-hook 'ai-code-prompt-mode-hook #'rc/ai--apply-prompt-text-scale))
   (with-eval-after-load 'ai-code-backends-infra
     ;; Make start/resume/switch from ai-code menu use the same robust project root.
     (advice-remove 'ai-code-backends-infra--session-working-directory
@@ -140,8 +101,6 @@
   (with-eval-after-load 'which-key
     (which-key-add-key-based-replacements
       "C-c C-a" "ai-menu"
-      "C-c C-z" "ai-resume"
-      "C-c z" "ai-switch"
-      "C-c q" "ai-hide")))
+      "C-c C-z" "ai-resume")))
 
 ;;; ai.el ends here

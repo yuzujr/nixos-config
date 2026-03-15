@@ -13,9 +13,56 @@
 ;; ----------------------------
 ;; Terminal - VTerm
 ;; ----------------------------
+(defconst rc/vterm-buffer-name-regexp
+  "\\`\\*vterm\\*\\(?:<[^>]+>\\)?\\'"
+  "Regexp matching standard vterm buffers.")
+
+(defun rc/vterm--preferred-side ()
+  "Return the side window placement used for terminal buffers."
+  (if (boundp 'ai-code-backends-infra-window-side)
+      ai-code-backends-infra-window-side
+    'right))
+
+(defun rc/vterm--preferred-size-alist (side)
+  "Return side window size parameters for SIDE."
+  (cond
+   ((memq side '(left right))
+    `((window-width . ,(if (boundp 'ai-code-backends-infra-window-width)
+                           ai-code-backends-infra-window-width
+                         72))))
+   ((memq side '(top bottom))
+    `((window-height . ,(if (boundp 'ai-code-backends-infra-window-height)
+                            ai-code-backends-infra-window-height
+                          20))))
+   (t nil)))
+
+(defun rc/vterm-display-buffer (buffer alist)
+  "Display BUFFER in the same side window slot used by AI terminals."
+  (let* ((side (rc/vterm--preferred-side))
+         (size-alist (rc/vterm--preferred-size-alist side)))
+    (display-buffer-in-side-window
+     buffer
+     (append `((side . ,side)
+               (slot . 0)
+               (window-parameters . ((no-delete-other-windows . t))))
+             size-alist
+             alist))))
+
 (use-package vterm
   :ensure nil
-  :bind (("C-c v" . vterm-other-window)))
+  :bind (("C-t" . vterm-other-window))
+  :config
+  ;; Reuse the same side window slot as ai-code/Codex sessions.
+  (add-to-list 'display-buffer-alist
+               `(,rc/vterm-buffer-name-regexp rc/vterm-display-buffer)))
+
+(use-package vterm-toggle
+  :ensure t
+  :bind (("C-c v" . vterm-toggle))
+  :config
+  ;; Switch between existing vterm buffers from within vterm.
+  (define-key vterm-mode-map (kbd "s-n") #'vterm-toggle-forward)
+  (define-key vterm-mode-map (kbd "s-p") #'vterm-toggle-backward))
 
 ;; ----------------------------
 ;; Sudo Edit - Edit as Root

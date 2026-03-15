@@ -18,21 +18,6 @@ log() { echo "[niri-mode] $*"; }
 
 require_file() { [[ -f "$1" ]] || die "missing file: $1"; }
 
-# ---- root runner ----
-run_root() {
-  if [[ ${EUID:-999} -eq 0 ]]; then
-    "$@"
-    return
-  fi
-
-  if command -v sudo >/dev/null 2>&1; then
-    sudo "$@"
-    return
-  fi
-
-  die "need root privileges (install sudo or run as root)"
-}
-
 # ---- profile links ----
 set_links() {
   local profile="$1" # normal|travel
@@ -68,94 +53,14 @@ set_power_profile() {
   fi
 }
 
-unit_exists() {
-  local unit="$1"
-  local state
-  state=$(systemctl --user show -p LoadState --value "$unit" 2>/dev/null || true)
-  [[ "$state" != "not-found" && -n "$state" ]]
-}
-
-system_unit_exists() {
-  local unit="$1"
-  local state
-  state=$(systemctl show -p LoadState --value "$unit" 2>/dev/null || true)
-  [[ "$state" != "not-found" && -n "$state" ]]
-}
-
-enable_system_units() {
-  local unit
-  for unit in "$@"; do
-    if system_unit_exists "$unit"; then
-      run_root systemctl enable --now "$unit"
-      log "enabled system unit: $unit"
-    else
-      log "system unit not found: $unit (skip)"
-    fi
-  done
-}
-
-disable_system_units() {
-  local unit
-  for unit in "$@"; do
-    if system_unit_exists "$unit"; then
-      run_root systemctl disable --now "$unit"
-      log "disabled system unit: $unit"
-    else
-      log "system unit not found: $unit (skip)"
-    fi
-  done
-}
-
-enable_units() {
-  local unit
-  for unit in "$@"; do
-    if unit_exists "$unit"; then
-      systemctl --user enable "$unit"
-      log "enabled user unit: $unit"
-    else
-      log "user unit not found: $unit (skip)"
-    fi
-  done
-}
-
-disable_units() {
-  local unit
-  for unit in "$@"; do
-    if unit_exists "$unit"; then
-      systemctl --user disable "$unit"
-      log "disabled user unit: $unit"
-    else
-      log "user unit not found: $unit (skip)"
-    fi
-  done
-}
-
-mask_unit() {
-  systemctl --user mask --now "$@"
-  log "masked services: $*"
-}
-
-unmask_unit() {
-  systemctl --user unmask "$@"
-  log "unmasked services: $*"
-}
-
 apply_mode() {
   local profile="$1"
 
   if [[ "$profile" == "normal" ]]; then
     set_power_profile balanced
 
-    enable_units \
-      wl-clip-persist.service \
-      sunshine.service
-
   elif [[ "$profile" == "travel" ]]; then
     set_power_profile power-saver
-
-    disable_units \
-      wl-clip-persist.service \
-      sunshine.service
 
   else
     die "unknown profile: $profile"
@@ -187,7 +92,7 @@ show_status() {
 
 usage() {
   cat <<EOF
-Usage: $0 normal|travel|toggle|status
+Usage: $0 normal|travel|switch|status
 EOF
   exit 2
 }
@@ -195,13 +100,13 @@ EOF
 case "$mode" in
 travel) apply_mode travel ;;
 normal) apply_mode normal ;;
-toggle)
+switch)
   current="$(get_current_mode)"
   log "current mode: $current"
   case "$current" in
   travel) apply_mode normal ;;
   normal) apply_mode travel ;;
-  *) die "cannot toggle: current mode is unknown. Run 'status' first." ;;
+  *) die "cannot switch: current mode is unknown. Run 'status' first." ;;
   esac
   ;;
 status) show_status ;;

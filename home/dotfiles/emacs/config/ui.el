@@ -139,6 +139,6 @@
                                             'right))))))))
 
 (setq-default split-height-threshold  4
-              split-width-threshold   120) ; the reasonable limit for horizontal splits
+              split-width-threshold   100) ; the reasonable limit for horizontal splits
 
 ;;; ui.el ends here

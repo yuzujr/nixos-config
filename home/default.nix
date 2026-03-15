@@ -2,6 +2,7 @@
 {
   imports = [
     ./dotfiles/dotfiles.nix
+    ./systemd-user.nix
   ];
 
   fonts.fontconfig.enable = false;

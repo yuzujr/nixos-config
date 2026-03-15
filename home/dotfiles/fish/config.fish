@@ -5,8 +5,9 @@ if status is-interactive
     zoxide init fish | source
 
     # env
-    set -x XDG_CONFIG_HOME "$HOME/.config"
-    set -x EDITOR nvim
+    if not contains -- $HOME/.local/bin $PATH
+        set -gx PATH $HOME/.local/bin $PATH
+    end
 
     # Alias
     alias vim="nvim"

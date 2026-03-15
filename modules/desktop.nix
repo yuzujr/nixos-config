@@ -127,7 +127,7 @@ in
         XCURSOR_SIZE = "28";
         EDITOR = "nvim";
         NIXOS_OZONE_WL = "1";
-        KWIN_DRM_DEVICES = "/dev/dri/card0:/dev/dri/card1";
+        KWIN_DRM_DEVICES = "/dev/dri/by-path/pci-0000\\:01\\:00.0-card:/dev/dri/by-path/pci-0000\\:06\\:00.0-card";
       };
 
       # ==========================================

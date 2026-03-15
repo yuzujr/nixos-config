@@ -75,6 +75,39 @@ nix develop ./dev/gcc-cpp-env
 nix develop ./dev/qt-env
 ```
 
+- Python environment (`uv` + Python 3.12):
+
+```bash
+nix develop ./dev/python-env
+```
+
+How to use it:
+
+```bash
+# new project
+uv init
+
+# existing project with pyproject.toml
+uv sync
+
+# add dependencies
+uv add requests
+uv add --dev ruff pyright pytest
+
+# run commands inside the project environment
+uv run python main.py
+uv run ruff check .
+uv run pyright
+```
+
+You do not need to create or activate a virtualenv manually. Run the shell from each project's root, then use `uv` there so every project keeps its own separate dependencies.
+
+If you want automatic activation with `direnv`, add this to the project's `.envrc`:
+
+```bash
+use flake /home/yuzujr/nixos-config/dev/python-env
+```
+
 ## Updating inputs
 
 ```bash

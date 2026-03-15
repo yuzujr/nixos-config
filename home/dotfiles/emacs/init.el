@@ -38,6 +38,7 @@
 ;; Load modular configuration
 (require 'editor)       ; Basic editor settings
 (require 'ui)           ; UI and appearance
+(require 'context)      ; Shared command/root context
 (require 'completion)   ; Completion framework (Vertico)
 (require 'lsp)          ; Eglot (LSP client)
 (require 'programming)  ; Programming modes and tools

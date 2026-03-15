@@ -52,18 +52,6 @@ in
       mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/notifications.conf";
     "fcitx5/conf/rime.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/rime.conf";
 
-    "systemd/user/drcom.service".source =
-      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/drcom.service";
-    "systemd/user/gold-price-history-daily.service".source =
-      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/gold-price-history-daily.service";
-    "systemd/user/gold-price-history-daily.timer".source =
-      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/gold-price-history-daily.timer";
-    "systemd/user/gold-price-watch.service".source =
-      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/gold-price-watch.service";
-    "systemd/user/sunshine.service".source =
-      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/sunshine.service";
-    "systemd/user/wl-clip-persist.service".source =
-      mkSymlink "${repoRoot}/home/dotfiles/systemd-user/wl-clip-persist.service";
   }
   // lib.optionalAttrs (hasSecret "drcom-jlu.conf") {
     "drcom-client-cpp/drcom_jlu.conf" = {

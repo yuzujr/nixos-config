@@ -113,5 +113,3 @@ Embark：
 
 - `C-c C-a`: `ai-code-menu`
 - `C-c C-z`: `rc/ai-resume`
-- `C-c z`: `rc/ai-switch`
-- `C-c q`: `rc/ai-hide`

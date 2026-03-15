@@ -2,6 +2,8 @@
 
 (provide 'completion)
 
+(declare-function rc/context-directory "context" (&optional fallback))
+
 ;; ----------------------------
 ;; Vertico - Vertical Completion UI
 ;; ----------------------------
@@ -105,12 +107,17 @@
 ;; ----------------------------
 ;; Consult - Enhanced Commands
 ;; ----------------------------
+(defun rc/consult-ripgrep ()
+  "Run `consult-ripgrep' from the current Treemacs-aware context directory."
+  (interactive)
+  (consult-ripgrep (rc/context-directory)))
+
 (use-package consult
   :bind (;; Canonical keymap (no legacy compatibility bindings)
          ("C-c b" . consult-buffer)
          ("C-c f" . consult-fd)
          ("C-c F" . consult-locate)
-         ("C-c s" . consult-ripgrep)
+         ("C-c s" . rc/consult-ripgrep)
          ("C-c /" . consult-line)
          ("C-c c g" . consult-goto-line)
          ("C-c c o" . consult-outline)
