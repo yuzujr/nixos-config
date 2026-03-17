@@ -1,2 +1,1 @@
-//spawn-sh-at-startup "dbus-update-activation-environment --systemd QT_QPA_PLATFORMTHEME"
 spawn-at-startup "noctalia-shell"

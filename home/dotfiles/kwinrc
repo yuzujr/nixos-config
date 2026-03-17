@@ -122,7 +122,7 @@ InputMethod[$e]=/run/current-system/sw/share/applications/fcitx5-wayland-launche
 VirtualKeyboardEnabled=true
 
 [Xwayland]
-Scale=1.75
+Scale=1.25
 
 [org.kde.kdecoration2]
 ButtonsOnRight=IAX
