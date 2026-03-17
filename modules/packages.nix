@@ -27,6 +27,7 @@
       codex
       csvlens
       curl
+      cmake
       ddcutil
       delta
       duf
@@ -50,6 +51,8 @@
       google-chrome
       gpu-screen-recorder
       inetutils
+      gnumake
+      nodejs
       noctalia-shell
       nh
       nixd
@@ -79,6 +82,7 @@
       splayer
       starship
       sunshine
+      shellcheck
       tela-circle-icon-theme
       tree
       typora

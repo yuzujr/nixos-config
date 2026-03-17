@@ -20,7 +20,7 @@ in
   xdg.configFile = {
     "fish".source = mkSymlink "${repoRoot}/home/dotfiles/fish";
     "nvim".source = mkSymlink "${repoRoot}/home/dotfiles/nvim";
-    "emacs".source = mkSymlink "${repoRoot}/home/dotfiles/emacs";
+    "doom".source = mkSymlink "${repoRoot}/home/dotfiles/doom";
     "starship.toml".source = mkSymlink "${repoRoot}/home/dotfiles/starship.toml";
 
     "niri".source = mkSymlink "${repoRoot}/home/dotfiles/niri/conf";

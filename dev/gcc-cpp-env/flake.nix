@@ -27,14 +27,12 @@
               pkgs.ninja
               pkgs.pkg-config
               pkgs.gdb
+              pkgs.clang-tools
             ];
 
             shellHook = ''
               export CC="${pkgs.gcc}/bin/gcc"
               export CXX="${pkgs.gcc}/bin/g++"
-              echo "GNU C/C++ dev shell ready"
-              echo "CC=$CC"
-              echo "CXX=$CXX"
             '';
           };
         }
