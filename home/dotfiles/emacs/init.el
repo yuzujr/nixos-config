@@ -4,17 +4,9 @@
 ;; Package System Bootstrap
 ;; ----------------------------
 (require 'package)
-(unless (bound-and-true-p package--initialized)
-  (package-initialize))
-
-;; Refresh archives once when needed.
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; Bootstrap use-package.
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-(require 'use-package)
+(package-initialize)
+(eval-and-compile
+  (require 'use-package))
 (setq use-package-always-ensure t)
 
 (use-package benchmark-init

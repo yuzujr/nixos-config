@@ -2,7 +2,7 @@
 
 (provide 'completion)
 
-(declare-function rc/context-directory "context" (&optional fallback))
+(defvar rc/state-directory)
 
 ;; ----------------------------
 ;; Vertico - Vertical Completion UI
@@ -59,6 +59,7 @@
   :init
   (savehist-mode 1)
   :custom
+  (savehist-file (expand-file-name "savehist" rc/state-directory))
   (history-length 1000)
   (history-delete-duplicates t)
   (savehist-autosave-interval 300)
@@ -69,7 +70,7 @@
   :after savehist
   :custom
   (prescient-history-length 1000)
-  (prescient-save-file (locate-user-emacs-file "prescient-save.el"))
+  (prescient-save-file (expand-file-name "prescient-save.el" rc/state-directory))
   :config
   (prescient-persist-mode 1))
 
@@ -107,17 +108,12 @@
 ;; ----------------------------
 ;; Consult - Enhanced Commands
 ;; ----------------------------
-(defun rc/consult-ripgrep ()
-  "Run `consult-ripgrep' from the current Treemacs-aware context directory."
-  (interactive)
-  (consult-ripgrep (rc/context-directory)))
-
 (use-package consult
   :bind (;; Canonical keymap (no legacy compatibility bindings)
          ("C-c b" . consult-buffer)
          ("C-c f" . consult-fd)
          ("C-c F" . consult-locate)
-         ("C-c s" . rc/consult-ripgrep)
+         ("C-c s" . consult-ripgrep)
          ("C-c /" . consult-line)
          ("C-c c g" . consult-goto-line)
          ("C-c c o" . consult-outline)
@@ -141,11 +137,6 @@
   :after (consult vertico)
   :bind (:map vertico-map
          ("M-g" . consult-dir)))
-
-(with-eval-after-load 'which-key
-  (which-key-add-key-based-replacements
-    "C-c c i" "consult-dir"
-    "C-c c j" "consult-dir-file"))
 
 ;; ----------------------------
 ;; Embark - Contextual Actions

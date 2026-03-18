@@ -2,59 +2,25 @@
 
 (provide 'ai)
 
-(declare-function rc/context-treemacs-directory "context" ())
+(declare-function rc/context-buffer-directory "context" (&optional buffer))
+(declare-function rc/context-directory "context" (&optional fallback))
+(declare-function rc/context-project-root "context" (&optional dir))
 
 ;; ----------------------------
 ;; AI Agent Coding - ai-code-interface.el + Codex CLI
 ;; ----------------------------
 
-(defun rc/ai--buffer-directory (&optional buffer)
-  "Return a usable directory for BUFFER, or nil."
-  (when (buffer-live-p buffer)
-    (with-current-buffer buffer
-      (cond
-       (buffer-file-name
-        (file-name-directory (expand-file-name buffer-file-name)))
-       ((derived-mode-p 'dired-mode)
-        (when (and (boundp 'dired-directory) dired-directory)
-          (expand-file-name
-           (if (stringp dired-directory)
-               dired-directory
-             default-directory))))
-       ((and default-directory (file-directory-p default-directory))
-        (expand-file-name default-directory))
-       (t nil)))))
-
 (defun rc/ai--context-directory ()
   "Return best-effort directory context for AI project detection."
   (or
-   (rc/ai--buffer-directory (current-buffer))
+   (rc/context-buffer-directory (current-buffer))
    ;; If currently in AI terminal buffer, fall back to recently visited buffer.
-   (rc/ai--buffer-directory (other-buffer (current-buffer) t))
-   (and default-directory (expand-file-name default-directory))
-   (expand-file-name "~")))
+   (rc/context-buffer-directory (other-buffer (current-buffer) t))
+   (rc/context-directory)))
 
 (defun rc/ai--project-root (&optional dir)
   "Return a stable Treemacs-aware root for AI session lookup."
-  (let* ((treemacs-dir (rc/context-treemacs-directory))
-         (start-dir (expand-file-name
-                     (or treemacs-dir dir (rc/ai--context-directory))))
-         (start-truename (ignore-errors (file-truename start-dir))))
-    (or
-     treemacs-dir
-     ;; Prefer git root, including symlink-resolved path.
-     (locate-dominating-file start-dir ".git")
-     (and start-truename (locate-dominating-file start-truename ".git"))
-     ;; Fall back to project.el root from explicit directory.
-     (when-let ((project (ignore-errors (project-current nil start-dir))))
-       (project-root project))
-     (and start-truename
-          (when-let ((project (ignore-errors (project-current nil start-truename))))
-            (project-root project)))
-     (locate-dominating-file start-dir "AGENTS.md")
-     (when (file-in-directory-p start-dir user-emacs-directory)
-        user-emacs-directory)
-     start-dir)))
+  (rc/context-project-root (or dir (rc/ai--context-directory))))
 
 (defun rc/ai--ensure-codex ()
   "Ensure ai-code backend is codex."
@@ -74,7 +40,7 @@
   (let ((root (rc/ai--project-root)))
     (if (and root (file-directory-p root))
         (expand-file-name root)
-      (funcall orig-fn))))
+      (apply orig-fn _args))))
 
 (use-package ai-code
   :bind (("C-c C-a" . ai-code-menu)

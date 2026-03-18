@@ -28,8 +28,9 @@
 (defun rc/open-cheatsheet ()
   "Open the local Emacs keybinding cheatsheet."
   (interactive)
-  (find-file rc/cheatsheet-file)
-  (rc/protect-cheatsheet-buffer))
+  (find-file rc/cheatsheet-file))
+
+(add-hook 'find-file-hook #'rc/protect-cheatsheet-buffer)
 
 (global-set-key (kbd "C-,") #'rc/duplicate-line)
 (global-set-key (kbd "C-c ?") #'rc/open-cheatsheet)

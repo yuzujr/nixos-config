@@ -2,6 +2,8 @@
 
 (provide 'tools)
 
+(defvar rc/state-directory)
+
 ;; ----------------------------
 ;; Git - Magit
 ;; ----------------------------
@@ -179,6 +181,10 @@
          ("C-c o" . treemacs-select-window)
          ("C-c p" . treemacs-add-project-to-workspace))
   :custom
+  (treemacs-persist-file
+   (expand-file-name "treemacs/persist" rc/state-directory))
+  (treemacs-last-error-persist-file
+   (expand-file-name "treemacs/persist-at-last-error" rc/state-directory))
   (treemacs-width 32)
   (treemacs-width-is-initially-locked nil)
   (treemacs-text-scale 0)
@@ -256,7 +262,7 @@
 ;; ----------------------------
 (use-package direnv
   :custom
-  (setq direnv-always-show-summary nil)
+  (direnv-always-show-summary nil)
   :config
   (direnv-mode))
 

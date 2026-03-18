@@ -1,28 +1,35 @@
 ;;; ui.el -*- lexical-binding: t; -*-
 
 (provide 'ui)
+(require 'dbus nil t)
 (require 'subr-x)
 
 ;; ----------------------------
 ;; Font Configuration
 ;; ----------------------------
-(defvar font-family "Maple Mono NF CN"
+(defcustom rc/font-family "Maple Mono NF CN"
   "Default font family.")
 
-(defvar font-height 120
-  "Default font height (1/10 pt).")
+(defcustom rc/font-height 120
+  "Default font hei/ght (1/10 pt).")
 
-(defvar font-weight 'regular
+(defcustom rc/font-weight 'regular
   "Default font weight.")
 
-(defvar font-slant 'normal
+(defcustom rc/font-slant 'normal
   "Default font slant.")
 
-(set-face-attribute 'default nil
-                    :family font-family
-                    :height font-height
-                    :weight font-weight
-                    :slant  font-slant)
+(defun rc/apply-fonts (&optional frame)
+  "Apply configured fonts to FRAME."
+  (when (display-graphic-p (or frame (selected-frame)))
+    (set-face-attribute 'default frame
+                        :family rc/font-family
+                        :height rc/font-height
+                        :weight rc/font-weight
+                        :slant rc/font-slant)))
+
+(add-hook 'after-make-frame-functions #'rc/apply-fonts)
+(rc/apply-fonts)
 
 ;; ----------------------------
 ;; Theme (solarized)
@@ -30,7 +37,7 @@
 (defvar rc/theme-dark 'solarized-dark)
 (defvar rc/theme-light 'solarized-light)
 (defvar rc/current-theme nil)
-(defvar rc/theme-monitor-proc nil)
+(defvar rc/theme-monitor nil)
 
 (defun rc/theme-apply (theme)
   (unless (eq theme rc/current-theme)
@@ -42,49 +49,65 @@
   (when scheme
     (rc/theme-apply (if (eq scheme 'light) rc/theme-light rc/theme-dark))))
 
+(defun rc/theme--scheme-from-value (value)
+  "Extract a portal light/dark value from VALUE."
+  (cond
+   ((eq value 1) 'dark)
+   ((eq value 2) 'light)
+   ((consp value)
+    (or (rc/theme--scheme-from-value (car value))
+        (rc/theme--scheme-from-value (cdr value))))
+   (t nil)))
+
 (defun rc/theme--portal-read-scheme ()
-  ;; your machine output: (<<uint32 2>>,)
-  (let ((out (string-trim
-              (shell-command-to-string
-               "gdbus call --session --dest org.freedesktop.portal.Desktop --object-path /org/freedesktop/portal/desktop --method org.freedesktop.portal.Settings.Read org.freedesktop.appearance color-scheme 2>/dev/null"))))
-    (cond
-     ((string-match-p "(<<uint32 1>>" out) 'dark)
-     ((string-match-p "(<<uint32 2>>" out) 'light)
-     (t nil))))
+  "Return the current desktop color scheme, or nil when unavailable."
+  (when (and (display-graphic-p)
+             (featurep 'dbusbind))
+    (condition-case nil
+        (rc/theme--scheme-from-value
+         (dbus-call-method
+          :session
+          "org.freedesktop.portal.Desktop"
+          "/org/freedesktop/portal/desktop"
+          "org.freedesktop.portal.Settings"
+          "Read"
+          "org.freedesktop.appearance"
+          "color-scheme"))
+      (error nil))))
+
+(defun rc/theme--portal-signal-handler (_namespace _key value)
+  "Apply a new theme after a portal SettingChanged signal VALUE."
+  (when-let ((scheme (rc/theme--scheme-from-value value)))
+    (rc/theme--apply-scheme scheme)))
 
 (defun rc/theme-stop-portal-monitor ()
   (interactive)
-  (when (process-live-p rc/theme-monitor-proc)
-    (ignore-errors (kill-process rc/theme-monitor-proc)))
-  (setq rc/theme-monitor-proc nil))
+  (when rc/theme-monitor
+    (ignore-errors (dbus-unregister-object rc/theme-monitor)))
+  (setq rc/theme-monitor nil))
 
 (add-hook 'kill-emacs-hook #'rc/theme-stop-portal-monitor)
 
 (defun rc/theme-start-portal-monitor ()
   (interactive)
   (rc/theme-stop-portal-monitor)
-
-  ;; 启动先读一次
-  (rc/theme--apply-scheme (rc/theme--portal-read-scheme))
-
-  ;; 监听：
-  ;; SettingChanged ('org.freedesktop.appearance', 'color-scheme', <uint32 1|2>)
-  (setq rc/theme-monitor-proc
-        (make-process
-         :name "rc-theme-portal-monitor"
-         :buffer " *rc-theme-portal*"
-         :command '("gdbus" "monitor" "--session"
-                    "--dest" "org.freedesktop.portal.Desktop"
-                    "--object-path" "/org/freedesktop/portal/desktop")
-         :noquery t
-         :filter
-         (lambda (_proc chunk)
-           (dolist (line (split-string chunk "\n" t))
-             (when (and (string-match-p "org\\.freedesktop\\.appearance" line)
-                        (string-match-p "color-scheme" line))
-               (cond
-                ((string-match-p "<uint32 1>" line) (rc/theme--apply-scheme 'dark))
-                ((string-match-p "<uint32 2>" line) (rc/theme--apply-scheme 'light)))))))))
+  (rc/theme-apply rc/theme-dark)
+  (when-let ((scheme (rc/theme--portal-read-scheme)))
+    (rc/theme--apply-scheme scheme))
+  (when (and (display-graphic-p)
+             (featurep 'dbusbind))
+    (setq rc/theme-monitor
+          (condition-case nil
+              (dbus-register-signal
+               :session
+               "org.freedesktop.portal.Desktop"
+               "/org/freedesktop/portal/desktop"
+               "org.freedesktop.portal.Settings"
+               "SettingChanged"
+               #'rc/theme--portal-signal-handler
+               :arg0 "org.freedesktop.appearance"
+               :arg1 "color-scheme")
+            (error nil)))))
 
 (use-package solarized-theme
   :config

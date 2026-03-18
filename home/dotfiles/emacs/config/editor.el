@@ -2,6 +2,8 @@
 
 (provide 'editor)
 
+(defvar rc/state-directory)
+
 ;; ----------------------------
 ;; Basic Editor Settings
 ;; ----------------------------
@@ -52,9 +54,24 @@
 (auto-save-visited-mode 1)
 (setq auto-save-visited-interval 10)
 
-;; Disable backup and lock files
-(setq make-backup-files nil
-      auto-save-default nil
+;; Keep backups and auto-save files outside the repo-backed config directory.
+(let ((backup-dir (expand-file-name "backups/" rc/state-directory))
+      (autosave-dir (expand-file-name "auto-save/" rc/state-directory))
+      (autosave-list-dir (expand-file-name "auto-save/sessions/" rc/state-directory)))
+  (dolist (dir (list backup-dir autosave-dir autosave-list-dir))
+    (make-directory dir t))
+  (setq backup-directory-alist `(("." . ,backup-dir))
+        auto-save-file-name-transforms `((".*" ,autosave-dir t))
+        auto-save-list-file-prefix (expand-file-name ".saves-" autosave-list-dir)))
+
+(setq make-backup-files t
+      backup-by-copying t
+      delete-old-versions t
+      version-control t
+      kept-new-versions 10
+      kept-old-versions 2
+      auto-save-default t
+      auto-save-no-message t
       create-lockfiles nil)
 
 ;; ----------------------------

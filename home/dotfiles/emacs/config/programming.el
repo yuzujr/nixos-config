@@ -50,4 +50,3 @@
               #'rc/markdown-live-preview-temp-file))
 
 ;;; programming.el ends here
-

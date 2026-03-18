@@ -8,6 +8,33 @@
       gc-cons-percentage 0.6)
 
 ;; ----------------------------
+;; XDG Data Directories
+;; ----------------------------
+(defconst rc/cache-directory
+  (expand-file-name
+   "emacs/"
+   (or (getenv "XDG_CACHE_HOME")
+       (expand-file-name "~/.cache/")))
+  "Directory for Emacs cache files.")
+
+(defconst rc/data-directory
+  (expand-file-name
+   "emacs/"
+   (or (getenv "XDG_DATA_HOME")
+       (expand-file-name "~/.local/share/")))
+  "Directory for Emacs data files.")
+
+(defconst rc/state-directory
+  (expand-file-name
+   "emacs/"
+   (or (getenv "XDG_STATE_HOME")
+       (expand-file-name "~/.local/state/")))
+  "Directory for Emacs state files.")
+
+(dolist (dir (list rc/cache-directory rc/data-directory rc/state-directory))
+  (make-directory dir t))
+
+;; ----------------------------
 ;; Native Compilation
 ;; ----------------------------
 (when (featurep 'native-compile)
@@ -32,7 +59,12 @@
 ;; ----------------------------
 ;; Package Management
 ;; ----------------------------
-(setq package-enable-at-startup nil)
+(setq package-enable-at-startup nil
+      package-user-dir (expand-file-name "elpa/" rc/data-directory))
+
+(when (fboundp 'startup-redirect-eln-cache)
+  (startup-redirect-eln-cache
+   (expand-file-name "eln-cache/" rc/cache-directory)))
 
 ;; Use upstream archives for reliability.
 (setq package-archives
