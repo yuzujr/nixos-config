@@ -7,6 +7,8 @@
     canTouchEfiVariables = true;
     efiSysMountPoint = "/efi";
   };
+  # Keep the boot menu available, but do not spend 5 seconds waiting on it.
+  boot.loader.timeout = 5;
   boot.loader.systemd-boot.configurationLimit = 10;
 
   boot.kernelPackages = pkgs.linuxPackages_zen;

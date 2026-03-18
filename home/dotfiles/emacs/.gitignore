@@ -1,0 +1,8 @@
+.cache/
+auto-save-list/
+eln-cache/
+elpa/
+snippet/
+tree-sitter/
+history
+prescient-save.el
