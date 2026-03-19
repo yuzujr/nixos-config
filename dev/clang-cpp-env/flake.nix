@@ -1,5 +1,5 @@
 {
-  description = "GNU/GCC C++ dev shell";
+  description = "LLVM/Clang C++ dev shell";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -19,19 +19,19 @@
           pkgs = import nixpkgs { inherit system; };
         in
         {
-          default = pkgs.mkShell {
+          default = pkgs.mkShell.override { stdenv = pkgs.clangStdenv; } {
             packages = [
               pkgs.cmake
               pkgs.xmake
               pkgs.ninja
               pkgs.pkg-config
-              pkgs.gdb
+              pkgs.lldb
               pkgs.clang-tools
             ];
 
             shellHook = ''
-              export CC="${pkgs.gcc}/bin/gcc"
-              export CXX="${pkgs.gcc}/bin/g++"
+              export CC="${pkgs.clang}/bin/clang"
+              export CXX="${pkgs.clang}/bin/clang++"
             '';
           };
         }

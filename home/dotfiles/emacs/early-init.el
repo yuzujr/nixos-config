@@ -56,6 +56,60 @@
 (when (boundp 'pgtk-wait-for-event-timeout)
   (setq-default pgtk-wait-for-event-timeout 0))
 
+;; Seed the initial frame with Solarized colors before the theme package loads.
+(require 'dbus nil t)
+
+(defconst rc/solarized-dark-frame-colors
+  '((background-color . "#002b36")
+    (foreground-color . "#839496")
+    (cursor-color . "#93a1a1")
+    (background-mode . dark))
+  "Frame parameters matching Solarized Dark.")
+
+(defconst rc/solarized-light-frame-colors
+  '((background-color . "#fdf6e3")
+    (foreground-color . "#657b83")
+    (cursor-color . "#586e75")
+    (background-mode . light))
+  "Frame parameters matching Solarized Light.")
+
+(defun rc/early-portal-color-scheme ()
+  "Return the current portal color scheme, or nil when unavailable."
+  (when (featurep 'dbusbind)
+    (condition-case nil
+        (let ((value
+               (dbus-call-method
+                :session
+                "org.freedesktop.portal.Desktop"
+                "/org/freedesktop/portal/desktop"
+                "org.freedesktop.portal.Settings"
+                "Read"
+                "org.freedesktop.appearance"
+                "color-scheme")))
+          (cond
+           ((equal value '((1))) 'dark)
+           ((equal value '((2))) 'light)
+           ((equal value '(1)) 'dark)
+           ((equal value '(2)) 'light)
+           (t nil)))
+      (error nil))))
+
+(defun rc/apply-initial-frame-colors ()
+  "Apply frame colors that match the later Solarized theme selection."
+  (let ((colors (if (eq (rc/early-portal-color-scheme) 'light)
+                    rc/solarized-light-frame-colors
+                  rc/solarized-dark-frame-colors)))
+    (dolist (param colors)
+      (add-to-list 'default-frame-alist param))
+    (dolist (param colors)
+      (add-to-list 'initial-frame-alist param))
+    (setq frame-background-mode (cdr (assq 'background-mode colors)))
+    (set-face-attribute 'default nil
+                        :background (cdr (assq 'background-color colors))
+                        :foreground (cdr (assq 'foreground-color colors)))))
+
+(rc/apply-initial-frame-colors)
+
 ;; ----------------------------
 ;; Package Management
 ;; ----------------------------

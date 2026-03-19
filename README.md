@@ -19,7 +19,7 @@ NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps,
 ├── home/                    # Home Manager entrypoint + dotfiles wiring
 ├── secrets/                 # agenix module + placeholder secrets directory
 ├── vars/default.nix         # username/hostname/repoRoot
-└── dev/                     # Standalone dev shells (gcc-cpp-env, qt-env)
+└── dev/                     # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env)
 ```
 
 ## Prerequisites
@@ -67,6 +67,12 @@ For most users, start with `.#nixos-public`.
 
 ```bash
 nix develop ./dev/gcc-cpp-env
+```
+
+- Clang/LLVM C/C++ environment:
+
+```bash
+nix develop ./dev/clang-cpp-env
 ```
 
 - Qt environment (Qt Creator + Qt6 toolchain):
