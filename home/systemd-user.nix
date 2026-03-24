@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  drcomClientPkg,
   ...
 }:
 {
@@ -14,7 +15,7 @@
 
       Service = {
         ExecStartPre = "${pkgs.coreutils}/bin/sleep 10";
-        ExecStart = "/run/current-system/sw/bin/drcom_client -c %h/.config/drcom-client-cpp/drcom_jlu.conf";
+        ExecStart = "${drcomClientPkg}/bin/drcom_client -c %h/.config/drcom-client-cpp/drcom_jlu.conf";
       };
 
       Install = {
@@ -85,7 +86,7 @@
         # Only auto-start Sunshine for the normal Niri profile.
         ExecCondition = "${pkgs.bash}/bin/bash -lc 'target=$(${pkgs.coreutils}/bin/readlink \"$HOME/.config/niri/profiles/current-config.kdl\" 2>/dev/null || true); [[ \"$target\" == normal/config.kdl ]]'";
         ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
-        ExecStart = "/run/current-system/sw/bin/sunshine";
+        ExecStart = "${pkgs.sunshine}/bin/sunshine";
         Restart = "on-failure";
         RestartSec = "5s";
       };
@@ -104,7 +105,7 @@
       };
 
       Service = {
-        ExecStart = "/run/current-system/sw/bin/wl-clip-persist --clipboard regular";
+        ExecStart = "${pkgs.wl-clip-persist}/bin/wl-clip-persist --clipboard regular";
         Restart = "on-failure";
         RestartSec = 1;
       };

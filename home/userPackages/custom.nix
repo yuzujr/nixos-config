@@ -1,0 +1,12 @@
+{
+  coomerPkg,
+  drcomClientPkg,
+  ani2xcursorPkg,
+  noctaliaPkg,
+}:
+[
+  coomerPkg
+  drcomClientPkg
+  ani2xcursorPkg
+  noctaliaPkg
+]

@@ -1,8 +1,9 @@
 { myvars, ... }:
 {
   imports = [
-    ./dotfiles/dotfiles.nix
+    ./dotfiles.nix
     ./systemd-user.nix
+    ./userPackages.nix
   ];
 
   fonts.fontconfig.enable = false;

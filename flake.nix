@@ -106,7 +106,7 @@
             {
               networking.hostName = hostname;
               modules.secrets.enable = secretsEnabled;
-              modules.desktop.mihomo.enable = mihomoEnabled;
+              modules.features.mihomo.enable = mihomoEnabled;
             }
 
             home-manager.nixosModules.home-manager

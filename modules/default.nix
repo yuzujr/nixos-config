@@ -1,9 +1,12 @@
 { ... }:
 {
   imports = [
-    ./base.nix
     ./desktop.nix
+    ./features.nix
     ./hardware.nix
-    ./packages.nix
+    ./locale.nix
+    ./nix.nix
+    ./systemPackages.nix
+    ./users.nix
   ];
 }

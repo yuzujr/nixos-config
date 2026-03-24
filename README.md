@@ -15,7 +15,7 @@ NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps,
 .
 ├── flake.nix                # Inputs, outputs, host variants
 ├── hosts/default/           # Host entrypoint + generated hardware config
-├── modules/                 # System modules (base/desktop/hardware/packages)
+├── modules/                 # System modules (nix/users/locale/desktop/features/hardware/packages)
 ├── home/                    # Home Manager entrypoint + dotfiles wiring
 ├── secrets/                 # agenix module + placeholder secrets directory
 ├── vars/default.nix         # username/hostname/repoRoot

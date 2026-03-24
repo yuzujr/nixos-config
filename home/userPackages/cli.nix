@@ -1,0 +1,32 @@
+{ pkgs }:
+with pkgs;
+[
+  btop
+  cmatrix
+  codex
+  csvlens
+  curl
+  delta
+  duf
+  dust
+  eza
+  fastfetch
+  fd
+  fzf
+  git
+  jq
+  nh
+  nix-tree
+  nyancat
+  openssh
+  ripgrep
+  shellcheck
+  starship
+  tree
+  unzip
+  vim
+  wget
+  yazi
+  zoxide
+  zip
+]
