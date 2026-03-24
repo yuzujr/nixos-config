@@ -25,6 +25,16 @@ in
       security.polkit.enable = true;
       services.orca.enable = false;
       services.speechd.enable = false;
+      # Keep Plasma installed, but disable KDE's crash handler entirely.
+      systemd.services."drkonqi-coredump-processor@".enable = false;
+      systemd.user.sockets."drkonqi-coredump-launcher".enable = false;
+      systemd.user.services."drkonqi-coredump-launcher@".enable = false;
+      systemd.user.services."drkonqi-coredump-pickup".enable = false;
+      systemd.user.services."drkonqi-coredump-cleanup".enable = false;
+      systemd.user.timers."drkonqi-coredump-cleanup".enable = false;
+      systemd.user.services."drkonqi-sentry-postman".enable = false;
+      systemd.user.paths."drkonqi-sentry-postman".enable = false;
+      systemd.user.timers."drkonqi-sentry-postman".enable = false;
       systemd.user.services.polkit-gnome-authentication-agent-1 = {
         description = "Polkit GNOME Authentication Agent";
         partOf = [ "niri.service" ];
@@ -103,10 +113,8 @@ in
 
       xdg.portal = {
         enable = true;
-        xdgOpenUsePortal = true;
         extraPortals = [
           pkgs.xdg-desktop-portal-gnome
-          pkgs.xdg-desktop-portal-gtk
         ];
       };
 

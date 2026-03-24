@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   myvars,
   ...
@@ -61,6 +62,9 @@
       "i2c"
     ];
   };
+
+  # Disable Home Manager auto-activation at boot; run it manually when needed.
+  systemd.services."home-manager-${myvars.username}".wantedBy = lib.mkForce [ ];
 
   time.timeZone = "Asia/Shanghai";
 

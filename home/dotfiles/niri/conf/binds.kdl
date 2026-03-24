@@ -28,7 +28,7 @@ binds {
 
     // #"壁纸"
     Mod+Ctrl+W hotkey-overlay-title="打开壁纸选择" { spawn "noctalia-shell" "ipc" "call" "wallpaper" "toggle"; }
-    Mod+Shift+W hotkey-overlay-title="随机切换壁纸" { spawn "noctalia-shell" "ipc" "call" "wallpaper" "random"; }
+    Mod+Shift+W hotkey-overlay-title="随机切换壁纸" { spawn "noctalia-shell" "ipc" "call" "wallpaper" "random" "all"; }
 
     // #"窗口与概览"
     Mod+O repeat=false hotkey-overlay-title="切换概览" { toggle-overview; }

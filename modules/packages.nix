@@ -3,6 +3,7 @@
   coomerPkg,
   drcomClientPkg,
   ani2xcursorPkg,
+  noctaliaPkg,
   ...
 }:
 
@@ -53,7 +54,6 @@
       inetutils
       gnumake
       nodejs
-      noctalia-shell
       nh
       nixd
       nix-tree
@@ -103,6 +103,7 @@
       coomerPkg
       drcomClientPkg
       ani2xcursorPkg
+      noctaliaPkg
     ]
     ++ (with pkgs.kdePackages; [
       qt6ct
