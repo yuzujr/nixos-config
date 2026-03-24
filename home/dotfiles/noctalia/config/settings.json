@@ -139,6 +139,36 @@
             ],
             "right": [
                 {
+                    "defaultSettings": {
+                        "colorizationBadge": "Primary",
+                        "colorizationBadgeText": "Primary",
+                        "colorizationEnabled": false,
+                        "colorizationIcon": "Primary",
+                        "defaultTab": 0,
+                        "enableSystemNotifications": false,
+                        "maxEvents": 50,
+                        "notifyForks": true,
+                        "notifyGitHubNotifications": true,
+                        "notifyMyRepoForks": true,
+                        "notifyMyRepoStars": true,
+                        "notifyPRs": true,
+                        "notifyRepoCreations": true,
+                        "notifyStars": true,
+                        "openInBrowser": true,
+                        "refreshInterval": 1800,
+                        "showForks": true,
+                        "showMyRepoForks": true,
+                        "showMyRepoStars": true,
+                        "showNotificationBadge": true,
+                        "showPRs": true,
+                        "showRepoCreations": true,
+                        "showStars": true,
+                        "token": "",
+                        "username": ""
+                    },
+                    "id": "plugin:github-feed"
+                },
+                {
                     "blacklist": [
                     ],
                     "chevronColor": "none",
@@ -257,7 +287,7 @@
         ]
     },
     "colorSchemes": {
-        "darkMode": false,
+        "darkMode": true,
         "generationMethod": "content",
         "manualSunrise": "06:30",
         "manualSunset": "18:30",

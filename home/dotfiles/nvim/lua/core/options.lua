@@ -16,7 +16,6 @@ opt.shiftwidth = 4
 opt.smartindent = true
 
 opt.number = true
-opt.relativenumber = true
 opt.signcolumn = "yes"
 opt.scrolloff = 5
 opt.wrap = false

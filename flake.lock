@@ -30,11 +30,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774160014,
-        "narHash": "sha256-2TGIxVtqiw6GMseJwTfdKdXYbrXdFGON/dWbeqDakC4=",
+        "lastModified": 1774346344,
+        "narHash": "sha256-wN87Z/2bKAsUfjPl18drIIqbYbhkKHjUpmS/r6E3aac=",
         "owner": "yuzujr",
         "repo": "ani2xcursor",
-        "rev": "0f933b0d64d543f0f53273ad5ba5726c0f240940",
+        "rev": "3a953c4fb2c6bf703d74f7191864b57c19c882d1",
         "type": "github"
       },
       "original": {

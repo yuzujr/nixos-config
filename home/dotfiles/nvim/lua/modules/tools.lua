@@ -86,7 +86,7 @@ local function setup_snacks()
       },
     },
     explorer = { enabled = true },
-    indent = { enabled = true },
+    indent = { enabled = false },
     input = { enabled = true },
     notifier = { enabled = false },
     picker = { enabled = true },
