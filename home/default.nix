@@ -1,9 +1,16 @@
-{ myvars, ... }:
+{
+  lib,
+  myvars,
+  userSystemdServicesEnabled,
+  ...
+}:
 {
   imports = [
     ./dotfiles.nix
-    ./systemd-user.nix
     ./userPackages.nix
+  ]
+  ++ lib.optionals userSystemdServicesEnabled [
+    ./systemd-user.nix
   ];
 
   fonts.fontconfig.enable = false;

@@ -1,3 +1,4 @@
 completions/
 functions/
 fish_variables
+*.bak

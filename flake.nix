@@ -77,6 +77,7 @@
           hostname,
           secretsEnabled,
           mihomoEnabled,
+          userSystemdServicesEnabled,
         }:
         let
           specialArgs = {
@@ -84,6 +85,7 @@
               myvars
               agenix
               mysecrets
+              userSystemdServicesEnabled
               ;
             coomerPkg = coomer.packages.${system}.default;
             drcomClientPkg = drcom-client-cpp.packages.${system}.default;
@@ -128,12 +130,14 @@
           hostname = myvars.hostname;
           secretsEnabled = true;
           mihomoEnabled = true;
+          userSystemdServicesEnabled = true;
         };
 
         nixos-public = mkHost {
           hostname = myvars.hostname;
           secretsEnabled = false;
           mihomoEnabled = false;
+          userSystemdServicesEnabled = false;
         };
       };
     };
