@@ -119,7 +119,6 @@
   # Environment Variables
   # ==========================================
   environment.sessionVariables = {
-    NO_AT_BRIDGE = "1";
     XDG_ICON_THEME = "Tela-circle";
     XDG_MENU_PREFIX = "plasma-";
     XMODIFIERS = "@im=fcitx";

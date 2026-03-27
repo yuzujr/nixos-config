@@ -3,7 +3,6 @@
   coomerPkg,
   drcomClientPkg,
   ani2xcursorPkg,
-  noctaliaPkg,
   ...
 }:
 let
@@ -11,7 +10,7 @@ let
   devPackages = import ./userPackages/dev.nix { inherit pkgs; };
   desktopPackages = import ./userPackages/desktop.nix { inherit pkgs; };
   customPackages = import ./userPackages/custom.nix {
-    inherit coomerPkg drcomClientPkg ani2xcursorPkg noctaliaPkg;
+    inherit coomerPkg drcomClientPkg ani2xcursorPkg;
   };
 in
 {

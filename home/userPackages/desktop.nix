@@ -4,11 +4,7 @@ with pkgs;
   adw-gtk3
   bibata-cursors
   bluetui
-  cava
-  cliphist
-  dconf
   feh
-  ffmpeg
   fuzzel
   gamescope
   google-chrome
@@ -22,18 +18,17 @@ with pkgs;
   mpv
   networkmanagerapplet
   nwg-look
-  nvtopPackages.full
+  noctalia-shell
   (obs-studio.override { browserSupport = false; })
   pavucontrol
-  playerctl
   qq
   satty
+  seahorse
   splayer
   sunshine
   tela-circle-icon-theme
   typora
   wechat
-  wev
   wl-clipboard
   wl-clip-persist
   xwayland-satellite

@@ -3,7 +3,7 @@ binds {
     Mod+Shift+Slash hotkey-overlay-title="切换快捷键速查面板" { spawn "noctalia-shell" "ipc" "call" "plugin:keybind-cheatsheet" "toggle"; }
     Mod+Return hotkey-overlay-title="终端（Kitty）" { spawn "kitty"; }
     Mod+E hotkey-overlay-title="文件管理器（Dolphin）" { spawn "dolphin"; }
-    Mod+B hotkey-overlay-title="浏览器（Chrome）" { spawn "google-chrome-stable"; }
+    Mod+B hotkey-overlay-title="浏览器（Chrome）" { spawn "google-chrome"; }
     Alt+Shift+W hotkey-overlay-title="Coomer聚焦" { spawn "coomer" "--overlay" "--monitor" "all"; }
     Alt+Space hotkey-overlay-title="应用启动器" { spawn-sh "pkill fuzzel || fuzzel"; }
     Super+Shift+XF86TouchpadOff hotkey-overlay-title="Microslop键的唯一用处" { spawn-sh "pkill fuzzel || fuzzel"; }

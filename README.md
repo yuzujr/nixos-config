@@ -19,7 +19,7 @@ NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps,
 ├── home/                    # Home Manager entrypoint + dotfiles wiring
 ├── secrets/                 # agenix module + placeholder secrets directory
 ├── vars/default.nix         # username/hostname/repoRoot
-└── dev/                     # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env)
+└── dev/                     # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env, python-env, android-studio-env)
 ```
 
 ## Prerequisites
@@ -112,6 +112,12 @@ If you want automatic activation with `direnv`, add this to the project's `.envr
 
 ```bash
 use flake /home/yuzujr/nixos-config/dev/python-env
+```
+
+- Android Studio environment:
+
+```bash
+nix develop ./dev/android-studio-env
 ```
 
 ## Updating inputs

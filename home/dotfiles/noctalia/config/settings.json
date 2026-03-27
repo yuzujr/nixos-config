@@ -8,9 +8,7 @@
         "customLaunchPrefixEnabled": false,
         "density": "default",
         "enableClipPreview": true,
-        "enableClipboardChips": true,
         "enableClipboardHistory": true,
-        "enableClipboardSmartIcons": true,
         "enableSessionSearch": true,
         "enableSettingsSearch": false,
         "enableWindowsSearch": false,
@@ -25,6 +23,7 @@
         "showIconBackground": false,
         "sortByMostUsed": true,
         "terminalCommand": "kitty -e",
+        "useApp2Unit": false,
         "viewMode": "list"
     },
     "audio": {
@@ -32,7 +31,6 @@
         ],
         "preferredPlayer": "",
         "spectrumFrameRate": 30,
-        "spectrumMirrored": true,
         "visualizerType": "none",
         "volumeFeedback": false,
         "volumeFeedbackSoundFile": "",
@@ -50,6 +48,7 @@
         "density": "comfortable",
         "displayMode": "always_visible",
         "enableExclusionZoneInset": true,
+        "floating": false,
         "fontScale": 1,
         "frameRadius": 12,
         "frameThickness": 8,
@@ -92,7 +91,7 @@
                 {
                     "characterCount": 2,
                     "colorizeIcons": false,
-                    "emptyColor": "secondary",
+                    "emptyColor": "none",
                     "enableScrollWheel": true,
                     "focusedColor": "primary",
                     "followFocusedScreen": false,
@@ -102,7 +101,7 @@
                     "iconScale": 0.8,
                     "id": "Workspace",
                     "labelMode": "index",
-                    "occupiedColor": "secondary",
+                    "occupiedColor": "none",
                     "pillSize": 0.6,
                     "showApplications": false,
                     "showApplicationsHover": false,
@@ -287,14 +286,13 @@
         ]
     },
     "colorSchemes": {
-        "darkMode": false,
+        "darkMode": true,
         "generationMethod": "content",
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
         "monitorForColors": "",
         "predefinedScheme": "Solarized",
         "schedulingMode": "location",
-        "syncGsettings": true,
         "useWallpaperColors": false
     },
     "controlCenter": {
@@ -381,10 +379,8 @@
         "indicatorColor": "primary",
         "indicatorOpacity": 0.6,
         "indicatorThickness": 3,
-        "launcherIcon": "",
         "launcherIconColor": "none",
         "launcherPosition": "end",
-        "launcherUseDistroLogo": false,
         "monitors": [
         ],
         "onlySameOutput": true,
@@ -463,7 +459,6 @@
         "telemetryEnabled": false
     },
     "hooks": {
-        "colorGeneration": "",
         "darkModeChange": "",
         "enabled": false,
         "performanceModeDisabled": "",
@@ -511,7 +506,8 @@
         "bluetoothRssiPollingEnabled": false,
         "disableDiscoverability": true,
         "networkPanelView": "ethernet",
-        "wifiDetailsViewMode": "grid"
+        "wifiDetailsViewMode": "grid",
+        "wifiEnabled": true
     },
     "nightLight": {
         "autoSchedule": true,
@@ -573,8 +569,7 @@
         "overlayLayer": true
     },
     "plugins": {
-        "autoUpdate": false,
-        "notifyUpdates": true
+        "autoUpdate": false
     },
     "sessionMenu": {
         "countdownDuration": 10000,
@@ -643,7 +638,7 @@
         "showHeader": false,
         "showKeybinds": true
     },
-    "settingsVersion": 59,
+    "settingsVersion": 57,
     "systemMonitor": {
         "batteryCriticalThreshold": 5,
         "batteryWarningThreshold": 20,
@@ -747,10 +742,7 @@
         "sortOrder": "name",
         "transitionDuration": 1500,
         "transitionEdgeSmoothness": 0.05,
-        "transitionType": [
-            "disc"
-        ],
-        "useOriginalImages": false,
+        "transitionType": "random",
         "useSolidColor": false,
         "useWallhaven": false,
         "viewMode": "recursive",

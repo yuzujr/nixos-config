@@ -5,13 +5,16 @@ with pkgs;
   cmatrix
   codex
   csvlens
+  cliphist
   curl
+  dconf
   delta
   duf
   dust
   eza
   fastfetch
   fd
+  ffmpeg
   fzf
   git
   jq
@@ -19,12 +22,14 @@ with pkgs;
   nix-tree
   nyancat
   openssh
+  playerctl
   ripgrep
   shellcheck
   starship
   tree
   unzip
   vim
+  wev
   wget
   yazi
   zoxide

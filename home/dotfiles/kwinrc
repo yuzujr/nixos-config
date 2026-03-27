@@ -17,16 +17,9 @@ TopLeft=ShowDesktop
 
 [Plugins]
 fadingpopupsEnabled=false
-fullscreenEnabled=false
 loginEnabled=false
 logoutEnabled=false
-maximizeEnabled=false
-scaleEnabled=false
 shakecursorEnabled=false
-slideEnabled=false
-slidingpopupsEnabled=false
-squashEnabled=false
-windowapertureEnabled=false
 
 [TabBox]
 HighlightWindows=false

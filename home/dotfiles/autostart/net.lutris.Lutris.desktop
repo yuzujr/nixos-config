@@ -66,3 +66,4 @@ StartupNotify=true
 MimeType=x-scheme-handler/lutris;
 X-GNOME-UsesNotifications=true
 OnlyShowIn=KDE;
+Hidden=true

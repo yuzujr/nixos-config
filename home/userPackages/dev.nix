@@ -8,6 +8,5 @@ with pkgs;
   neovim
   nixd
   nixfmt
-  nodejs
   vscode
 ]
