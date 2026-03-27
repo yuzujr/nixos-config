@@ -1,14 +1,18 @@
 {
+  config,
   lib,
   pkgs,
   myvars,
   ...
 }:
 
+let
+  secretsEnabled = config.modules.secrets.enable;
+in
 {
   programs.fish.enable = true;
 
-  programs.ssh.extraConfig = ''
+  programs.ssh.extraConfig = lib.optionalString secretsEnabled ''
     Host github.com
       User git
       IdentityFile /etc/agenix/ssh-key-github

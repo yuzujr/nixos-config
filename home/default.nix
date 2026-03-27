@@ -15,6 +15,11 @@
 
   fonts.fontconfig.enable = false;
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
   home = {
     inherit (myvars) username;
     stateVersion = "24.11";

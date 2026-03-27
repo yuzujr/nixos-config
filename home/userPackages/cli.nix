@@ -1,37 +1,30 @@
-{ pkgs }:
-with pkgs;
-[
-  btop
-  cmatrix
-  codex
-  csvlens
-  cliphist
-  curl
-  dconf
-  delta
-  duf
-  dust
-  eza
-  fastfetch
-  fd
-  ffmpeg
-  fzf
-  git
-  jq
-  nh
-  nix-tree
-  nyancat
-  openssh
-  playerctl
-  ripgrep
-  shellcheck
-  starship
-  tree
-  unzip
-  vim
-  wev
-  wget
-  yazi
-  zoxide
-  zip
+{ lib, pkgs }:
+let
+  shellPackages = with pkgs; [
+    codex
+    delta
+    eza
+    fzf
+    starship
+    yazi
+    zoxide
+  ];
+
+  terminalTools = with pkgs; [
+    btop
+    csvlens
+    duf
+    dust
+    fastfetch
+  ];
+
+  funPackages = with pkgs; [
+    cmatrix
+    nyancat
+  ];
+in
+lib.concatLists [
+  shellPackages
+  terminalTools
+  funPackages
 ]

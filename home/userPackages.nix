@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   coomerPkg,
   drcomClientPkg,
@@ -6,22 +7,24 @@
   ...
 }:
 let
-  cliPackages = import ./userPackages/cli.nix { inherit pkgs; };
-  devPackages = import ./userPackages/dev.nix { inherit pkgs; };
-  desktopPackages = import ./userPackages/desktop.nix { inherit pkgs; };
+  cliPackages = import ./userPackages/cli.nix {
+    inherit lib pkgs;
+  };
+  devPackages = import ./userPackages/dev.nix {
+    inherit lib pkgs;
+  };
+  desktopPackages = import ./userPackages/desktop.nix {
+    inherit lib pkgs;
+  };
   customPackages = import ./userPackages/custom.nix {
     inherit coomerPkg drcomClientPkg ani2xcursorPkg;
   };
 in
 {
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-
-  home.packages =
+  home.packages = lib.concatLists [
     cliPackages
-    ++ devPackages
-    ++ desktopPackages
-    ++ customPackages;
+    devPackages
+    desktopPackages
+    customPackages
+  ];
 }
