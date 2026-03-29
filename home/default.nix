@@ -15,6 +15,7 @@
   ];
 
   fonts.fontconfig.enable = false;
+  services.mpris-proxy.enable = true;
 
   home = {
     inherit (myvars) username;
