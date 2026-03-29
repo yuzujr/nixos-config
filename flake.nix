@@ -16,8 +16,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Public-safe default. Override this input for real deployments:assets/
-    # --override-input mysecrets git+ssh://git@github.com/<you>/nix-secrets.git?shallow=1
+    # Public-safe default. Override this input for full deployments:
+    # --override-input mysecrets path:/path/to/nix-secrets
     mysecrets = {
       url = "path:./secrets/placeholder";
       flake = false;

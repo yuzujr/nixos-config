@@ -40,7 +40,7 @@
     typora = {
       name = "Typora";
       genericName = "Markdown Editor";
-      exec = "typora --enable-wayland-ime --wayland-text-input-version=3 %U";
+      exec = "typora --ozone-platform=wayland --enable-wayland-ime --wayland-text-input-version=3 %U";
       icon = "typora";
       terminal = false;
       startupNotify = true;

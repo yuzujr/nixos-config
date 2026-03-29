@@ -43,19 +43,13 @@ sudo nixos-rebuild switch --flake .#nixos-public
 ### Personal full profile
 
 ```bash
-sudo nixos-rebuild switch --flake .#nixos
+sudo nixos-rebuild switch --flake .#nixos --override-input mysecrets path:/path/to/nix-secrets
 ```
 
 ## Private profile note
 
 `.#nixos` is my personal profile and depends on private inputs/config.
 For most users, start with `.#nixos-public`.
-
-## Recovery
-
-Minimal ISO reproduction notes, including China-friendly cache/mirror setup, temporary `mihomo` bootstrap, and `agenix` identity caveats:
-
-- [`docs/rebuild-from-minimal-iso.md`](docs/rebuild-from-minimal-iso.md)
 
 ## Development shells
 
