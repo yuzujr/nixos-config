@@ -17,6 +17,8 @@ let
     ] osConfig;
 in
 {
+  home.file.".local/bin".source = mkSymlink "${repoRoot}/home/dotfiles/local/bin";
+
   xdg.configFile = {
     "fish".source = mkSymlink "${repoRoot}/home/dotfiles/fish";
     "nvim".source = mkSymlink "${repoRoot}/home/dotfiles/nvim";
@@ -28,7 +30,6 @@ in
     "kitty".source = mkSymlink "${repoRoot}/home/dotfiles/kitty";
     "fuzzel".source = mkSymlink "${repoRoot}/home/dotfiles/fuzzel";
     "fastfetch".source = mkSymlink "${repoRoot}/home/dotfiles/fastfetch";
-    "autostart".source = mkSymlink "${repoRoot}/home/dotfiles/autostart";
     "btop".source = mkSymlink "${repoRoot}/home/dotfiles/btop";
     "cava".source = mkSymlink "${repoRoot}/home/dotfiles/cava";
     "chrome-flags.conf".source = mkSymlink "${repoRoot}/home/dotfiles/chrome-flags.conf";
@@ -51,7 +52,6 @@ in
     "fcitx5/conf/notifications.conf".source =
       mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/notifications.conf";
     "fcitx5/conf/rime.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/rime.conf";
-
   }
   // lib.optionalAttrs (hasSecret "drcom-jlu.conf") {
     "drcom-client-cpp/drcom_jlu.conf" = {
@@ -73,14 +73,8 @@ in
   };
 
   xdg.dataFile = {
-    "applications".source = mkSymlink "${repoRoot}/home/dotfiles/local/applications";
     "konsole".source = mkSymlink "${repoRoot}/home/dotfiles/konsole";
     "fcitx5/rime".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/rime";
-  };
-
-  home.file = {
-    ".gitconfig".source = mkSymlink "${repoRoot}/home/dotfiles/gitconfig";
-    ".local/bin".source = mkSymlink "${repoRoot}/home/dotfiles/local/bin";
   };
 
   home.activation.niriProfileLinks = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

@@ -1,12 +1,13 @@
 { ... }:
 {
   imports = [
-    ./desktop.nix
-    ./features.nix
-    ./hardware.nix
     ./locale.nix
     ./nix.nix
-    ./systemPackages.nix
-    ./users.nix
+    ./system-packages.nix
+    ./user.nix
+    ./desktop.nix
+    ./hardware.nix
+    ./networking.nix
+    ./virtualization.nix
   ];
 }

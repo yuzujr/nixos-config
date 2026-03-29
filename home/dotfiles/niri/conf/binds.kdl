@@ -12,6 +12,7 @@ binds {
     // #"截图与录屏"
     Ctrl+F1 hotkey-overlay-title="选取区域截图" { screenshot; }
     Mod+Shift+S hotkey-overlay-title="选取区域截图" { screenshot; }
+    Mod+Alt+S hotkey-overlay-title="当前窗口截图" { screenshot-window; }
     Print hotkey-overlay-title="全屏截图" { screenshot-screen; }
     Alt+R hotkey-overlay-title="开始/停止录屏" { spawn "noctalia-shell" "ipc" "call" "plugin:screen-recorder" "toggle"; }
 

@@ -5,9 +5,6 @@
   ...
 }:
 {
-  # ==========================================
-  # Core System Services
-  # ==========================================
   services.dbus.enable = true;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
@@ -17,56 +14,7 @@
   security.polkit.enable = true;
   services.orca.enable = false;
   services.speechd.enable = false;
-  # Keep Plasma installed, but disable KDE's crash handler entirely.
-  systemd.services."drkonqi-coredump-processor@".enable = false;
-  systemd.user.sockets."drkonqi-coredump-launcher".enable = false;
-  systemd.user.services."drkonqi-coredump-launcher@".enable = false;
-  systemd.user.services."drkonqi-coredump-pickup".enable = false;
-  systemd.user.services."drkonqi-coredump-cleanup".enable = false;
-  systemd.user.timers."drkonqi-coredump-cleanup".enable = false;
-  systemd.user.services."drkonqi-sentry-postman".enable = false;
-  systemd.user.paths."drkonqi-sentry-postman".enable = false;
-  systemd.user.timers."drkonqi-sentry-postman".enable = false;
-  systemd.user.services.polkit-gnome-authentication-agent-1 = {
-    description = "Polkit GNOME Authentication Agent";
-    partOf = [ "niri.service" ];
-    after = [ "niri.service" ];
-    bindsTo = [ "niri.service" ];
-    wantedBy = [ "niri.service" ];
 
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-      Restart = "on-failure";
-      RestartSec = 1;
-    };
-  };
-
-  services.logind.settings.Login = {
-    HandlePowerKey = "ignore";
-    HandleLidSwitch = "ignore";
-    HandleLidSwitchExternalPower = "ignore";
-    HandleLidSwitchDocked = "ignore";
-  };
-
-  # ==========================================
-  # Networking & Proxies
-  # ==========================================
-  networking.networkmanager = {
-    enable = true;
-    settings.connectivity.enabled = false;
-  };
-  systemd.services.NetworkManager-wait-online.enable = false;
-  networking.firewall.enable = true;
-
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-  };
-
-  # ==========================================
-  # Audio (Pipewire)
-  # ==========================================
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -75,11 +23,10 @@
     jack.enable = true;
   };
 
-  # ==========================================
-  # Desktop Environment & Display Manager
-  # ==========================================
   programs.niri.enable = true;
   services.desktopManager.plasma6.enable = true;
+  programs.steam.enable = true;
+
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
     plasma-browser-integration
     elisa
@@ -89,38 +36,6 @@
     krdp
   ];
 
-  services.greetd = {
-    enable = true;
-    settings = {
-      terminal.vt = 1;
-
-      initial_session = {
-        command = "${pkgs.niri}/bin/niri-session";
-        user = myvars.username;
-      };
-
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions --xsessions ${config.services.displayManager.sessionData.desktops}/share/xsessions";
-        user = "greeter";
-      };
-    };
-  };
-
-  xdg.portal = {
-    enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gnome
-    ];
-  };
-
-  xdg.mime.defaultApplications = {
-    "inode/directory" = "org.kde.dolphin.desktop";
-    "image/*" = "feh.desktop";
-  };
-
-  # ==========================================
-  # Environment Variables
-  # ==========================================
   environment.sessionVariables = {
     XDG_ICON_THEME = "Tela-circle";
     XDG_MENU_PREFIX = "plasma-";
@@ -132,9 +47,6 @@
     KWIN_DRM_DEVICES = "/dev/dri/by-path/pci-0000\\:01\\:00.0-card:/dev/dri/by-path/pci-0000\\:06\\:00.0-card";
   };
 
-  # ==========================================
-  # Fonts
-  # ==========================================
   fonts = {
     packages = with pkgs; [
       noto-fonts
@@ -161,9 +73,6 @@
     };
   };
 
-  # ==========================================
-  # Input Methods
-  # ==========================================
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
@@ -175,5 +84,61 @@
       })
       qt6Packages.fcitx5-configtool
     ];
+  };
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      terminal.vt = 1;
+
+      initial_session = {
+        command = "${pkgs.niri}/bin/niri-session";
+        user = myvars.username;
+      };
+
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --remember --remember-session --sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions --xsessions ${config.services.displayManager.sessionData.desktops}/share/xsessions";
+        user = "greeter";
+      };
+    };
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gnome
+    ];
+  };
+
+  # Keep Plasma installed, but disable KDE's crash handler entirely.
+  systemd.services."drkonqi-coredump-processor@".enable = false;
+  systemd.user.sockets."drkonqi-coredump-launcher".enable = false;
+  systemd.user.services."drkonqi-coredump-launcher@".enable = false;
+  systemd.user.services."drkonqi-coredump-pickup".enable = false;
+  systemd.user.timers."drkonqi-coredump-cleanup".enable = false;
+  systemd.user.services."drkonqi-sentry-postman".enable = false;
+  systemd.user.paths."drkonqi-sentry-postman".enable = false;
+  systemd.user.timers."drkonqi-sentry-postman".enable = false;
+
+  services.logind.settings.Login = {
+    HandlePowerKey = "ignore";
+    HandleLidSwitch = "ignore";
+    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitchDocked = "ignore";
+  };
+
+  systemd.user.services.polkit-gnome-authentication-agent-1 = {
+    description = "Polkit GNOME Authentication Agent";
+    partOf = [ "niri.service" ];
+    after = [ "niri.service" ];
+    bindsTo = [ "niri.service" ];
+    wantedBy = [ "niri.service" ];
+
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
   };
 }

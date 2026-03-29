@@ -15,10 +15,11 @@ NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps,
 .
 ├── flake.nix                # Inputs, outputs, host variants
 ├── hosts/default/           # Host entrypoint + generated hardware config
-├── modules/                 # System modules (nix/users/locale/desktop/features/hardware/packages)
-├── home/                    # Home Manager entrypoint + dotfiles wiring
+├── modules/                 # Fine-grained NixOS modules by responsibility
+├── home/                    # Home Manager entrypoint + user-scoped modules
 ├── secrets/                 # agenix module + placeholder secrets directory
 ├── vars/default.nix         # username/hostname/repoRoot
+├── docs/                    # Recovery and operational notes
 └── dev/                     # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env, python-env, android-studio-env)
 ```
 
@@ -49,6 +50,12 @@ sudo nixos-rebuild switch --flake .#nixos
 
 `.#nixos` is my personal profile and depends on private inputs/config.
 For most users, start with `.#nixos-public`.
+
+## Recovery
+
+Minimal ISO reproduction notes, including China-friendly cache/mirror setup, temporary `mihomo` bootstrap, and `agenix` identity caveats:
+
+- [`docs/rebuild-from-minimal-iso.md`](docs/rebuild-from-minimal-iso.md)
 
 ## Development shells
 

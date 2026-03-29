@@ -6,11 +6,15 @@
 }:
 {
   imports = [
-    ./dotfiles.nix
-    ./userPackages.nix
+    ./packages
+    ./git-config.nix
+    ./links.nix
+    ./xdg-autostart.nix
+    ./xdg-desktop-entry-overrides.nix
+    ./xdg-mime-apps.nix
   ]
   ++ lib.optionals userSystemdServicesEnabled [
-    ./systemd-user.nix
+    ./systemd-user
   ];
 
   fonts.fontconfig.enable = false;

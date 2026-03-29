@@ -5,7 +5,6 @@
   myvars,
   ...
 }:
-
 let
   secretsEnabled = config.modules.secrets.enable;
 in

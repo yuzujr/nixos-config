@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Typora
-GenericName=Markdown Editor
-Exec=typora --enable-wayland-ime --wayland-text-input-version=3 %U
-Icon=typora
-Type=Application
-StartupNotify=true
-Categories=Office;WordProcessor;
-MimeType=text/markdown;text/x-markdown;
