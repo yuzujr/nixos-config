@@ -14,7 +14,6 @@ local specs = {
 
   -- Completion
   { src = "https://github.com/Saghen/blink.cmp" },
-  { src = "https://github.com/L3MON4D3/LuaSnip" },
   { src = "https://github.com/rafamadriz/friendly-snippets" },
 
   -- Formatting
@@ -27,6 +26,45 @@ local specs = {
   { src = "https://github.com/echasnovski/mini.pairs" },
 }
 
+local function setup_commands()
+  if vim.g.rc_pack_commands then
+    return
+  end
+
+  vim.g.rc_pack_commands = true
+
+  vim.api.nvim_create_user_command("PackStatus", function()
+    vim.pack.update(nil, { offline = true })
+  end, { desc = "Inspect vim.pack plugin state" })
+
+  vim.api.nvim_create_user_command("PackUpdate", function()
+    vim.pack.update()
+  end, { desc = "Review plugin updates" })
+
+  vim.api.nvim_create_user_command("PackSync", function()
+    vim.pack.update(nil, { target = "lockfile" })
+  end, { desc = "Sync plugins to the lockfile" })
+
+  vim.api.nvim_create_user_command("PackPrune", function()
+    local inactive = vim
+      .iter(vim.pack.get())
+      :filter(function(plugin)
+        return not plugin.active
+      end)
+      :map(function(plugin)
+        return plugin.spec.name
+      end)
+      :totable()
+
+    if #inactive == 0 then
+      vim.notify("No inactive plugins to prune.", vim.log.levels.INFO)
+      return
+    end
+
+    vim.pack.del(inactive)
+  end, { desc = "Remove inactive vim.pack plugins from disk" })
+end
+
 function M.setup()
   if not vim.pack or type(vim.pack.add) ~= "function" then
     vim.notify("This configuration requires Neovim 0.12+ (vim.pack).", vim.log.levels.ERROR)
@@ -34,6 +72,7 @@ function M.setup()
   end
 
   vim.pack.add(specs)
+  setup_commands()
 end
 
 return M

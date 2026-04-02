@@ -1,4 +1,5 @@
 local M = {}
+local map = require("core.map")
 
 local function open_cheatsheet()
   local path = vim.fn.stdpath("config") .. "/CHEATSHEET.md"
@@ -8,11 +9,11 @@ local function open_cheatsheet()
 end
 
 function M.setup()
-  vim.keymap.set("n", "<leader>?", open_cheatsheet, {
-    noremap = true,
-    silent = true,
-    desc = "Open cheatsheet",
+  vim.api.nvim_create_user_command("Cheatsheet", open_cheatsheet, {
+    desc = "Open the Neovim cheatsheet",
   })
+
+  map.set("n", "<leader>?", open_cheatsheet, "Open cheatsheet")
 end
 
 return M

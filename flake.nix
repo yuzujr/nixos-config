@@ -23,11 +23,6 @@
       flake = false;
     };
 
-    neovim-nightly = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     coomer = {
       url = "github:yuzujr/coomer";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -50,7 +45,6 @@
       home-manager,
       agenix,
       mysecrets,
-      neovim-nightly,
       coomer,
       drcom-client-cpp,
       ani2xcursor,
@@ -83,12 +77,6 @@
         nixpkgs.lib.nixosSystem {
           inherit system specialArgs;
           modules = [
-            {
-              nixpkgs.overlays = [
-                neovim-nightly.overlays.default
-              ];
-            }
-
             ./hosts/default/default.nix
             ./secrets/nixos.nix
 

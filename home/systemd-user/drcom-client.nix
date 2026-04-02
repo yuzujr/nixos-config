@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   ...
 }:
 {
@@ -12,8 +11,9 @@
     };
 
     Service = {
-      ExecStartPre = "${pkgs.coreutils}/bin/sleep 10";
       ExecStart = "${config.home.profileDirectory}/bin/drcom_client -c %h/.config/drcom-client-cpp/drcom_jlu.conf";
+      Restart = "on-failure";
+      RestartSec = 3;
     };
 
     Install.WantedBy = [ "default.target" ];

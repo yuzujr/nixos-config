@@ -1,7 +1,6 @@
 local M = {}
 
-local map = vim.keymap.set
-local opts = { noremap = true, silent = true }
+local map = require("core.map")
 
 function M.setup()
   local ok, flash = pcall(require, "flash")
@@ -11,21 +10,21 @@ function M.setup()
 
   flash.setup({})
 
-  map("n", "<leader>jj", function()
+  map.set("n", "<leader>jj", function()
     flash.jump()
-  end, vim.tbl_extend("force", opts, { desc = "Jump" }))
+  end, "Jump")
 
-  map("n", "<leader>jt", function()
+  map.set("n", "<leader>jt", function()
     flash.treesitter()
-  end, vim.tbl_extend("force", opts, { desc = "Jump treesitter" }))
+  end, "Jump treesitter")
 
-  map("n", "<leader>jr", function()
+  map.set("n", "<leader>jr", function()
     flash.remote()
-  end, vim.tbl_extend("force", opts, { desc = "Remote jump" }))
+  end, "Remote jump")
 
-  map("n", "<leader>js", function()
+  map.set("n", "<leader>js", function()
     flash.treesitter_search()
-  end, vim.tbl_extend("force", opts, { desc = "Treesitter search jump" }))
+  end, "Treesitter search jump")
 end
 
 return M

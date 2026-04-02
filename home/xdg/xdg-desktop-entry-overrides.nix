@@ -5,7 +5,7 @@
       name = "Visual Studio Code";
       genericName = "Text Editor";
       comment = "Code Editing. Redefined.";
-      exec = "env __EGL_VENDOR_LIBRARY_FILENAMES=/run/opengl-driver/share/glvnd/egl_vendor.d/10_nvidia.json code %F";
+      exec = "env __EGL_VENDOR_LIBRARY_FILENAMES=/run/opengl-driver/share/glvnd/egl_vendor.d/10_nvidia.json code --ozone-platform-hint=auto %F";
       icon = "vscode";
       terminal = false;
       startupNotify = true;
@@ -40,7 +40,7 @@
     typora = {
       name = "Typora";
       genericName = "Markdown Editor";
-      exec = "typora --ozone-platform=wayland --enable-wayland-ime --wayland-text-input-version=3 %U";
+      exec = "typora --ozone-platform-hint=auto --enable-wayland-ime --wayland-text-input-version=3 %U";
       icon = "typora";
       terminal = false;
       startupNotify = true;

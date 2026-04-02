@@ -1,25 +1,36 @@
 local M = {}
 
-function M.setup()
-  local ok_loader, vscode_loader = pcall(require, "luasnip.loaders.from_vscode")
-  if ok_loader then
-    vscode_loader.lazy_load()
+function M.capabilities(base)
+  local ok, blink = pcall(require, "blink.cmp")
+  if ok and type(blink.get_lsp_capabilities) == "function" then
+    return blink.get_lsp_capabilities(base)
   end
+  return base or vim.lsp.protocol.make_client_capabilities()
+end
 
+function M.setup()
   local ok, blink = pcall(require, "blink.cmp")
   if not ok then
     return
   end
 
   blink.setup({
-    keymap = { preset = "super-tab" },
+    keymap = {
+      preset = "default",
+      ["<Tab>"] = { "snippet_forward", "select_next", "fallback" },
+      ["<S-Tab>"] = { "snippet_backward", "select_prev", "fallback" },
+      ["<CR>"] = { "accept", "fallback" },
+    },
     appearance = {
       nerd_font_variant = "mono",
     },
     completion = {
-      trigger = {
-        show_on_keyword = true,
-        show_on_trigger_character = true,
+      keyword = { range = "full" },
+      list = {
+        selection = {
+          auto_insert = false,
+          preselect = false,
+        },
       },
       accept = {
         auto_brackets = {
@@ -30,23 +41,23 @@ function M.setup()
       },
       documentation = {
         auto_show = true,
-        auto_show_delay_ms = 120,
+        auto_show_delay_ms = 180,
       },
       ghost_text = {
         enabled = true,
       },
     },
     snippets = {
-      preset = "luasnip",
+      preset = "default",
     },
     sources = {
-      default = { "path", "snippets", "buffer" },
+      default = { "lsp", "path", "snippets", "buffer" },
     },
     fuzzy = {
       -- Stable on systems without cargo/prebuilt fuzzy library.
       implementation = "lua",
     },
-    signature = { enabled = false },
+    signature = { enabled = true },
   })
 end
 

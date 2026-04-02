@@ -13,13 +13,13 @@ local function setup_colorscheme()
 end
 
 local function setup_messages_ui()
+  local map = require("core.map")
   local ok_notify, notify = pcall(require, "notify")
   if ok_notify then
     notify.setup({
       render = "compact",
       stages = "fade_in_slide_out",
       timeout = 2600,
-      background_colour = "#002b36",
     })
     vim.notify = notify
   end
@@ -38,6 +38,12 @@ local function setup_messages_ui()
       enabled = true,
       backend = "nui",
     },
+    lsp = {
+      override = {
+        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+        ["vim.lsp.util.stylize_markdown"] = true,
+      },
+    },
     messages = {
       enabled = true,
       view = "notify",
@@ -55,6 +61,9 @@ local function setup_messages_ui()
       },
     },
   })
+
+  map.set("n", "<leader>fn", "<cmd>Noice history<cr>", "Notification history")
+  map.set("n", "<leader>un", "<cmd>Noice dismiss<cr>", "Dismiss notifications")
 end
 
 local function setup_lualine()
@@ -63,10 +72,18 @@ local function setup_lualine()
     return
   end
 
+  local function lsp_status()
+    local status = vim.lsp.status()
+    return status ~= "" and status or nil
+  end
+
   lualine.setup({
     options = {
       theme = "auto",
       globalstatus = true,
+      disabled_filetypes = {
+        statusline = { "snacks_dashboard" },
+      },
       component_separators = { left = "|", right = "|" },
       section_separators = { left = "", right = "" },
     },
@@ -84,7 +101,11 @@ local function setup_lualine()
           },
         },
       },
-      lualine_x = { "diagnostics", "filetype" },
+      lualine_x = {
+        { lsp_status, color = { gui = "italic" } },
+        "diagnostics",
+        "filetype",
+      },
       lualine_y = { "progress" },
       lualine_z = { "location" },
     },

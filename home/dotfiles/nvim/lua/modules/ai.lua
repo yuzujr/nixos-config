@@ -1,7 +1,6 @@
 local M = {}
 
-local map = vim.keymap.set
-local opts = { noremap = true, silent = true }
+local map = require("core.map")
 
 local state = {
   buf = nil,
@@ -20,7 +19,15 @@ end
 
 local function project_root()
   local start = context_path()
-  local marker = vim.fs.find({ ".git", "AGENTS.md" }, {
+  local marker = vim.fs.find({
+    ".git",
+    "AGENTS.md",
+    "flake.nix",
+    "pyproject.toml",
+    "package.json",
+    "Cargo.toml",
+    "go.mod",
+  }, {
     upward = true,
     path = start,
   })[1]
@@ -167,13 +174,14 @@ function M.setup()
     hide_codex_windows()
   end, { desc = "Hide Codex windows" })
 
-  map("n", "<leader>ar", "<cmd>AICodex<cr>", vim.tbl_extend("force", opts, { desc = "AI: Return to session" }))
-  map("n", "<leader>an", "<cmd>AICodexNew<cr>", vim.tbl_extend("force", opts, { desc = "AI: New session" }))
-  map("n", "<leader>aR", "<cmd>AICodexResume<cr>", vim.tbl_extend("force", opts, { desc = "AI: Resume picker" }))
-  map("n", "<leader>ah", "<cmd>AICodexHide<cr>", vim.tbl_extend("force", opts, { desc = "AI: Hide" }))
+  map.set("n", "<leader>ac", "<cmd>AICodex<cr>", "AI: Open or focus Codex")
+  map.set("n", "<leader>ar", "<cmd>AICodex<cr>", "AI: Return to session")
+  map.set("n", "<leader>an", "<cmd>AICodexNew<cr>", "AI: New session")
+  map.set("n", "<leader>aR", "<cmd>AICodexResume<cr>", "AI: Resume picker")
+  map.set("n", "<leader>ah", "<cmd>AICodexHide<cr>", "AI: Hide")
 
   -- Backward-compatible alias
-  map("n", "<leader>aa", "<cmd>AICodex<cr>", vim.tbl_extend("force", opts, { desc = "AI: Codex (open/focus)" }))
+  map.set("n", "<leader>aa", "<cmd>AICodex<cr>", "AI: Codex (open/focus)")
 end
 
 return M

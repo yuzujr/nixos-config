@@ -1,7 +1,6 @@
 local M = {}
 
-local map = vim.keymap.set
-local opts = { noremap = true, silent = true }
+local map = require("core.map")
 
 local function setup_pairs()
   local ok_pairs, mini_pairs = pcall(require, "mini.pairs")
@@ -32,9 +31,13 @@ local function setup_treesitter()
       "html",
       "css",
       "json",
+      "jsonc",
       "yaml",
       "markdown",
       "markdown_inline",
+      "nix",
+      "toml",
+      "regex",
       "vim",
       "vimdoc",
       "query",
@@ -44,7 +47,7 @@ local function setup_treesitter()
       "gdshader",
     },
     sync_install = false,
-    auto_install = true,
+    auto_install = false,
     highlight = {
       enable = true,
       additional_vim_regex_highlighting = false,
@@ -56,9 +59,9 @@ end
 local function setup_conform()
   local ok_conform, conform = pcall(require, "conform")
   if not ok_conform then
-    map("n", "<leader>cf", function()
+    map.set("n", "<leader>cf", function()
       vim.notify("conform.nvim is not available.", vim.log.levels.WARN)
-    end, vim.tbl_extend("force", opts, { desc = "Format buffer" }))
+    end, "Format buffer")
     return
   end
 
@@ -70,12 +73,19 @@ local function setup_conform()
     },
     formatters_by_ft = {
       lua = { "stylua" },
+      nix = { "nixfmt" },
       rust = { "rustfmt" },
       python = { "black" },
       go = { "gofmt" },
       javascript = { "prettier" },
+      javascriptreact = { "prettier" },
       typescript = { "prettier" },
+      typescriptreact = { "prettier" },
+      tsx = { "prettier" },
+      jsonc = { "prettier" },
       json = { "jq" },
+      css = { "prettier" },
+      scss = { "prettier" },
       htmldjango = { "djlint" },
       html = { "djlint" },
       markdown = { "prettier" },
@@ -87,8 +97,8 @@ local function setup_conform()
     conform.format({ async = true, lsp_fallback = false })
   end
 
-  map("n", "<leader>cf", format_buffer, vim.tbl_extend("force", opts, { desc = "Format buffer" }))
-  map("n", "<leader>lf", format_buffer, vim.tbl_extend("force", opts, { desc = "Format buffer" }))
+  map.set("n", "<leader>cf", format_buffer, "Format buffer")
+  map.set("n", "<leader>lf", format_buffer, "Format buffer")
 end
 
 local function setup_gitsigns()
@@ -109,12 +119,15 @@ local function setup_gitsigns()
     current_line_blame = false,
   })
 
-  map("n", "]h", gitsigns.next_hunk, vim.tbl_extend("force", opts, { desc = "Next hunk" }))
-  map("n", "[h", gitsigns.prev_hunk, vim.tbl_extend("force", opts, { desc = "Prev hunk" }))
-  map("n", "<leader>ghs", gitsigns.stage_hunk, vim.tbl_extend("force", opts, { desc = "Stage hunk" }))
-  map("n", "<leader>ghr", gitsigns.reset_hunk, vim.tbl_extend("force", opts, { desc = "Reset hunk" }))
-  map("n", "<leader>ghp", gitsigns.preview_hunk, vim.tbl_extend("force", opts, { desc = "Preview hunk" }))
-  map("n", "<leader>ghb", gitsigns.blame_line, vim.tbl_extend("force", opts, { desc = "Blame line" }))
+  map.set("n", "]h", gitsigns.next_hunk, "Next hunk")
+  map.set("n", "[h", gitsigns.prev_hunk, "Previous hunk")
+  map.set("n", "<leader>ghs", gitsigns.stage_hunk, "Stage hunk")
+  map.set("n", "<leader>ghr", gitsigns.reset_hunk, "Reset hunk")
+  map.set("n", "<leader>ghp", gitsigns.preview_hunk, "Preview hunk")
+  map.set("n", "<leader>ghb", gitsigns.blame_line, "Blame line")
+  map.set("n", "<leader>ghd", gitsigns.diffthis, "Diff this")
+  map.set("n", "<leader>ghq", gitsigns.setqflist, "Hunks to quickfix")
+  map.set("n", "<leader>ght", gitsigns.toggle_current_line_blame, "Toggle line blame")
 end
 
 function M.setup()

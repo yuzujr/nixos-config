@@ -36,7 +36,8 @@ in
     "feh".source = mkSymlink "${repoRoot}/home/dotfiles/feh";
     "gold-price/gold-price-watch.conf".source =
       mkSymlink "${repoRoot}/home/dotfiles/gold-price/gold-price-watch.conf";
-    "kwinrc".source = mkSymlink "${repoRoot}/home/dotfiles/kwinrc";
+    "kdeglobals".source = mkSymlink "${repoRoot}/home/dotfiles/kdeglobals";
+    "kcminputrc".source = mkSymlink "${repoRoot}/home/dotfiles/kcminputrc";
     "nwg-look".source = mkSymlink "${repoRoot}/home/dotfiles/nwg-look";
     "qt6ct".source = mkSymlink "${repoRoot}/home/dotfiles/qt6ct";
     "zathura".source = mkSymlink "${repoRoot}/home/dotfiles/zathura";

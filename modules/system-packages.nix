@@ -18,7 +18,6 @@
       ];
 
       storage = [
-        btrfs-progs
         efibootmgr
         exfatprogs
         parted

@@ -2,7 +2,7 @@ if status is-interactive
     # Init
     set fish_greeting
     starship init fish | source
-    zoxide init fish | source
+    zoxide init fish --cmd cd | source
 
     # env
     if not contains -- $HOME/.local/bin $PATH
@@ -16,9 +16,7 @@ if status is-interactive
     alias ll="eza --icons -F -H --group-directories-first --git -1 -l"
     alias du="dust"
     alias df="duf -only local"
-    alias cd="z"
     alias diff="delta"
-    alias code="code --ozone-platform-hint=auto &> /dev/null"
 
     # Functions
     function nhs --description "nh with secret inputs: nhs [switch|build|test|boot]"
@@ -54,7 +52,7 @@ if status is-interactive
         wl-copy <$argv[1]
     end
 
-    function fast --wraps fastfetch --description "fastfetch with GNOME light/dark config"
+    function ff --wraps fastfetch --description "fastfetch with GNOME light/dark config"
         set -l light ~/.config/fastfetch/config-light.jsonc
         set -l dark ~/.config/fastfetch/config-dark.jsonc
 

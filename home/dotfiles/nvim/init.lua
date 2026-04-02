@@ -1,3 +1,7 @@
+if vim.loader then
+  pcall(vim.loader.enable)
+end
+
 require("core.options")
 require("core.keymaps")
 require("core.autocmds")
@@ -6,8 +10,9 @@ require("core.packages").setup()
 
 require("modules.ui").setup()
 require("modules.completion").setup()
-require("modules.programming").setup()
 require("modules.tools").setup()
+require("modules.lsp").setup()
+require("modules.programming").setup()
 require("modules.navigation").setup()
 require("modules.ai").setup()
 require("modules.functions").setup()
