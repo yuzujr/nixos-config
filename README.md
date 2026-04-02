@@ -53,12 +53,12 @@ For most users, start with `.#nixos-public`.
 
 ## Development shells
 
-- GNU C/C++ environment:
+- GNU C/C++ environment
 
-- Clang/LLVM C/C++ environment:
+- Clang/LLVM C/C++ environment
 
-- Qt environment (Qt Creator + Qt6 toolchain):
+- Qt environment (Qt Creator + Qt6 toolchain)
 
-- Python environment (`uv` + Python 3.12):
+- Python environment (`uv` + Python 3.12)
 
-- Android Studio environment:
+- Android Studio environment

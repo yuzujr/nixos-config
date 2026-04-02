@@ -1,38 +1,38 @@
 { pkgs, ... }:
 {
-  home.packages =
-    with pkgs;
-    let
-      daily = [
-        google-chrome
-        kitty
-        noctalia-shell
-      ];
+    home.packages =
+        with pkgs;
+        let
+            daily = [
+                google-chrome
+                kitty
+                noctalia-shell
+            ];
 
-      communication = [
-        qq
-        wechat
-      ];
+            communication = [
+                qq
+                wechat
+            ];
 
-      documentation = [
-        libreoffice-fresh
-        typora
-        zathura
-        zathuraPkgs.zathura_pdf_poppler
-      ];
+            documentation = [
+                libreoffice-fresh
+                typora
+                zathura
+                zathuraPkgs.zathura_pdf_poppler
+            ];
 
-      media = [
-        (obs-studio.override { browserSupport = false; })
-        splayer
-      ];
+            media = [
+                (obs-studio.override { browserSupport = false; })
+                splayer
+            ];
 
-      gaming = [
-        lutris
-      ];
+            gaming = [
+                lutris
+            ];
 
-      secret = [
-        seahorse
-      ];
-    in
-    daily ++ communication ++ documentation ++ media ++ gaming ++ secret;
+            secret = [
+                seahorse
+            ];
+        in
+        daily ++ communication ++ documentation ++ media ++ gaming ++ secret;
 }

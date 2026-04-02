@@ -1,52 +1,40 @@
-{ pkgs, ... }:
+{ pkgs, vars, ... }:
 {
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-
-  programs.git = {
-    enable = true;
-    signing.format = null;
-    settings = {
-      user = {
-        email = "15568103056@163.com";
-        name = "yuzujr";
-      };
-
-      core.quotepath = false;
-      merge.conflictStyle = "zdiff3";
-      init.defaultBranch = "main";
+    programs.direnv = {
+        enable = true;
+        nix-direnv.enable = true;
     };
-  };
 
-  programs.delta = {
-    enable = true;
-    enableGitIntegration = true;
-    options = {
-      navigate = true;
-      dark = true;
+    programs.git = {
+        enable = true;
+        settings = {
+            user = {
+                email = vars.git.email;
+                name = vars.git.name;
+            };
+            core.quotepath = false;
+            init.defaultBranch = "main";
+        };
     };
-  };
 
-  home.packages =
-    with pkgs;
-    let
-      ai = [
-        codex
-      ];
+    programs.delta = {
+        enable = true;
+        enableGitIntegration = true;
+    };
 
-      editors = [
-        emacs-pgtk
-        emacsPackages.vterm
-        neovim
-        vscode
-      ];
+    home.packages =
+        with pkgs;
+        let
+            ai = [
+                codex
+            ];
 
-      tools = [
-        nixd
-        nixfmt
-      ];
-    in
-    ai ++ editors ++ tools;
+            editors = [
+                emacs-pgtk
+                emacsPackages.vterm
+                neovim
+                vscode
+            ];
+        in
+        ai ++ editors;
 }

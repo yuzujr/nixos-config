@@ -43,5 +43,5 @@ opt.timeoutlen = 300
 opt.undofile = true
 opt.updatetime = 200
 opt.winborder = "rounded"
-opt.wrap = false
+opt.wrap = true
 opt.writebackup = false

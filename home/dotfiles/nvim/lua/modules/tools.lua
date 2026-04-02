@@ -106,15 +106,6 @@ local function setup_snacks()
     bigfile = { enabled = true },
     dashboard = {
       enabled = true,
-      preset = {
-        header = [[
- _   _ __     ___ __  __
-| \ | |\ \   / / |  \/  |
-|  \| | \ \ / /| | |\/| |
-| |\  |  \ V / | | |  | |
-|_| \_|   \_/  |_|_|  |_|
-        ]],
-      },
       sections = {
         { section = "header" },
         { section = "keys", gap = 1, padding = 1 },
@@ -123,7 +114,7 @@ local function setup_snacks()
     explorer = { enabled = true },
     dim = { enabled = true },
     gitbrowse = { enabled = true },
-    indent = { enabled = false },
+    indent = { enabled = true },
     input = { enabled = true },
     notifier = { enabled = false },
     picker = { enabled = true },

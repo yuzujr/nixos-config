@@ -1,2 +1,2 @@
-# Nix build outputs
-result
+.direnv/
+

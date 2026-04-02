@@ -1,10 +1,10 @@
 {
-  myvars,
-  ...
+    vars,
+    ...
 }:
 {
-  programs.virt-manager.enable = true;
-  users.groups.libvirtd.members = [ myvars.username ];
-  virtualisation.libvirtd.enable = true;
-  virtualisation.spiceUSBRedirection.enable = true;
+    programs.virt-manager.enable = true;
+    users.groups.libvirtd.members = [ vars.username ];
+    virtualisation.libvirtd.enable = true;
+    virtualisation.spiceUSBRedirection.enable = true;
 }

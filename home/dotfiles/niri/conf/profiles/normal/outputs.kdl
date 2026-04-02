@@ -1,6 +1,6 @@
 // school
 output "BOE NE160QDM-NZL Unknown" { 
-   off
+   // off
    mode "2560x1600@240.000"
    scale 1.5
 }

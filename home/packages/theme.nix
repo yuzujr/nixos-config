@@ -1,24 +1,24 @@
 { pkgs, ... }:
 {
-  home.packages =
-    with pkgs;
-    let
-      gtkThemes = [
-        adw-gtk3
-      ];
+    home.packages =
+        with pkgs;
+        let
+            gtkThemes = [
+                adw-gtk3
+            ];
 
-      cursorThemes = [
-        bibata-cursors
-      ];
+            cursorThemes = [
+                bibata-cursors
+            ];
 
-      iconThemes = [
-        tela-circle-icon-theme
-      ];
+            iconThemes = [
+                tela-circle-icon-theme
+            ];
 
-      themeTools = [
-        kdePackages.qt6ct
-        nwg-look
-      ];
-    in
-    gtkThemes ++ cursorThemes ++ iconThemes ++ themeTools;
+            themeTools = [
+                kdePackages.qt6ct
+                nwg-look
+            ];
+        in
+        gtkThemes ++ cursorThemes ++ iconThemes ++ themeTools;
 }

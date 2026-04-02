@@ -1,49 +1,50 @@
 {
-  config,
-  lib,
-  pkgs,
-  myvars,
-  ...
+    config,
+    lib,
+    pkgs,
+    vars,
+    ...
 }:
 let
-  secretsEnabled = config.modules.secrets.enable;
+    secretsEnabled = config.modules.secrets.enable;
+    inherit (vars) username;
 in
 {
-  programs.fish.enable = true;
+    programs.fish.enable = true;
 
-  programs.ssh.extraConfig = lib.optionalString secretsEnabled ''
-    Host github.com
-      User git
-      IdentityFile /etc/agenix/ssh-key-github
+    programs.ssh.extraConfig = lib.optionalString secretsEnabled ''
+        Host github.com
+          User git
+          IdentityFile /etc/agenix/ssh-key-github
 
-    Host gitee.com
-      User git
-      IdentityFile /etc/agenix/ssh-key-gitee
+        Host gitee.com
+          User git
+          IdentityFile /etc/agenix/ssh-key-gitee
 
-    Host server
-      HostName 47.94.142.31
-      User root
-      IdentityFile /etc/agenix/ssh-key-server
+        Host server
+          HostName 47.94.142.31
+          User root
+          IdentityFile /etc/agenix/ssh-key-server
 
-    Host aur.archlinux.org
-      User aur
-      IdentityFile /etc/agenix/ssh-key-aur
-  '';
+        Host aur.archlinux.org
+          User aur
+          IdentityFile /etc/agenix/ssh-key-aur
+    '';
 
-  users.users.${myvars.username} = {
-    isNormalUser = true;
-    description = myvars.username;
-    shell = pkgs.fish;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "audio"
-      "video"
-      "input"
-      "i2c"
-    ];
-  };
+    users.users.${username} = {
+        isNormalUser = true;
+        description = username;
+        shell = pkgs.fish;
+        extraGroups = [
+            "wheel"
+            "networkmanager"
+            "audio"
+            "video"
+            "input"
+            "i2c"
+        ];
+    };
 
-  # Disable Home Manager auto-activation at boot; run it manually when needed.
-  systemd.services."home-manager-${myvars.username}".wantedBy = lib.mkForce [ ];
+    # Disable Home Manager auto-activation at boot; run it manually when needed.
+    systemd.services."home-manager-${username}".wantedBy = lib.mkForce [ ];
 }

@@ -1,24 +1,24 @@
 {
-  lib,
-  myvars,
-  userSystemdServicesEnabled,
-  ...
+    lib,
+    vars,
+    userSystemdServicesEnabled,
+    ...
 }:
 {
-  imports = [
-    ./dotfiles
-    ./packages
-    ./xdg
-  ]
-  ++ lib.optionals userSystemdServicesEnabled [
-    ./systemd-user
-  ];
+    imports = [
+        ./dotfiles
+        ./packages
+        ./xdg
+    ]
+    ++ lib.optionals userSystemdServicesEnabled [
+        ./systemd-user
+    ];
 
-  fonts.fontconfig.enable = false;
-  services.mpris-proxy.enable = true;
+    fonts.fontconfig.enable = false;
+    services.mpris-proxy.enable = true;
 
-  home = {
-    inherit (myvars) username;
-    stateVersion = "26.05";
-  };
+    home = {
+        inherit (vars) username;
+        stateVersion = "26.05";
+    };
 }
