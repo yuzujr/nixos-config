@@ -63,7 +63,7 @@
         ],
         "mouseWheelAction": "none",
         "mouseWheelWrap": true,
-        "outerCorners": true,
+        "outerCorners": false,
         "position": "top",
         "reverseScroll": false,
         "rightClickAction": "controlCenter",
@@ -405,8 +405,8 @@
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
         "allowPasswordWithFprintd": false,
-        "animationDisabled": false,
-        "animationSpeed": 1.75,
+        "animationDisabled": true,
+        "animationSpeed": 1.5,
         "autoStartAuth": false,
         "avatarImage": "/home/yuzujr/Pictures/Wallpapers/明日香.png",
         "boxRadiusRatio": 1,
@@ -504,7 +504,7 @@
         "use12hourFormat": false,
         "useFahrenheit": false,
         "weatherEnabled": true,
-        "weatherShowEffects": true
+        "weatherShowEffects": false
     },
     "network": {
         "airplaneModeEnabled": false,

@@ -1,3 +1,6 @@
+[Libinput][2362][597][UNIW0001:00 093A:0255 Touchpad]
+NaturalScroll=true
+
 [Mouse]
 cursorSize=28
 cursorTheme=Bibata-Modern-Ice

@@ -25,7 +25,7 @@ in
         "emacs".source = mkSymlink "${repoRoot}/home/dotfiles/emacs";
         "starship.toml".source = mkSymlink "${repoRoot}/home/dotfiles/starship.toml";
 
-        "niri".source = mkSymlink "${repoRoot}/home/dotfiles/niri/conf";
+        "niri".source = mkSymlink "${repoRoot}/home/dotfiles/niri/";
         "noctalia".source = mkSymlink "${repoRoot}/home/dotfiles/noctalia/config";
         "kitty".source = mkSymlink "${repoRoot}/home/dotfiles/kitty";
         "fuzzel".source = mkSymlink "${repoRoot}/home/dotfiles/fuzzel";
@@ -38,7 +38,10 @@ in
             mkSymlink "${repoRoot}/home/dotfiles/gold-price/gold-price-watch.conf";
         "kdeglobals".source = mkSymlink "${repoRoot}/home/dotfiles/kdeglobals";
         "kcminputrc".source = mkSymlink "${repoRoot}/home/dotfiles/kcminputrc";
+        "kxkbrc".source = mkSymlink "${repoRoot}/home/dotfiles/kxkbrc";
         "nwg-look".source = mkSymlink "${repoRoot}/home/dotfiles/nwg-look";
+        "plasma-workspace/env/10-unset-qt-platformtheme.sh".source =
+            mkSymlink "${repoRoot}/home/dotfiles/plasma-workspace/env/10-unset-qt-platformtheme.sh";
         "qt6ct".source = mkSymlink "${repoRoot}/home/dotfiles/qt6ct";
         "zathura".source = mkSymlink "${repoRoot}/home/dotfiles/zathura";
 
@@ -57,19 +60,16 @@ in
     // lib.optionalAttrs (hasSecret "drcom-jlu.conf") {
         "drcom-client-cpp/drcom_jlu.conf" = {
             source = mkSymlink "/etc/agenix/drcom-jlu.conf";
-            force = true;
         };
     }
     // lib.optionalAttrs (hasSecret "gold-price-history.conf") {
         "gold-price/gold-price-history.conf" = {
             source = mkSymlink "/etc/agenix/gold-price-history.conf";
-            force = true;
         };
     }
     // lib.optionalAttrs (hasSecret "nix-user.conf") {
         "nix/nix.conf" = {
             source = mkSymlink "/etc/agenix/nix-user.conf";
-            force = true;
         };
     };
 

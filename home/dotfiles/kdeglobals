@@ -134,6 +134,14 @@ ForegroundVisited=#f6d5e5
 
 [General]
 ColorScheme=noctalia
+XftAntialias=true
+XftHintStyle=hintslight
+XftSubPixel=vbgr
+fixed=Hack,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+font=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+menuFont=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+smallestReadableFont=Noto Sans,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+toolBarFont=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 
 [Icons]
 Theme=Tela-circle
@@ -145,6 +153,7 @@ frameContrast=0.2
 [WM]
 activeBackground=76,58,0
 activeBlend=255,243,204
+activeFont=Noto Sans,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 activeForeground=255,243,204
 inactiveBackground=0,43,54
 inactiveBlend=101,123,131

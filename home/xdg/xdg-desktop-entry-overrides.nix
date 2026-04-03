@@ -27,16 +27,6 @@
             };
         };
 
-        qq = {
-            name = "QQ";
-            comment = "QQ";
-            exec = "env __EGL_VENDOR_LIBRARY_FILENAMES=/run/opengl-driver/share/glvnd/egl_vendor.d/10_nvidia.json qq %U";
-            icon = "qq";
-            terminal = false;
-            categories = [ "Network" ];
-            settings.StartupWMClass = "QQ";
-        };
-
         typora = {
             name = "Typora";
             genericName = "Markdown Editor";
