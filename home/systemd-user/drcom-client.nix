@@ -11,9 +11,7 @@
         };
 
         Service = {
-            ExecStart = "${config.home.profileDirectory}/bin/drcom_client -c %h/.config/drcom-client-cpp/drcom_jlu.conf";
-            Restart = "on-failure";
-            RestartSec = 3;
+            ExecStart = "${config.home.profileDirectory}/bin/drcom_client -c /etc/agenix/drcom-jlu.conf";
         };
 
         Install.WantedBy = [ "default.target" ];

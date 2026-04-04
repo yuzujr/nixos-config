@@ -57,11 +57,6 @@ in
             mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/notifications.conf";
         "fcitx5/conf/rime.conf".source = mkSymlink "${repoRoot}/home/dotfiles/fcitx5/conf/rime.conf";
     }
-    // lib.optionalAttrs (hasSecret "drcom-jlu.conf") {
-        "drcom-client-cpp/drcom_jlu.conf" = {
-            source = mkSymlink "/etc/agenix/drcom-jlu.conf";
-        };
-    }
     // lib.optionalAttrs (hasSecret "gold-price-history.conf") {
         "gold-price/gold-price-history.conf" = {
             source = mkSymlink "/etc/agenix/gold-price-history.conf";

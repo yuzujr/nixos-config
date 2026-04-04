@@ -44,17 +44,9 @@
                             export ANDROID_HOME="$HOME/Android/Sdk"
                             export ANDROID_SDK_ROOT="$ANDROID_HOME"
 
-                            echo "Android development shell ready"
+                            echo
                             echo "JAVA_HOME=$JAVA_HOME"
                             echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
-
-                            if command -v android-studio >/dev/null 2>&1; then
-                              echo "Run: android-studio"
-                            elif command -v studio >/dev/null 2>&1; then
-                              echo "Run: studio"
-                            else
-                              echo "android-studio is unavailable on this architecture."
-                            fi
                         '';
                     };
                 }

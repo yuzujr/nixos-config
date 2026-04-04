@@ -43,6 +43,7 @@
                             export CC="$(command -v cc)"
                             export CXX="$(command -v c++)"
                             export QT_CREATOR_SKIP_MAINTENANCE_TOOL_PROVIDER=ON
+                            echo
                             echo "CC=$CC"
                             echo "CXX=$CXX"
                         '';
