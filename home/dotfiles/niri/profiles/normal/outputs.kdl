@@ -7,7 +7,7 @@ output "BOE NE160QDM-NZL Unknown" {
 output "SKYDATA S.P.A. F27G10U F27G10U07158"{
    // off
    mode "3840x2160@143.999"
-   scale 1.75
+   scale 1.5
 }
 
 // home

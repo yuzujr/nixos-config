@@ -1,7 +1,7 @@
 include "binds.kdl"
 include "rule.kdl"
 include "layout.kdl"
-include "noctalia.kdl"
+include "color.kdl"
 include "animation.kdl"
 include "profiles/current-config.kdl"
 include "profiles/current-outputs.kdl"
@@ -35,10 +35,8 @@ recent-windows {
     open-delay-ms 150
 
     highlight {
-        active-color "#999999ff"
-        urgent-color "#ff9999ff"
-        padding 30
-        corner-radius 12
+        padding 20
+        corner-radius 18
     }
 
     previews {
@@ -126,4 +124,3 @@ hotkey-overlay {
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
 prefer-no-csd
-

@@ -37,7 +37,7 @@
         "volumeFeedback": false,
         "volumeFeedbackSoundFile": "",
         "volumeOverdrive": false,
-        "volumeStep": 2
+        "volumeStep": 5
     },
     "bar": {
         "autoHideDelay": 500,
@@ -63,7 +63,7 @@
         ],
         "mouseWheelAction": "none",
         "mouseWheelWrap": true,
-        "outerCorners": false,
+        "outerCorners": true,
         "position": "top",
         "reverseScroll": false,
         "rightClickAction": "controlCenter",
@@ -112,9 +112,9 @@
                 },
                 {
                     "colorizeIcons": false,
-                    "hideMode": "hidden",
+                    "hideMode": "visible",
                     "id": "ActiveWindow",
-                    "maxWidth": 150,
+                    "maxWidth": 145,
                     "scrollingMode": "hover",
                     "showIcon": true,
                     "textColor": "none",
@@ -292,7 +292,7 @@
         ]
     },
     "colorSchemes": {
-        "darkMode": true,
+        "darkMode": false,
         "generationMethod": "content",
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
@@ -405,8 +405,8 @@
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
         "allowPasswordWithFprintd": false,
-        "animationDisabled": true,
-        "animationSpeed": 1.5,
+        "animationDisabled": false,
+        "animationSpeed": 1,
         "autoStartAuth": false,
         "avatarImage": "/home/yuzujr/Pictures/Wallpapers/明日香.png",
         "boxRadiusRatio": 1,
@@ -514,7 +514,7 @@
         "bluetoothRssiPollIntervalMs": 10000,
         "bluetoothRssiPollingEnabled": false,
         "disableDiscoverability": true,
-        "networkPanelView": "wifi",
+        "networkPanelView": "ethernet",
         "wifiDetailsViewMode": "grid"
     },
     "nightLight": {
@@ -684,10 +684,6 @@
             {
                 "enabled": true,
                 "id": "kcolorscheme"
-            },
-            {
-                "enabled": true,
-                "id": "niri"
             },
             {
                 "enabled": true,

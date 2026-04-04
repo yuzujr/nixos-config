@@ -1,6 +1,7 @@
 // 整体设置
 window-rule {
-    geometry-corner-radius 0
+    geometry-corner-radius 18
+    clip-to-geometry true
     opacity 1.0
     draw-border-with-background true
 }

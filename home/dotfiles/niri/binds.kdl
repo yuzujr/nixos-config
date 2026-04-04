@@ -57,6 +57,9 @@ binds {
     Mod+S hotkey-overlay-title="窗口向下移动" { move-window-down; }
     Mod+W hotkey-overlay-title="窗口向上移动" { move-window-up; }
 
+    // #"标签堆叠"
+    Mod+Alt+T hotkey-overlay-title="当前列切换标签堆叠" { toggle-column-tabbed-display; }
+
     // #"显示器焦点"
     Mod+Shift+H hotkey-overlay-title="焦点到左侧显示器" { focus-monitor-left; }
     Mod+Shift+J hotkey-overlay-title="焦点到下方显示器" { focus-monitor-down; }
