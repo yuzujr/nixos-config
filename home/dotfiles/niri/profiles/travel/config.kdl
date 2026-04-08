@@ -1,8 +1,8 @@
 debug {
-    // render-drm-device "/dev/dri/by-path/pci-0000:06:00.0-render"
-    // ignore-drm-device "/dev/dri/by-path/pci-0000:01:00.0-render"
+    render-drm-device "/dev/dri/by-path/pci-0000:06:00.0-render"
+    ignore-drm-device "/dev/dri/by-path/pci-0000:01:00.0-render"
 }
 
 xwayland-satellite {
-    // off
+    off
 }
