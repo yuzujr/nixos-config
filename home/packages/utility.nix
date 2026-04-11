@@ -21,6 +21,7 @@
 
             gaming = [
                 gamescope
+                gamemode
                 mangohud
             ];
 

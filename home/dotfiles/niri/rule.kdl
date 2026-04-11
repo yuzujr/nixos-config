@@ -9,6 +9,7 @@ window-rule {
 // 全屏打开
 window-rule {
     match app-id="google-chrome"
+    match app-id="SPlayer"
     open-maximized true
 }
 
