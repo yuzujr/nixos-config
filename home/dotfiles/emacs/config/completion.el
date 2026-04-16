@@ -109,13 +109,7 @@
 ;; Consult - Enhanced Commands
 ;; ----------------------------
 (use-package consult
-  :bind (;; Canonical keymap (no legacy compatibility bindings)
-         ("C-c b" . consult-buffer)
-         ("C-c f" . consult-fd)
-         ("C-c F" . consult-locate)
-         ("C-c s" . consult-ripgrep)
-         ("C-c /" . consult-line)
-         ("C-c c g" . consult-goto-line)
+  :bind (("C-c c g" . consult-goto-line)
          ("C-c c o" . consult-outline)
          ("C-c c e" . consult-compile-error)
          ("C-c c n" . consult-flymake)

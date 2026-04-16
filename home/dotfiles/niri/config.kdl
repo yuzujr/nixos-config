@@ -47,6 +47,7 @@ recent-windows {
     binds {
         // #"焦点移动"
         Alt+Tab       hotkey-overlay-title="最近窗口"  { next-window scope="output";}
+        Mod+O         hotkey-overlay-title="最近窗口"  { next-window scope="output";}
     }
 }
 

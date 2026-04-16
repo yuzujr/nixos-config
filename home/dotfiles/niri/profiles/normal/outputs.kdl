@@ -2,7 +2,7 @@
 output "BOE NE160QDM-NZL Unknown" { 
    off
    mode "2560x1600@300.000"
-   scale 1.5
+   scale 1.25
 }
 output "SKYDATA S.P.A. F27G10U F27G10U07158"{
    // off

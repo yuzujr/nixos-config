@@ -31,10 +31,16 @@
 
             editors = [
                 emacs-pgtk
-                emacsPackages.vterm
                 neovim
                 vscode
             ];
+
+            buildTools = [
+                python3
+                gcc
+                gnumake
+                binutils
+            ];
         in
-        ai ++ editors;
+        ai ++ editors ++ buildTools;
 }

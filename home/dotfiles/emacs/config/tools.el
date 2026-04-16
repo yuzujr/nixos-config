@@ -2,7 +2,10 @@
 
 (provide 'tools)
 
-(defvar rc/state-directory)
+(declare-function consult-buffer "consult")
+(declare-function consult-line "consult")
+(declare-function consult-locate "consult" (&optional dir initial))
+(declare-function consult-ripgrep "consult" (&optional dir initial))
 
 ;; ----------------------------
 ;; Git - Magit
@@ -13,194 +16,35 @@
          ("C-c c f" . magit-file-dispatch)))
 
 ;; ----------------------------
-;; Terminal - VTerm
-;; ----------------------------
-(defconst rc/vterm-buffer-name-regexp
-  "\\`\\*vterm\\*\\(?:<[^>]+>\\)?\\'"
-  "Regexp matching standard vterm buffers.")
-
-(defun rc/vterm--preferred-side ()
-  "Return the side window placement used for terminal buffers."
-  (if (boundp 'ai-code-backends-infra-window-side)
-      ai-code-backends-infra-window-side
-    'right))
-
-(defun rc/vterm--preferred-size-alist (side)
-  "Return side window size parameters for SIDE."
-  (cond
-   ((memq side '(left right))
-    `((window-width . ,(if (boundp 'ai-code-backends-infra-window-width)
-                           ai-code-backends-infra-window-width
-                         72))))
-   ((memq side '(top bottom))
-    `((window-height . ,(if (boundp 'ai-code-backends-infra-window-height)
-                            ai-code-backends-infra-window-height
-                          20))))
-   (t nil)))
-
-(defun rc/vterm-display-buffer (buffer alist)
-  "Display BUFFER in the same side window slot used by AI terminals."
-  (let* ((side (rc/vterm--preferred-side))
-         (size-alist (rc/vterm--preferred-size-alist side)))
-    (display-buffer-in-side-window
-     buffer
-     (append `((side . ,side)
-               (slot . 0)
-               (window-parameters . ((no-delete-other-windows . t))))
-             size-alist
-             alist))))
-
-(use-package vterm
-  :ensure nil
-  :bind (("C-t" . vterm-other-window))
-  :config
-  ;; Reuse the same side window slot as ai-code/Codex sessions.
-  (add-to-list 'display-buffer-alist
-               `(,rc/vterm-buffer-name-regexp rc/vterm-display-buffer)))
-
-(use-package vterm-toggle
-  :ensure t
-  :bind (("C-c v" . vterm-toggle))
-  :config
-  ;; Switch between existing vterm buffers from within vterm.
-  (define-key vterm-mode-map (kbd "s-n") #'vterm-toggle-forward)
-  (define-key vterm-mode-map (kbd "s-p") #'vterm-toggle-backward))
-
-;; ----------------------------
 ;; Sudo Edit - Edit as Root
 ;; ----------------------------
 (use-package sudo-edit
   :commands (sudo-edit sudo-edit-find-file))
 
 ;; ----------------------------
-;; File Tree - Treemacs
+;; Navigation - Project + Dired
 ;; ----------------------------
-(defun rc/treemacs--workspace-names ()
-  "Return names of all treemacs workspaces."
-  (mapcar #'treemacs-workspace->name (treemacs-workspaces)))
+(keymap-global-set "C-c b" #'consult-buffer)
+(keymap-global-set "C-c f" #'project-find-file)
+(keymap-global-set "C-c s" #'consult-ripgrep)
+(keymap-global-set "C-c /" #'consult-line)
+(keymap-global-set "C-c p" #'project-switch-project)
+(keymap-global-set "C-c t" #'project-dired)
+(keymap-global-set "C-c w" #'project-find-dir)
+(keymap-global-set "C-c o" #'dired-jump)
 
-(defun rc/treemacs--unique-workspace-name (base)
-  "Return a unique workspace name using BASE."
-  (let* ((seed (if (and base (not (string= base ""))) base "workspace"))
-         (name seed)
-         (n 1)
-         (names (rc/treemacs--workspace-names)))
-    (while (member name names)
-      (setq n (1+ n)
-            name (format "%s<%d>" seed n)))
-    name))
-
-(defun rc/treemacs--activate-workspace (workspace)
-  "Switch to WORKSPACE robustly, including the single-workspace edge case."
-  (let ((current (treemacs-current-workspace)))
-    (unless (eq current workspace)
-      (pcase (treemacs-do-switch-workspace workspace)
-        (`(success ,_)
-         nil)
-        ;; treemacs internal switch refuses when there is only one workspace.
-        ;; In that case just pin the scope shelf to the target workspace.
-        (`only-one-workspace
-         (setf (treemacs-current-workspace) workspace))
-        (`(workspace-not-found ,name)
-         (user-error "Workspace not found: %s" name))
-        (_
-         (setf (treemacs-current-workspace) workspace))))))
-
-(defun rc/treemacs--add-project-noninteractive (path name)
-  "Add PATH as NAME into current workspace without any interactive prompt."
-  (pcase (treemacs-do-add-project-to-workspace path name)
-    (`(success ,_)
-     t)
-    (`(invalid-path ,reason)
-     (user-error "Invalid path %s: %s" path reason))
-    (`(invalid-name ,bad-name)
-     (user-error "Invalid project name: %s" bad-name))
-    (`(duplicate-project ,_)
-     t)
-    (`(includes-project ,_)
-     t)
-    (`(duplicate-name ,_)
-     ;; Directory basenames can collide; keep behavior stable without prompting.
-     (let ((i 2)
-           (candidate nil)
-           (result nil))
-       (while (not result)
-         (setq candidate (format "%s<%d>" name i)
-               i (1+ i)
-               result (treemacs-do-add-project-to-workspace path candidate))
-         (pcase result
-           (`(success ,_) (setq result t))
-           (`(duplicate-name ,_) (setq result nil))
-           (`(duplicate-project ,_) (setq result t))
-           (`(includes-project ,_) (setq result t))
-           (`(invalid-path ,reason)
-            (user-error "Invalid path %s: %s" path reason))
-           (`(invalid-name ,bad-name)
-            (user-error "Invalid project name: %s" bad-name))
-           (_ (user-error "Failed to add project %s to workspace" path)))))
-     t)
-    (_
-     (user-error "Failed to add project %s to workspace" path))))
-
-(defun rc/treemacs-open-directory-workspace ()
-  "Open directory DIR as treemacs workspace, reusing existing one when possible."
-  (interactive)
-  (require 'treemacs)
-  (require 'treemacs-workspaces)
-  ;; Ensure persisted workspaces are restored before any create/switch operations.
-  (treemacs-current-workspace)
-  (let* ((path (treemacs-canonical-path
-                (read-directory-name "Workspace directory: " default-directory nil t)))
-         (existing (treemacs-find-workspace-by-path path)))
-    (if existing
-        (progn
-          (rc/treemacs--activate-workspace existing)
-          (treemacs-select-window))
-      (let* ((base (file-name-nondirectory (directory-file-name path)))
-             (ws-name (rc/treemacs--unique-workspace-name base)))
-        (pcase (treemacs-do-create-workspace ws-name)
-          (`(success ,workspace)
-           ;; Important ordering: if we switch first, treemacs may render the
-           ;; still-empty workspace and ask for a first project directory.
-           ;; Add the selected path non-interactively first, then switch.
-           (let ((treemacs-override-workspace workspace))
-             (rc/treemacs--add-project-noninteractive path base))
-           (rc/treemacs--activate-workspace workspace)
-           (treemacs-select-window))
-          (`(duplicate-name ,_)
-           (user-error "Workspace name already exists: %s" ws-name))
-          (`(invalid-name ,name)
-           (user-error "Invalid workspace name: %s" name))
-          (_
-           (user-error "Failed to create treemacs workspace for: %s" path)))))))
-
-(use-package treemacs
-  :bind (("C-c t" . treemacs)
-         ("C-c w" . rc/treemacs-open-directory-workspace)
-         ("C-c C-w" . treemacs-switch-workspace)
-         ("C-c o" . treemacs-select-window)
-         ("C-c p" . treemacs-add-project-to-workspace))
+(use-package dired
+  :ensure nil
   :custom
-  (treemacs-persist-file
-   (expand-file-name "treemacs/persist" rc/state-directory))
-  (treemacs-last-error-persist-file
-   (expand-file-name "treemacs/persist-at-last-error" rc/state-directory))
-  (treemacs-width 32)
-  (treemacs-width-is-initially-locked nil)
-  (treemacs-text-scale 0)
-  (treemacs-follow-after-init t)
-  :config
-  ;; Disable git integration to avoid spawning python for status parsing.
-  (treemacs-git-mode -1)
-  (treemacs-filewatch-mode 1)
-  (treemacs-follow-mode 1))
+  (dired-kill-when-opening-new-dired-buffer t))
 
-(use-package nerd-icons)
+(use-package dired-x
+  :ensure nil)
 
-(use-package treemacs-nerd-icons
-  :after (treemacs nerd-icons)
-  :config
-  (treemacs-load-theme "nerd-icons"))
+(use-package project
+  :ensure nil
+  :custom
+  (project-vc-extra-root-markers '(".project")))
 
 ;; ----------------------------
 ;; Editing Enhancements
@@ -247,13 +91,17 @@
   (which-key-sort-order 'which-key-key-order-alpha)
   :config
   (which-key-add-key-based-replacements
+    "C-c /" "line-search"
+    "C-c b" "buffers"
     "C-c c" "extra"
-    "C-c w" "tree-open-ws-dir"
-    "C-c C-w" "tree-switch-ws"
-    "C-c t" "tree-toggle"
-    "C-c o" "tree-focus-dir"
-    "C-c p" "tree-add-project"
+    "C-c f" "project-file"
+    "C-c F" "fd"
     "C-c l" "lsp-extra"
+    "C-c o" "dired-jump"
+    "C-c p" "project-switch"
+    "C-c s" "ripgrep"
+    "C-c t" "project-dired"
+    "C-c w" "project-dir"
     "C-c y" "snippets"
     "C-c ?" "cheatsheet"))
 

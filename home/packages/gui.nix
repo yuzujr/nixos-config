@@ -26,13 +26,9 @@
                 splayer
             ];
 
-            gaming = [
-                lutris
-            ];
-
             secret = [
                 seahorse
             ];
         in
-        daily ++ communication ++ documentation ++ media ++ gaming ++ secret;
+        daily ++ communication ++ documentation ++ media ++ secret;
 }

@@ -1,7 +1,7 @@
 binds {
     // #"应用启动"
     Mod+Shift+Slash hotkey-overlay-title="切换快捷键速查面板" { spawn "noctalia-shell" "ipc" "call" "plugin:keybind-cheatsheet" "toggle"; }
-    Mod+Return hotkey-overlay-title="终端（Kitty）" { spawn "kitty"; }
+    Mod+Return hotkey-overlay-title="终端（Kitty）" { spawn "kitty" "--single-instance"; }
     Mod+E hotkey-overlay-title="文件管理器（Dolphin）" { spawn "dolphin"; }
     Mod+B hotkey-overlay-title="浏览器（Chrome）" { spawn "google-chrome"; }
     Alt+Shift+W hotkey-overlay-title="Coomer聚焦" { spawn "coomer" "--overlay" "--monitor" "all"; }
@@ -33,7 +33,6 @@ binds {
     Mod+Shift+W hotkey-overlay-title="随机切换壁纸" { spawn "noctalia-shell" "ipc" "call" "wallpaper" "random" "all"; }
 
     // #"窗口与概览"
-    Mod+O repeat=false hotkey-overlay-title="切换概览" { toggle-overview; }
     Mod+G repeat=false hotkey-overlay-title="切换概览" { toggle-overview; }
     Mod+Q repeat=false hotkey-overlay-title="关闭窗口" { close-window; }
     Mod+V hotkey-overlay-title="窗口浮动/平铺切换" { toggle-window-floating; }

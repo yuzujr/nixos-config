@@ -3,113 +3,78 @@
 快速入口：
 - `C-c ?` 打开这份文档（只读）
 - `C-h k` 然后按一个键，查看它绑定到什么命令
+- 停顿片刻看 `which-key`，可看到当前前缀下还能按什么
 
-## 1. 全局高频
+## 高频
 
 - `C-c b`: `consult-buffer`
-- `C-c f`: `consult-find`
+- `C-c f`: `project-find-file`
 - `C-c s`: `consult-ripgrep`
 - `C-c /`: `consult-line`
+- `C-c p`: `project-switch-project`
+- `C-c t`: `project-dired`
+- `C-c w`: `project-find-dir`
+- `C-c o`: `dired-jump`
 - `M-o`: `ace-window`
-- `C-c v`: `vterm-other-window`
 - `C-c g`: `magit-status`
 - `C-c h`: `helpful-at-point`
 - `C-,`: 复制当前行
 
-## 2. LSP / 诊断 / 文档
+## 代码导航 / LSP
 
 - `C-c d`: `xref-find-definitions`
 - `C-c u`: `xref-find-references`
 - `C-c r`: `eglot-rename`
 - `C-c a`: `eglot-code-actions`
-- `C-c n`: `flymake-goto-next-error`
-- `C-c j`: `flymake-goto-prev-error`
+- `C-c j`: 下一条诊断
+- `C-c k`: 上一条诊断
 - `C-c e`: `eldoc-box-help-at-point`
 
-`C-c l` 前缀：
-- `C-c l s`: `eglot`
-- `C-c l c`: `eglot-reconnect`
-- `C-c l q`: `eglot-shutdown`
-- `C-c l o`: `eglot-code-action-organize-imports`
+`C-c l` 常用：
 - `C-c l f`: `eglot-format-buffer`
+- `C-c l o`: `eglot-code-action-organize-imports`
 - `C-c l i`: `eglot-find-implementation`
 - `C-c l t`: `xref-find-type-definitions`
-- `C-c l b`: `eldoc-doc-buffer`
-- `C-c l e`: `eglot-events-buffer`
+- 其他 LSP 子命令直接看 `which-key`
 
-## 3. Snippets
+## 补全 / Minibuffer
 
-`C-c y` 前缀：
-- `C-c y e`: `yas-expand`
-- `C-c y i`: `yas-insert-snippet`
-- `C-c y n`: `yas-new-snippet`
-- `C-c y v`: `yas-visit-snippet-file`
-- `C-c y r`: `yas-reload-all`
-
-## 4. Treemacs / Workspace
-
-- `C-c t`: `treemacs`（toggle）
-- `C-c w`: 选目录；若已存在所属 workspace 则切换，否则新建同名 workspace 并加入该目录
-- `C-c C-w`: `treemacs-switch-workspace`
-- `C-c o`: `treemacs-select-window`
-- `C-c p`: `treemacs-add-project-to-workspace`
-
-## 5. Completion / Minibuffer 细节
-
-Corfu（补全弹窗）：
-- `TAB`: `corfu-insert`（确认候选）
-- `RET`: 保持回车本义（换行）
-- `M-SPC`: `corfu-insert-separator`
-- `M-d`: `corfu-popupinfo-documentation`
-- `M-l`: `corfu-popupinfo-location`
-
-Vertico（minibuffer）：
-- `C-j`: 下一个候选
-- `C-k`: 上一个候选
-- `M-p`: `vertico-repeat-previous`
-- `M-n`: `vertico-repeat-next`
-- `RET`: `vertico-directory-enter`（文件补全时进入目录）
-- `DEL`: `vertico-directory-delete-char`
-- `M-DEL`: `vertico-directory-delete-word`
-- `M-A`: `marginalia-cycle`
-
-Embark：
 - `C-.`: `embark-act`
 - `C-;`: `embark-dwim`
 - `C-h B`: `embark-bindings`
 
-## 6. `C-c c` 扩展前缀
+Corfu（补全弹窗）：
+- `TAB`: 确认候选
+- `M-d`: 显示文档
+- `M-l`: 显示候选位置
 
+Vertico（minibuffer）：
+- `RET`: 进入目录 / 确认当前项
+- `DEL`: 删除字符；在 `/` 处退回上级目录
+- `M-DEL`: 删除一个词；在 `/` 处退回上级目录
+- `M-g`: `consult-dir`
+- `M-A`: `marginalia-cycle`
+- `C-c c v`: `vertico-repeat`
+
+`C-c c` 常用：
 - `C-c c g`: `consult-goto-line`
 - `C-c c o`: `consult-outline`
-- `C-c c e`: `consult-compile-error`
 - `C-c c n`: `consult-flymake`
-- `C-c c h`: `consult-history`
-- `C-c c m`: `consult-mode-command`
-- `C-c c k`: `consult-kmacro`
 - `C-c c y`: `consult-yank-pop`
 - `C-c c x`: `consult-bookmark`
-- `C-c c v`: `vertico-repeat`
 - `C-c c d`: `magit-dispatch`
 - `C-c c f`: `magit-file-dispatch`
 
-## 7. 编辑增强
+## 编辑
 
-- `M-<up>`: `move-text-up`
-- `M-<down>`: `move-text-down`
+- `M-<up>`: 上移当前行/选区
+- `M-<down>`: 下移当前行/选区
 - `C-S-c C-S-c`: `mc/edit-lines`
 - `C->`: `mc/mark-next-like-this`
 - `C-<`: `mc/mark-previous-like-this`
 - `C-c C-<`: `mc/mark-all-dwim`
-- `C-c C->`: `mc/mark-all-dwim`
 
-## 8. Markdown（内置工作流）
+## Snippets
 
-在 `markdown-mode` / `gfm-mode`：
-- `C-c C-c p`: 预览 HTML
-- `C-c C-c l`: 切换 live preview（Emacs 内）
-
-## 9. AI（Codex CLI）
-
-- `C-c C-a`: `ai-code-menu`
-- `C-c C-z`: `rc/ai-resume`
+- `C-c y e`: `yas-expand`
+- `C-c y i`: `yas-insert-snippet`

@@ -29,13 +29,12 @@
 
 ;; Load modular configuration
 (require 'editor)       ; Basic editor settings
+(require 'org-config)   ; Org mode and Babel
 (require 'ui)           ; UI and appearance
-(require 'context)      ; Shared command/root context
 (require 'completion)   ; Completion framework (Vertico)
 (require 'lsp)          ; Eglot (LSP client)
 (require 'programming)  ; Programming modes and tools
 (require 'tools)        ; Utility packages
-(require 'ai)           ; AI coding agent integration
 (require 'functions)    ; Custom functions
 
 ;; ----------------------------

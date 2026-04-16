@@ -12,9 +12,10 @@
               c-basic-offset 4
               c-ts-mode-indent-offset 4)
 
-;; Compilation
+;; Annoying message
 (setq byte-compile-verbose nil
-      byte-compile-warnings nil)
+      byte-compile-warnings nil
+      python-indent-guess-indent-offset-verbose nil)
 
 ;; ----------------------------
 ;; Editing Behavior

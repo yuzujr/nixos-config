@@ -5,11 +5,5 @@
             [Desktop Entry]
             Hidden=true
         '';
-
-        "autostart/net.lutris.Lutris.desktop".text = ''
-            [Desktop Entry]
-            OnlyShowIn=KDE;
-            Hidden=true
-        '';
     };
 }

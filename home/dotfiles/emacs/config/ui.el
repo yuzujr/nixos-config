@@ -10,7 +10,7 @@
 (defcustom rc/font-family "Maple Mono NF CN"
   "Default font family.")
 
-(defcustom rc/font-height 120
+(defcustom rc/font-height 110
   "Default font hei/ght (1/10 pt).")
 
 (defcustom rc/font-weight 'regular
@@ -118,7 +118,6 @@
 ;; ----------------------------
 ;; Line numbers
 (global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
 
 ;; Smooth scrolling
 (setq scroll-margin 5
@@ -129,39 +128,64 @@
 ;; Window Splitting Behavior
 ;; ----------------------------
 (with-eval-after-load "window"
-  (defcustom split-window-below nil
-    "If non-nil, vertical splits produce new windows below."
-    :group 'windows
-    :type 'boolean)
+  (defun rc/frame-live-windows (&optional frame)
+    "Return live non-minibuffer windows on FRAME."
+    (let (windows)
+      (walk-windows
+       (lambda (window)
+         (unless (window-minibuffer-p window)
+           (push window windows)))
+       nil
+       (or frame (selected-frame)))
+      (nreverse windows)))
 
-  (defcustom split-window-right nil
-    "If non-nil, horizontal splits produce new windows to the right."
-    :group 'windows
-    :type 'boolean)
-
-  (fmakunbound #'split-window-sensibly)
+  (defun rc/right-stack-window (&optional frame)
+    "Return the bottom-most window in FRAME's rightmost column."
+    (let ((target nil)
+          (rightmost-left nil))
+      (dolist (window (rc/frame-live-windows frame))
+        (let ((left (car (window-edges window)))
+              (top (cadr (window-edges window))))
+          (when (or (null rightmost-left)
+                    (> left rightmost-left)
+                    (and (= left rightmost-left)
+                         (or (null target)
+                             (> top (cadr (window-edges target))))))
+            (setq rightmost-left left
+                  target window))))
+      target))
 
   (defun split-window-sensibly
       (&optional window)
+    "Split WINDOW like a master/stack tiling layout.
+If there is only one live window, create a new window on the right.
+Otherwise, keep stacking new windows below the bottom-most window in
+the rightmost column."
     (setq window (or window (selected-window)))
-    (or (and (window-splittable-p window t)
-             ;; Split window horizontally.
-             (split-window window nil (if split-window-right 'left  'right)))
-        (and (window-splittable-p window)
-             ;; Split window vertically.
-             (split-window window nil (if split-window-below 'above 'below)))
-        (and (eq window (frame-root-window (window-frame window)))
-             (not (window-minibuffer-p window))
-             ;; If WINDOW is the only window on its frame and is not the
-             ;; minibuffer window, try to split it horizontally disregarding the
-             ;; value of `split-width-threshold'.
-             (let ((split-width-threshold 0))
-               (when (window-splittable-p window t)
-                 (split-window window nil (if split-window-right
-                                              'left
-                                            'right))))))))
+    (let* ((frame (window-frame window))
+           (live-windows (rc/frame-live-windows frame))
+           (stack-window (rc/right-stack-window frame)))
+      (if (= (length live-windows) 1)
+          (or (and (window-splittable-p window t)
+                   (split-window window nil 'right))
+              (and (window-splittable-p window)
+                   (split-window window nil 'below)))
+        (or (and stack-window
+                 (window-splittable-p stack-window)
+                 (split-window stack-window nil 'below))
+            (and (window-splittable-p window)
+                 (split-window window nil 'below))
+            (and (window-splittable-p window t)
+                 (split-window window nil 'right))
+            (and (eq window (frame-root-window frame))
+                 (not (window-minibuffer-p window))
+                 (let ((split-height-threshold 0))
+                   (when (window-splittable-p window)
+                     (split-window window nil 'below))))))))
 
-(setq-default split-height-threshold  4
-              split-width-threshold   100) ; the reasonable limit for horizontal splits
+  (setq split-window-preferred-function #'split-window-sensibly)
+
+  (setq-default split-height-threshold  4
+                split-width-threshold   100))
 
 ;;; ui.el ends here
