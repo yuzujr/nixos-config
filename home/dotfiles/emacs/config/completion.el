@@ -2,17 +2,19 @@
 
 (provide 'completion)
 
+(defvar rc/cache-directory)
 (defvar rc/state-directory)
 
 ;; ----------------------------
 ;; Vertico - Vertical Completion UI
 ;; ----------------------------
 (use-package vertico
-  :init
-  (vertico-mode)
+  :demand t
   :custom
   (vertico-cycle t)
-  (vertico-resize nil))
+  (vertico-resize nil)
+  :config
+  (vertico-mode))
 
 (use-package vertico-directory
   :ensure nil
@@ -25,18 +27,17 @@
 
 (use-package vertico-repeat
   :ensure nil
-  :after vertico
-  :init
-  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
+  :demand t
   :bind (("C-c c v" . vertico-repeat)
          :map vertico-map
          ("M-p" . vertico-repeat-previous)
-         ("M-n" . vertico-repeat-next)))
+         ("M-n" . vertico-repeat-next))
+  :config
+  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))
 
 ;; In-buffer completion UI (community mainstream with Eglot).
 (use-package corfu
-  :init
-  (global-corfu-mode)
+  :demand t
   :bind (:map corfu-map
               ("RET" . nil)
               ("<return>" . nil)
@@ -51,6 +52,11 @@
   (corfu-cycle t)
   (corfu-quit-no-match 'separator)
   (corfu-preview-current nil)
+  :config
+  (global-corfu-mode))
+
+(use-package corfu-popupinfo
+  :after corfu
   :config
   (corfu-popupinfo-mode 1))
 
@@ -100,10 +106,11 @@
 ;; Marginalia - Rich Annotations
 ;; ----------------------------
 (use-package marginalia
-  :init
-  (marginalia-mode)
+  :demand t
   :bind (:map minibuffer-local-map
-              ("M-A" . marginalia-cycle)))
+              ("M-A" . marginalia-cycle))
+  :config
+  (marginalia-mode))
 
 ;; ----------------------------
 ;; Consult - Enhanced Commands

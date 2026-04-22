@@ -9,6 +9,7 @@
                 fuzzel
                 gpu-screen-recorder
                 libnotify
+                mpvpaper
                 networkmanagerapplet
                 pavucontrol
                 playerctl

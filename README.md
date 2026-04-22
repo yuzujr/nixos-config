@@ -20,7 +20,7 @@ NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps,
 ├── secrets/                 # agenix module + placeholder secrets directory
 ├── vars/default.nix         # username/hostname/repoRoot
 ├── docs/                    # Recovery and operational notes
-└── dev/                     # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env, python-env, android-studio-env)
+└── dev/                     # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env, python-env, android-studio-env, rust-env)
 ```
 
 ## Prerequisites
@@ -62,3 +62,5 @@ For most users, start with `.#nixos-public`.
 - Python environment (`uv` + Python 3.12)
 
 - Android Studio environment
+
+- Rust environment (`cargo` + `rustc` + tooling)

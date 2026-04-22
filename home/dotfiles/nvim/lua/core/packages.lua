@@ -22,6 +22,7 @@ local specs = {
   -- Syntax / Git
   { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
+  { src = "https://github.com/rust-lang/rust.vim" },
   { src = "https://github.com/tpope/vim-sleuth" },
   { src = "https://github.com/echasnovski/mini.pairs" },
 }

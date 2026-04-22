@@ -48,6 +48,10 @@
       "rev": "40e9d5a6cc3db11b309e39593fc7ac03bb844e38",
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
+    "rust.vim": {
+      "rev": "889b9a7515db477f4cb6808bef1769e53493c578",
+      "src": "https://github.com/rust-lang/rust.vim"
+    },
     "snacks.nvim": {
       "rev": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e",
       "src": "https://github.com/folke/snacks.nvim"

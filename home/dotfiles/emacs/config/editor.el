@@ -2,7 +2,13 @@
 
 (provide 'editor)
 
+(defvar rc/cache-directory)
 (defvar rc/state-directory)
+(defvar project-list-file)
+(defvar transient-history-file)
+(defvar transient-levels-file)
+(defvar transient-values-file)
+(defvar treesit-extra-load-path)
 
 ;; ----------------------------
 ;; Basic Editor Settings
@@ -51,19 +57,22 @@
 (setq global-auto-revert-non-file-buffers t
       auto-revert-verbose nil)
 
-;; Auto-save visited files
-(auto-save-visited-mode 1)
-(setq auto-save-visited-interval 10)
-
 ;; Keep backups and auto-save files outside the repo-backed config directory.
 (let ((backup-dir (expand-file-name "backups/" rc/state-directory))
       (autosave-dir (expand-file-name "auto-save/" rc/state-directory))
-      (autosave-list-dir (expand-file-name "auto-save/sessions/" rc/state-directory)))
-  (dolist (dir (list backup-dir autosave-dir autosave-list-dir))
+      (autosave-list-dir (expand-file-name "auto-save/sessions/" rc/state-directory))
+      (transient-dir (expand-file-name "transient/" rc/state-directory))
+      (treesit-dir (expand-file-name "tree-sitter/" rc/cache-directory)))
+  (dolist (dir (list backup-dir autosave-dir autosave-list-dir transient-dir treesit-dir))
     (make-directory dir t))
   (setq backup-directory-alist `(("." . ,backup-dir))
         auto-save-file-name-transforms `((".*" ,autosave-dir t))
-        auto-save-list-file-prefix (expand-file-name ".saves-" autosave-list-dir)))
+        auto-save-list-file-prefix (expand-file-name ".saves-" autosave-list-dir)
+        project-list-file (expand-file-name "projects" rc/state-directory)
+        transient-history-file (expand-file-name "history.el" transient-dir)
+        transient-levels-file (expand-file-name "levels.el" transient-dir)
+        transient-values-file (expand-file-name "values.el" transient-dir)
+        treesit-extra-load-path (cons treesit-dir (remove treesit-dir treesit-extra-load-path))))
 
 (setq make-backup-files t
       backup-by-copying t

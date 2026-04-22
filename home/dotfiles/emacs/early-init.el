@@ -111,19 +111,12 @@
 (rc/apply-initial-frame-colors)
 
 ;; ----------------------------
-;; Package Management
+;; Package Activation
 ;; ----------------------------
-(setq package-enable-at-startup nil
-      package-user-dir (expand-file-name "elpa/" rc/data-directory))
+(setq package-enable-at-startup nil)
 
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache
    (expand-file-name "eln-cache/" rc/cache-directory)))
-
-;; Use upstream archives for reliability.
-(setq package-archives
-      '(("gnu"    . "https://elpa.gnu.org/packages/")
-        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-        ("melpa"  . "https://melpa.org/packages/")))
 
 ;;; early-init.el ends here

@@ -1,18 +1,16 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
 ;; ----------------------------
-;; Package System Bootstrap
+;; Init Helpers
 ;; ----------------------------
-(require 'package)
-(package-initialize)
 (eval-and-compile
   (require 'use-package))
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure nil)
 
 (use-package benchmark-init
   :demand t
-  :init
-  ;; Start collecting as early as possible in init.
+  :config
+  ;; Start collecting before the rest of the config loads.
   (benchmark-init/activate)
   :hook
   ;; Stop collecting after startup to avoid runtime overhead.
@@ -23,9 +21,8 @@
 ;; ----------------------------
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
 
-;; Set custom file location
+;; Keep Customize output in a tracked config file.
 (setq custom-file (locate-user-emacs-file "config/custom.el"))
-(load custom-file t)
 
 ;; Load modular configuration
 (require 'editor)       ; Basic editor settings
@@ -36,6 +33,10 @@
 (require 'programming)  ; Programming modes and tools
 (require 'tools)        ; Utility packages
 (require 'functions)    ; Custom functions
+
+;; Load Customize output after module defaults so UI changes made through
+;; Emacs don't get silently overridden by the base config on startup.
+(load custom-file t)
 
 ;; ----------------------------
 ;; Post-Startup Optimization

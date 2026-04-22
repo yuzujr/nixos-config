@@ -260,6 +260,7 @@
                 {
                     "colorizeDistroLogo": false,
                     "colorizeSystemIcon": "primary",
+                    "colorizeSystemText": "none",
                     "customIconPath": "",
                     "enableColorization": false,
                     "icon": "noctalia",
@@ -349,7 +350,7 @@
                     "id": "PowerProfile"
                 },
                 {
-                    "id": "KeepAwake"
+                    "id": "NoctaliaPerformance"
                 },
                 {
                     "id": "DarkMode"

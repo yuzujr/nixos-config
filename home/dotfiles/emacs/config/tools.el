@@ -84,12 +84,12 @@
 ;; Which-key - Display Keybindings
 ;; ----------------------------
 (use-package which-key
-  :init
-  (which-key-mode)
+  :demand t
   :custom
   (which-key-idle-delay 0.5)
   (which-key-sort-order 'which-key-key-order-alpha)
   :config
+  (which-key-mode)
   (which-key-add-key-based-replacements
     "C-c /" "line-search"
     "C-c b" "buffers"
