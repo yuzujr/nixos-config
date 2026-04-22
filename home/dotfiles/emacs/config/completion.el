@@ -2,7 +2,6 @@
 
 (provide 'completion)
 
-(defvar rc/cache-directory)
 (defvar rc/state-directory)
 
 ;; ----------------------------

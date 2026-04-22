@@ -16,16 +16,16 @@
 ;; ----------------------------
 ;; Language-specific Modes
 ;; ----------------------------
+(use-package nix-ts-mode
+  :mode ("\\.nix\\'" . nix-ts-mode))
+
+(use-package glsl-ts-mode
+  :mode ("\\.glsl\\'" . glsl-ts-mode)
+        ("\\.vert\\'" . glsl-ts-mode)
+        ("\\.frag\\'" . glsl-ts-mode))
+
 (use-package kdl-mode
   :mode ("\\.kdl\\'" . kdl-mode))
-
-(use-package glsl-mode
-  :mode ("\\.glsl\\'" . glsl-mode)
-        ("\\.vert\\'" . glsl-mode)
-        ("\\.frag\\'" . glsl-mode))
-
-(use-package nix-mode
-  :mode "\\.nix\\'")
 
 (defun rc/markdown-live-preview-temp-file (&rest _)
   "Return a temporary HTML file path for markdown live preview."

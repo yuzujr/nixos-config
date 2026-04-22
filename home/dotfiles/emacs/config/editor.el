@@ -9,6 +9,7 @@
 (defvar transient-levels-file)
 (defvar transient-values-file)
 (defvar treesit-extra-load-path)
+(defvar rc/treesit-directory)
 
 ;; ----------------------------
 ;; Basic Editor Settings
@@ -72,6 +73,7 @@
         transient-history-file (expand-file-name "history.el" transient-dir)
         transient-levels-file (expand-file-name "levels.el" transient-dir)
         transient-values-file (expand-file-name "values.el" transient-dir)
+        rc/treesit-directory treesit-dir
         treesit-extra-load-path (cons treesit-dir (remove treesit-dir treesit-extra-load-path))))
 
 (setq make-backup-files t
@@ -105,5 +107,10 @@
 (setq use-short-answers t)
 ;; dired dwim
 (setq dired-dwim-target t)
+;; Redirect 'treesit-install-language-grammar' installs into the cache directory instead.
+(defun rc/treesit-install-to-cache (orig lang &optional out-dir)
+  "Install tree-sitter grammar LANG into cache unless OUT-DIR is explicit."
+  (funcall orig lang (or out-dir rc/treesit-directory)))
+(advice-add 'treesit-install-language-grammar :around #'rc/treesit-install-to-cache)
 
 ;;; editor.el ends here

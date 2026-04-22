@@ -29,14 +29,10 @@
 
 (use-package eglot
   :ensure nil
-  :hook ((python-mode . eglot-ensure)
-         (python-ts-mode . eglot-ensure)
-         (c-mode . eglot-ensure)
+  :hook ((python-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
-         (c++-mode . eglot-ensure)
          (c++-ts-mode . eglot-ensure)
          (rust-ts-mode . eglot-ensure)
-         (nix-mode . eglot-ensure)
          (nix-ts-mode . eglot-ensure))
   :bind (("C-c a" . eglot-code-actions)
          ("C-c d" . xref-find-definitions)
@@ -60,8 +56,7 @@
   (eglot-send-changes-idle-time 0.1)
   (eglot-events-buffer-size 0)
   :config
-  (add-to-list 'eglot-server-programs '((rust-ts-mode) . ("rust-analyzer")))
-  (add-to-list 'eglot-server-programs '((nix-mode nix-ts-mode) . ("nixd"))))
+  (add-to-list 'eglot-server-programs '((nix-ts-mode) . ("nixd"))))
 
 (use-package eldoc-box
   :after eglot

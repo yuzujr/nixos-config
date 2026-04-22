@@ -23,7 +23,7 @@
                 markdown-mode
                 move-text
                 multiple-cursors
-                nix-mode
+                nix-ts-mode
                 orderless
                 prescient
                 solarized-theme

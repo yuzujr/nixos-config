@@ -10,7 +10,7 @@
 (defcustom rc/font-family "Maple Mono NF CN"
   "Default font family.")
 
-(defcustom rc/font-height 110
+(defcustom rc/font-height 120
   "Default font hei/ght (1/10 pt).")
 
 (defcustom rc/font-weight 'regular
