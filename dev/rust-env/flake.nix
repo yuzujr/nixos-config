@@ -32,7 +32,6 @@
 
                         shellHook = ''
                             export RUST_SRC_PATH="${pkgs.rustPlatform.rustLibSrc}"
-                            export CARGO_TERM_COLOR=always
 
                             echo
                             echo "rustc: $(rustc --version)"

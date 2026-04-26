@@ -26,6 +26,7 @@
                 nix-ts-mode
                 orderless
                 prescient
+                rust-mode
                 solarized-theme
                 sudo-edit
                 treesit-auto
@@ -72,10 +73,11 @@
             ];
 
             buildTools = [
-                python3
+                binutils
                 gcc
                 gnumake
-                binutils
+                python3
+                nodejs
             ];
         in
         ai ++ editors ++ buildTools;

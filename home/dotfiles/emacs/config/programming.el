@@ -16,6 +16,10 @@
 ;; ----------------------------
 ;; Language-specific Modes
 ;; ----------------------------
+(use-package rust-mode
+  :init
+  (setq rust-mode-treesitter-derive t))
+
 (use-package nix-ts-mode
   :mode ("\\.nix\\'" . nix-ts-mode))
 

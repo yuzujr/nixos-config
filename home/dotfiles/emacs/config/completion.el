@@ -115,7 +115,10 @@
 ;; Consult - Enhanced Commands
 ;; ----------------------------
 (use-package consult
-  :bind (("C-c c g" . consult-goto-line)
+  :bind (("C-c b" . consult-buffer)
+         ("C-c s" . consult-ripgrep)
+         ("C-c /" . consult-line)
+         ("C-c c g" . consult-goto-line)
          ("C-c c o" . consult-outline)
          ("C-c c e" . consult-compile-error)
          ("C-c c n" . consult-flymake)

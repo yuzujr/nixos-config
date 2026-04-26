@@ -23,20 +23,16 @@
   :after yasnippet)
 
 (use-package flymake
-  :ensure nil
-  :custom
-  (flymake-show-diagnostics-at-end-of-line 'short))
+  :ensure nil)
 
 (use-package eglot
   :ensure nil
   :hook ((python-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
          (c++-ts-mode . eglot-ensure)
-         (rust-ts-mode . eglot-ensure)
+         (rust-mode . eglot-ensure)
          (nix-ts-mode . eglot-ensure))
   :bind (("C-c a" . eglot-code-actions)
-         ("C-c d" . xref-find-definitions)
-         ("C-c u" . xref-find-references)
          ("C-c r" . eglot-rename)
          ("M-n" . flymake-goto-next-error)
          ("M-p" . flymake-goto-prev-error)

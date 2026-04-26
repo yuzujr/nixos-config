@@ -2,11 +2,6 @@
 
 (provide 'tools)
 
-(declare-function consult-buffer "consult")
-(declare-function consult-line "consult")
-(declare-function consult-locate "consult" (&optional dir initial))
-(declare-function consult-ripgrep "consult" (&optional dir initial))
-
 ;; ----------------------------
 ;; Git - Magit
 ;; ----------------------------
@@ -24,10 +19,7 @@
 ;; ----------------------------
 ;; Navigation - Project + Dired
 ;; ----------------------------
-(keymap-global-set "C-c b" #'consult-buffer)
 (keymap-global-set "C-c f" #'project-find-file)
-(keymap-global-set "C-c s" #'consult-ripgrep)
-(keymap-global-set "C-c /" #'consult-line)
 (keymap-global-set "C-c p" #'project-switch-project)
 (keymap-global-set "C-c t" #'project-dired)
 (keymap-global-set "C-c w" #'project-find-dir)
@@ -35,6 +27,9 @@
 
 (use-package dired
   :ensure nil
+  :bind (:map dired-mode-map
+              ("TAB" . dired-find-file)
+              ("<backtab>" . dired-up-directory))
   :custom
   (dired-kill-when-opening-new-dired-buffer t))
 

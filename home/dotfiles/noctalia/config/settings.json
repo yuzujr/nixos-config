@@ -294,7 +294,7 @@
         ]
     },
     "colorSchemes": {
-        "darkMode": true,
+        "darkMode": false,
         "generationMethod": "content",
         "manualSunrise": "06:30",
         "manualSunset": "18:30",
@@ -678,10 +678,6 @@
     },
     "templates": {
         "activeTemplates": [
-            {
-                "enabled": true,
-                "id": "cava"
-            },
             {
                 "enabled": true,
                 "id": "gtk"

@@ -20,6 +20,13 @@
 - `C-c h`: `helpful-at-point`
 - `C-,`: 复制当前行
 
+## Dired
+
+- `n` / `p`: 上下移动
+- `TAB`: 打开当前文件 / 进入当前目录
+- `S-TAB`: 返回上级目录
+- `^`: 返回上级目录
+
 ## 代码导航 / LSP
 
 - `C-c d`: `xref-find-definitions`
