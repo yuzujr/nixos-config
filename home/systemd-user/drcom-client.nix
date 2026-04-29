@@ -1,5 +1,6 @@
 {
     config,
+    osConfig ? { },
     ...
 }:
 {
@@ -11,7 +12,9 @@
         };
 
         Service = {
-            ExecStart = "${config.home.profileDirectory}/bin/drcom_client -c /etc/agenix/drcom-jlu.conf";
+            ExecStart = "${config.home.profileDirectory}/bin/drcom_client -c ${
+                osConfig.age.secrets."drcom-jlu.conf".path
+            }";
         };
 
         Install.WantedBy = [ "default.target" ];

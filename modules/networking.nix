@@ -31,7 +31,7 @@ in
                 enable = true;
                 tunMode = true;
                 webui = pkgs.metacubexd;
-                configFile = "/etc/agenix/mihomo-config.yaml";
+                configFile = config.age.secrets."mihomo-config.yaml".path;
             };
 
             # Mihomo's TUN mode can use asymmetric routing that conflicts with

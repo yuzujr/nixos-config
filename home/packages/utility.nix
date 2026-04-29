@@ -7,14 +7,18 @@
                 bluetui
                 cliphist
                 fuzzel
+                file
                 gpu-screen-recorder
+                gparted
                 libnotify
-                mpvpaper
                 networkmanagerapplet
                 pavucontrol
                 playerctl
                 sunshine
+                unrar
                 wev
+                wine-staging
+                winetricks
                 wl-clipboard
                 wl-clip-persist
                 xwayland-satellite
@@ -29,13 +33,9 @@
             mediaUtilities = [
                 ffmpeg
                 feh
-                mpv
-                satty
+                mpv-unwrapped
             ];
 
-            partitioning = [
-                gparted
-            ];
         in
-        desktopIntegration ++ gaming ++ mediaUtilities ++ partitioning;
+        desktopIntegration ++ gaming ++ mediaUtilities;
 }

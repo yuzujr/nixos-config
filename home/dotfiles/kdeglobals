@@ -134,6 +134,7 @@ ForegroundVisited=63,14,37
 
 [General]
 ColorScheme=Noctalia
+Name=noctalia
 XftAntialias=true
 XftHintStyle=hintslight
 XftSubPixel=vbgr
@@ -142,7 +143,6 @@ font=Noto Sans CJK SC,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 menuFont=Noto Sans CJK SC,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 smallestReadableFont=Noto Sans CJK SC,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
 toolBarFont=Noto Sans CJK SC,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
-Name=noctalia
 
 [Icons]
 Theme=Tela-circle
@@ -176,4 +176,3 @@ activeForeground=76,58,0
 inactiveBackground=253,246,227
 inactiveBlend=131,148,150
 inactiveForeground=131,148,150
-

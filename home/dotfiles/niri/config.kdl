@@ -6,6 +6,7 @@ include "animation.kdl"
 include "profiles/current-config.kdl"
 include "profiles/current-outputs.kdl"
 include "profiles/current-startup.kdl"
+include optional=true "local.kdl"
 
 screenshot-path "~/Pictures/Screenshots/Niri-screenshots/%Y-%m-%d %H-%M-%S.png"
 
@@ -23,6 +24,13 @@ cursor {
     xcursor-theme "Bibata-Modern-Ice"
     xcursor-size 28
     hide-after-inactive-ms 15000
+}
+
+blur {
+    passes 3
+    offset 3
+    noise 0.02
+    saturation 1.5
 }
 
 switch-events {

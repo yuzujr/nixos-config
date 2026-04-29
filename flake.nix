@@ -6,6 +6,10 @@
             url = "github:nixos/nixpkgs/nixos-unstable";
         };
 
+        nixpkgs-master = {
+            url = "github:nixos/nixpkgs/master";
+        };
+
         home-manager = {
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -38,7 +42,7 @@
     };
 
     outputs =
-        {
+        inputs@{
             nixpkgs,
             home-manager,
             agenix,
@@ -52,6 +56,9 @@
             system = "x86_64-linux";
             pkgs = nixpkgs.legacyPackages.${system};
             vars = import ./vars;
+            overlays = import ./overlays {
+                inherit inputs system;
+            };
             nixfmtProject = pkgs.writeShellScriptBin "nixfmt" ''
                 if [ "$#" -gt 0 ]; then
                   exec ${pkgs.nixfmt}/bin/nixfmt --indent 4 "$@"
@@ -92,6 +99,9 @@
                 nixpkgs.lib.nixosSystem {
                     inherit system specialArgs;
                     modules = [
+                        {
+                            nixpkgs.overlays = overlays;
+                        }
                         ./hosts/default/default.nix
                         ./secrets/nixos.nix
 

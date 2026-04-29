@@ -32,6 +32,7 @@ binds {
     Mod+Shift+V hotkey-overlay-title="浮动/平铺焦点切换" { switch-focus-between-floating-and-tiling; }
     Mod+Alt+F hotkey-overlay-title="全屏" { fullscreen-window; }
     Mod+F hotkey-overlay-title="最大化列" { maximize-column; }
+    Mod+M hotkey-overlay-title="窗口贴边最大化" { maximize-window-to-edges; }
     Mod+C hotkey-overlay-title="居中当前列" { center-column; }
 
     // #"焦点移动"
@@ -111,6 +112,7 @@ binds {
 
     // #"尺寸调整"
     Mod+R hotkey-overlay-title="按预设切换列宽" { switch-preset-column-width; }
+    Mod+Alt+R hotkey-overlay-title="按预设反向切换列宽" { switch-preset-column-width-back; }
     Mod+Shift+R hotkey-overlay-title="按预设切换窗口高度" { switch-preset-window-height; }
     Mod+Ctrl+R hotkey-overlay-title="恢复窗口高度" { reset-window-height; }
     Mod+Minus hotkey-overlay-title="列宽减少 5%" { set-column-width "-5%"; }

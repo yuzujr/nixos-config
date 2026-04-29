@@ -15,20 +15,20 @@ in
     programs.ssh.extraConfig = lib.optionalString secretsEnabled ''
         Host github.com
           User git
-          IdentityFile /etc/agenix/ssh-key-github
+          IdentityFile ${config.age.secrets."ssh-key-github".path}
 
         Host gitee.com
           User git
-          IdentityFile /etc/agenix/ssh-key-gitee
+          IdentityFile ${config.age.secrets."ssh-key-gitee".path}
 
         Host server
           HostName 47.94.142.31
           User root
-          IdentityFile /etc/agenix/ssh-key-server
+          IdentityFile ${config.age.secrets."ssh-key-server".path}
 
         Host aur.archlinux.org
           User aur
-          IdentityFile /etc/agenix/ssh-key-aur
+          IdentityFile ${config.age.secrets."ssh-key-aur".path}
     '';
 
     users.users.${username} = {

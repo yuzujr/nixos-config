@@ -16,11 +16,11 @@ set --global fish_color_error dc322f
 set --global fish_color_escape 00a6b2
 set --global fish_color_gray 
 set --global fish_color_history_current --bold
-set --global fish_color_host normal
+set --global fish_color_host --reset
 set --global fish_color_host_remote yellow
 set --global fish_color_keyword 
 set --global fish_color_match F28779
-set --global fish_color_normal normal
+set --global fish_color_normal --reset
 set --global fish_color_operator 00a6b2
 set --global fish_color_option 
 set --global fish_color_param 657b83

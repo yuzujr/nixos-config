@@ -59,12 +59,12 @@ in
     }
     // lib.optionalAttrs (hasSecret "gold-price-history.conf") {
         "gold-price/gold-price-history.conf" = {
-            source = mkSymlink "/etc/agenix/gold-price-history.conf";
+            source = mkSymlink osConfig.age.secrets."gold-price-history.conf".path;
         };
     }
     // lib.optionalAttrs (hasSecret "nix-user.conf") {
         "nix/nix.conf" = {
-            source = mkSymlink "/etc/agenix/nix-user.conf";
+            source = mkSymlink osConfig.age.secrets."nix-user.conf".path;
         };
     };
 

@@ -1,5 +1,5 @@
 # Gold API history config template
-# Real secret file should come from /etc/agenix/gold-price-history.conf
+# Real secret file should come from the agenix-managed runtime path.
 
 API_KEY="REPLACE_ME"
 API_URL="https://api.gold-api.com/history"
