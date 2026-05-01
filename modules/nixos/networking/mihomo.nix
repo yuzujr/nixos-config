@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+    config,
+    lib,
+    pkgs,
+    ...
+}:
 {
     options.modules.networking.mihomo.enable = lib.mkEnableOption "mihomo service";
 

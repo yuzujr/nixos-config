@@ -54,27 +54,34 @@
             ...
         }:
         let
-            supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+            supportedSystems = [
+                "x86_64-linux"
+                "aarch64-linux"
+                "x86_64-darwin"
+                "aarch64-darwin"
+            ];
             forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-            
+
             vars = import ./modules/vars;
 
-            mkNixfmt = pkgs: pkgs.writeShellScriptBin "nixfmt" ''
-                if [ "$#" -gt 0 ]; then
-                  exec ${pkgs.nixfmt}/bin/nixfmt --indent 4 "$@"
-                fi
+            mkNixfmt =
+                pkgs:
+                pkgs.writeShellScriptBin "nixfmt" ''
+                    if [ "$#" -gt 0 ]; then
+                      exec ${pkgs.nixfmt}/bin/nixfmt --indent 4 "$@"
+                    fi
 
-                root="''${PRJ_ROOT:-$PWD}"
+                    root="''${PRJ_ROOT:-$PWD}"
 
-                exec ${pkgs.fd}/bin/fd \
-                  --type f \
-                  --extension nix \
-                  --hidden \
-                  --exclude .git \
-                  --exclude .direnv \
-                  . "$root" \
-                  -X ${pkgs.nixfmt}/bin/nixfmt --indent 4
-            '';
+                    exec ${pkgs.fd}/bin/fd \
+                      --type f \
+                      --extension nix \
+                      --hidden \
+                      --exclude .git \
+                      --exclude .direnv \
+                      . "$root" \
+                      -X ${pkgs.nixfmt}/bin/nixfmt --indent 4
+                '';
 
             mkHost =
                 {
@@ -124,13 +131,14 @@
                 };
         in
         {
-            formatter = forAllSystems (system: 
-                mkNixfmt nixpkgs.legacyPackages.${system}
-            );
+            formatter = forAllSystems (system: mkNixfmt nixpkgs.legacyPackages.${system});
 
-            devShells = forAllSystems (system:
-                let pkgs = nixpkgs.legacyPackages.${system};
-                in {
+            devShells = forAllSystems (
+                system:
+                let
+                    pkgs = nixpkgs.legacyPackages.${system};
+                in
+                {
                     default = pkgs.mkShellNoCC {
                         packages = [
                             pkgs.nixd
