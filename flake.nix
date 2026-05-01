@@ -97,7 +97,7 @@
                     inherit system specialArgs;
                     modules = [
                         ./hosts/nixos/default.nix
-                        ./secrets/nixos.nix
+                        ./modules/secrets/nixos.nix
 
                         {
                             networking.hostName = hostname;
