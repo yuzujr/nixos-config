@@ -1,7 +1,6 @@
 { ... }:
 {
     imports = [
-        ./cli.nix
-        ./git.nix
+        ./vmware.nix
     ];
 }

@@ -8,7 +8,7 @@
     imports = [
         ./desktop
         ./development
-        ./dotfiles.nix
+        ./dotfiles
         ./editors
         ./shell
     ]

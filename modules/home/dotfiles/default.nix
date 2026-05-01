@@ -60,9 +60,14 @@ in
             source = mkSymlink osConfig.age.secrets."gold-price-history.conf".path;
         };
     }
-    // lib.optionalAttrs (hasSecret "nix-user.conf") {
+    // lib.optionalAttrs (hasSecret "nix.conf") {
         "nix/nix.conf" = {
-            source = mkSymlink osConfig.age.secrets."nix-user.conf".path;
+            source = mkSymlink osConfig.age.secrets."nix.conf".path;
+        };
+    }
+    // lib.optionalAttrs (hasSecret "drcom-jlu.conf") {
+        "drcom-client-cpp/drcom-jlu.conf" = {
+            source = mkSymlink osConfig.age.secrets."drcom-jlu.conf".path;
         };
     };
 

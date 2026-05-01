@@ -4,8 +4,8 @@
         enable = true;
         settings = {
             user = {
-                email = vars.git.email;
                 name = vars.git.name;
+                email = vars.git.email;
             };
             core.quotepath = false;
             init.defaultBranch = "main";

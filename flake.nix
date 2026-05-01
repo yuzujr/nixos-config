@@ -43,6 +43,7 @@
 
     outputs =
         inputs@{
+            self,
             nixpkgs,
             home-manager,
             agenix,
@@ -53,10 +54,12 @@
             ...
         }:
         let
-            system = "x86_64-linux";
-            pkgs = nixpkgs.legacyPackages.${system};
+            supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+            forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+            
             vars = import ./modules/vars;
-            nixfmtProject = pkgs.writeShellScriptBin "nixfmt" ''
+
+            mkNixfmt = pkgs: pkgs.writeShellScriptBin "nixfmt" ''
                 if [ "$#" -gt 0 ]; then
                   exec ${pkgs.nixfmt}/bin/nixfmt --indent 4 "$@"
                 fi
@@ -79,8 +82,10 @@
                     secretsEnabled,
                     mihomoEnabled,
                     userSystemdServicesEnabled,
+                    system ? "x86_64-linux",
                 }:
                 let
+                    pkgs = nixpkgs.legacyPackages.${system};
                     specialArgs = {
                         inherit
                             vars
@@ -119,14 +124,21 @@
                 };
         in
         {
-            formatter.${system} = nixfmtProject;
+            formatter = forAllSystems (system: 
+                mkNixfmt nixpkgs.legacyPackages.${system}
+            );
 
-            devShells.${system}.default = pkgs.mkShellNoCC {
-                packages = [
-                    pkgs.nixd
-                    nixfmtProject
-                ];
-            };
+            devShells = forAllSystems (system:
+                let pkgs = nixpkgs.legacyPackages.${system};
+                in {
+                    default = pkgs.mkShellNoCC {
+                        packages = [
+                            pkgs.nixd
+                            (mkNixfmt pkgs)
+                        ];
+                    };
+                }
+            );
 
             nixosConfigurations = {
                 nixos = mkHost {

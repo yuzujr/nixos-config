@@ -8,11 +8,21 @@
     };
 
     xdg.desktopEntries = {
+        qq = {
+            name = "QQ";
+            exec = "env __EGL_VENDOR_LIBRARY_FILENAMES=/run/opengl-driver/share/glvnd/egl_vendor.d/10_nvidia.json qq %U";
+            terminal = false;
+            type = "Application";
+            icon = "qq";
+            categories = [ "Network" ];
+            comment = "QQ";
+        };
+
         code = {
             name = "Visual Studio Code";
             genericName = "Text Editor";
             comment = "Code Editing. Redefined.";
-            exec = "env __EGL_VENDOR_LIBRARY_FILENAMES=/run/opengl-driver/share/glvnd/egl_vendor.d/10_nvidia.json code --ozone-platform-hint=auto %F";
+            exec = "code --ozone-platform-hint=auto %F";
             icon = "vscode";
             terminal = false;
             startupNotify = true;
@@ -57,21 +67,11 @@
         defaultApplicationPackages = with pkgs; [
             feh
             kdePackages.dolphin
+            typora
+            google-chrome
         ];
-        defaultApplications = {
-            "application/xhtml+xml" = [ "google-chrome.desktop" ];
-            "text/markdown" = [ "typora.desktop" ];
-            "text/html" = [ "google-chrome.desktop" ];
-            "text/x-markdown" = [ "typora.desktop" ];
-            "x-scheme-handler/about" = [ "google-chrome.desktop" ];
-            "x-scheme-handler/http" = [ "google-chrome.desktop" ];
-            "x-scheme-handler/https" = [ "google-chrome.desktop" ];
-            "x-scheme-handler/unknown" = [ "google-chrome.desktop" ];
-        };
     };
 
-    # Keep XDG user directories on the standard English names even if the UI
-    # message locale is set to Chinese.
     xdg.userDirs = {
         enable = true;
         createDirectories = true;

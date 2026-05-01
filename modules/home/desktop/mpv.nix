@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
     programs.mpv = {
-        enable = true;
+        enable = false;
 
         scripts = with pkgs.mpvScripts; [
             autoload
@@ -18,8 +18,4 @@
             ytdl-format = "bestvideo+bestaudio/best";
         };
     };
-
-    home.packages = with pkgs; [
-        yt-dlp
-    ];
 }

@@ -20,8 +20,10 @@
         fuzzel
         gamescope
         gamemode
+        google-chrome
         gparted
         gpu-screen-recorder
+        kitty
         libnotify
         libreoffice-fresh
         mangohud

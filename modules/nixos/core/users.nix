@@ -6,13 +6,12 @@
     ...
 }:
 let
-    secretsEnabled = config.modules.secrets.enable;
     inherit (vars) username;
 in
 {
     programs.fish.enable = true;
 
-    programs.ssh.extraConfig = lib.optionalString secretsEnabled ''
+    programs.ssh.extraConfig = lib.optionalString config.modules.secrets.enable ''
         Host github.com
           User git
           IdentityFile ${config.age.secrets."ssh-key-github".path}

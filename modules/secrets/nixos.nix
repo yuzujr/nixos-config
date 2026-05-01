@@ -8,7 +8,6 @@
     ...
 }:
 let
-    cfg = config.modules.secrets;
     hasEncryptedFile = name: builtins.pathExists "${secrets}/${name}";
     userSecret = {
         mode = "0400";
@@ -26,7 +25,7 @@ in
 
     options.modules.secrets.enable = lib.mkEnableOption "agenix secret decryption and wiring";
 
-    config = lib.mkIf cfg.enable {
+    config = lib.mkIf config.modules.secrets.enable {
         environment.systemPackages = [
             agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
         ];
@@ -56,8 +55,8 @@ in
             }
             // userSecret;
 
-            "mihomo-config.yaml" = {
-                file = "${secrets}/mihomo-config.yaml.age";
+            "mihomo.yaml" = {
+                file = "${secrets}/mihomo.yaml.age";
             }
             // rootSecret;
         }
@@ -73,9 +72,9 @@ in
             }
             // userSecret;
         }
-        // lib.optionalAttrs (hasEncryptedFile "nix-user.conf.age") {
-            "nix-user.conf" = {
-                file = "${secrets}/nix-user.conf.age";
+        // lib.optionalAttrs (hasEncryptedFile "nix.conf.age") {
+            "nix.conf" = {
+                file = "${secrets}/nix.conf.age";
             }
             // userSecret;
         };
