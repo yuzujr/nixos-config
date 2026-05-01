@@ -20,8 +20,8 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
-        mysecrets = {
-            url = "path:./secrets/placeholder";
+        secrets = {
+            url = "path:./modules/secrets/placeholder";
             flake = false;
         };
 
@@ -46,7 +46,7 @@
             nixpkgs,
             home-manager,
             agenix,
-            mysecrets,
+            secrets,
             coomer,
             drcom-client-cpp,
             ani2xcursor,
@@ -55,10 +55,7 @@
         let
             system = "x86_64-linux";
             pkgs = nixpkgs.legacyPackages.${system};
-            vars = import ./vars;
-            overlays = import ./overlays {
-                inherit inputs system;
-            };
+            vars = import ./modules/vars;
             nixfmtProject = pkgs.writeShellScriptBin "nixfmt" ''
                 if [ "$#" -gt 0 ]; then
                   exec ${pkgs.nixfmt}/bin/nixfmt --indent 4 "$@"
@@ -88,7 +85,7 @@
                         inherit
                             vars
                             agenix
-                            mysecrets
+                            secrets
                             userSystemdServicesEnabled
                             ;
                         coomerPkg = coomer.packages.${system}.default;
@@ -99,10 +96,7 @@
                 nixpkgs.lib.nixosSystem {
                     inherit system specialArgs;
                     modules = [
-                        {
-                            nixpkgs.overlays = overlays;
-                        }
-                        ./hosts/default/default.nix
+                        ./hosts/nixos/default.nix
                         ./secrets/nixos.nix
 
                         {
@@ -118,7 +112,7 @@
                             home-manager.backupFileExtension = "home-manager.backup";
                             home-manager.extraSpecialArgs = specialArgs;
                             home-manager.users.${vars.username}.imports = [
-                                ./home/default.nix
+                                ./modules/home
                             ];
                         }
                     ];

@@ -14,13 +14,13 @@ NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps,
 ```text
 .
 ├── flake.nix                # Inputs, outputs, host variants
-├── hosts/default/           # Host entrypoint + generated hardware config
-├── modules/                 # Fine-grained NixOS modules by responsibility
-├── home/                    # Home Manager entrypoint + user-scoped modules
-├── secrets/                 # agenix module + placeholder secrets directory
-├── vars/default.nix         # username/hostname/repoRoot
-├── docs/                    # Recovery and operational notes
-└── dev/                     # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env, python-env, android-studio-env, rust-env)
+├── hosts/nixos/             # Host entrypoint + generated hardware config
+├── modules/dev/             # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env, python-env, android-studio-env, rust-env)
+├── modules/home/            # Home Manager modules
+├── modules/nixos/           # system modules
+├── modules/secrets/         # agenix module + placeholder secrets directory
+├── modules/vars/            # username/hostname/repoRoot
+└── dotfiles/                # User dotfiles linked by Home Manager
 ```
 
 ## Prerequisites
@@ -43,7 +43,7 @@ sudo nixos-rebuild switch --flake .#nixos-public
 ### Personal full profile
 
 ```bash
-sudo nixos-rebuild switch --flake .#nixos --override-input mysecrets path:/path/to/nix-secrets
+sudo nixos-rebuild switch --flake .#nixos --override-input secrets path:/path/to/nix-secrets
 ```
 
 ## Private profile note

@@ -1,0 +1,49 @@
+{
+    pkgs,
+    coomerPkg,
+    drcomClientPkg,
+    ani2xcursorPkg,
+    ...
+}:
+{
+    home.packages = [
+        coomerPkg
+        drcomClientPkg
+        ani2xcursorPkg
+    ]
+    ++ (with pkgs; [
+        bluetui
+        cliphist
+        feh
+        ffmpeg
+        file
+        fuzzel
+        gamescope
+        gamemode
+        gparted
+        gpu-screen-recorder
+        libnotify
+        libreoffice-fresh
+        mangohud
+        networkmanagerapplet
+        noctalia-shell
+        (obs-studio.override { browserSupport = false; })
+        pavucontrol
+        playerctl
+        qq
+        seahorse
+        splayer
+        sunshine
+        typora
+        unrar
+        wev
+        wechat
+        wine-staging
+        winetricks
+        wl-clipboard
+        wl-clip-persist
+        xwayland-satellite
+        zathura
+        zathuraPkgs.zathura_pdf_poppler
+    ]);
+}

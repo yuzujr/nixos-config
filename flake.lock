@@ -133,11 +133,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777434174,
-        "narHash": "sha256-KwTyQ5g2qDhWIs/O6vH8HeF8n4JCzZIT/VYE7nYnukQ=",
+        "lastModified": 1777594677,
+        "narHash": "sha256-h90sHwoRJLRvaTpZroTvU2JRHDFj0czUafM8eqLe1RI=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "d3b4e4b1bd59aedd3d4eb0a8df7162edb6da4607",
+        "rev": "899c08a15beae5da51a5cecd6b2b994777a948da",
         "type": "github"
       },
       "original": {
@@ -145,18 +145,6 @@
         "repo": "home-manager",
         "type": "github"
       }
-    },
-    "mysecrets": {
-      "flake": false,
-      "locked": {
-        "path": "./secrets/placeholder",
-        "type": "path"
-      },
-      "original": {
-        "path": "./secrets/placeholder",
-        "type": "path"
-      },
-      "parent": []
     },
     "nixpkgs": {
       "locked": {
@@ -176,11 +164,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1777443166,
-        "narHash": "sha256-xksO3xxYlsiCxn4Vj6HldYJQVS1HVMVL79+zn8H/tHw=",
+        "lastModified": 1777616132,
+        "narHash": "sha256-f/ZATDMPqjLBUEiPabnEMbsna1ILMIm9RghaRhvB4jE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "3b0bc3fc4c7d3be9b9c2c00bc2598b8b91371ce1",
+        "rev": "1a96748f71adf0e25fce625804da4fbadd0ddb15",
         "type": "github"
       },
       "original": {
@@ -197,10 +185,22 @@
         "coomer": "coomer",
         "drcom-client-cpp": "drcom-client-cpp",
         "home-manager": "home-manager_2",
-        "mysecrets": "mysecrets",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-master": "nixpkgs-master"
+        "nixpkgs-master": "nixpkgs-master",
+        "secrets": "secrets"
       }
+    },
+    "secrets": {
+      "flake": false,
+      "locked": {
+        "path": "./modules/secrets/placeholder",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/secrets/placeholder",
+        "type": "path"
+      },
+      "parent": []
     },
     "systems": {
       "locked": {
