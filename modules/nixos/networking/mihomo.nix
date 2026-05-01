@@ -16,6 +16,6 @@
         };
         # Mihomo's TUN mode can use asymmetric routing that conflicts with
         # NixOS's default strict reverse-path filtering.
-        # networking.firewall.checkReversePath = lib.mkDefault "loose";
+        networking.firewall.checkReversePath = lib.mkDefault "loose";
     };
 }
