@@ -67,6 +67,7 @@ Vertico（minibuffer）：
 - `C-c c g`: `consult-goto-line`
 - `C-c c o`: `consult-outline`
 - `C-c c n`: `consult-flymake`
+- `C-c c t`: `eat`
 - `C-c c y`: `consult-yank-pop`
 - `C-c c x`: `consult-bookmark`
 - `C-c c d`: `magit-dispatch`

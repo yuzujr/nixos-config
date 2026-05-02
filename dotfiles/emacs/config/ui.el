@@ -19,6 +19,15 @@
 (defcustom rc/font-slant 'normal
   "Default font slant.")
 
+(defcustom rc/frame-opacity 100
+  "Default frame opacity percentage."
+  :type 'integer)
+
+(defun rc/set-default-frame-parameter (parameter value)
+  "Set default frame PARAMETER to VALUE for current and future frames."
+  (setf (alist-get parameter default-frame-alist) value)
+  (setf (alist-get parameter initial-frame-alist) value))
+
 (defun rc/apply-fonts (&optional frame)
   "Apply configured fonts to FRAME."
   (when (display-graphic-p (or frame (selected-frame)))
@@ -28,8 +37,20 @@
                         :weight rc/font-weight
                         :slant rc/font-slant)))
 
+(defun rc/apply-frame-opacity (&optional frame)
+  "Apply configured opacity to FRAME."
+  (let ((frame (or frame (selected-frame)))
+        (alpha `(,rc/frame-opacity . ,rc/frame-opacity)))
+    (when (display-graphic-p frame)
+      (rc/set-default-frame-parameter 'alpha-background rc/frame-opacity)
+      (rc/set-default-frame-parameter 'alpha alpha)
+      (set-frame-parameter frame 'alpha-background rc/frame-opacity)
+      (set-frame-parameter frame 'alpha alpha))))
+
 (add-hook 'after-make-frame-functions #'rc/apply-fonts)
+(add-hook 'after-make-frame-functions #'rc/apply-frame-opacity)
 (rc/apply-fonts)
+(rc/apply-frame-opacity)
 
 ;; ----------------------------
 ;; Theme (solarized)

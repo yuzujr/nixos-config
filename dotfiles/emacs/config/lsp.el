@@ -30,6 +30,7 @@
   :hook ((python-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
          (c++-ts-mode . eglot-ensure)
+         (rust-ts-mode . eglot-ensure)
          (rust-mode . eglot-ensure)
          (nix-ts-mode . eglot-ensure))
   :bind (("C-c a" . eglot-code-actions)

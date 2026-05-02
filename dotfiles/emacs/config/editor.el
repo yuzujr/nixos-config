@@ -86,6 +86,9 @@
       auto-save-no-message t
       create-lockfiles nil)
 
+;; Persist visited file buffers automatically while keeping recovery auto-save.
+(auto-save-visited-mode 1)
+
 ;; ----------------------------
 ;; Clipboard & Selection
 ;; ----------------------------

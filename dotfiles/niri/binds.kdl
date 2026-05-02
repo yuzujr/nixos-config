@@ -30,9 +30,9 @@ binds {
     Mod+Q repeat=false hotkey-overlay-title="关闭窗口" { close-window; }
     Mod+V hotkey-overlay-title="窗口浮动/平铺切换" { toggle-window-floating; }
     Mod+Shift+V hotkey-overlay-title="浮动/平铺焦点切换" { switch-focus-between-floating-and-tiling; }
-    Mod+Alt+F hotkey-overlay-title="全屏" { fullscreen-window; }
     Mod+F hotkey-overlay-title="最大化列" { maximize-column; }
-    Mod+M hotkey-overlay-title="窗口贴边最大化" { maximize-window-to-edges; }
+    Mod+Alt+F hotkey-overlay-title="窗口贴边最大化" { maximize-window-to-edges; }
+    Mod+M hotkey-overlay-title="全屏" { fullscreen-window; }
     Mod+C hotkey-overlay-title="居中当前列" { center-column; }
 
     // #"焦点移动"

@@ -2,6 +2,8 @@
 
 (provide 'tools)
 
+(defvar rc/state-directory)
+
 ;; ----------------------------
 ;; Git - Magit
 ;; ----------------------------
@@ -15,6 +17,19 @@
 ;; ----------------------------
 (use-package sudo-edit
   :commands (sudo-edit sudo-edit-find-file))
+
+;; ----------------------------
+;; Terminal - Eat
+;; ----------------------------
+(use-package eat
+  :commands (eat)
+  :bind (("C-c c t" . eat))
+  :config
+  (dolist (map '(eat-semi-char-mode-map
+                 eat-char-mode-map
+                 eat-eshell-semi-char-mode-map
+                 eat-eshell-char-mode-map))
+    (keymap-set (symbol-value map) "M-o" #'ace-window)))
 
 ;; ----------------------------
 ;; Navigation - Project + Dired
@@ -36,10 +51,31 @@
 (use-package dired-x
   :ensure nil)
 
+(defun rc/project-try-rust-subcrate (dir)
+  "Treat nested Rust crates as projects when the VC root is not a Cargo workspace.
+
+This keeps a Git repository without a top-level `Cargo.toml' from
+being used as the Rust project root, while leaving real Cargo
+workspaces alone."
+  (let ((manifest-dir (locate-dominating-file dir "Cargo.toml")))
+    (when manifest-dir
+      (let* ((project-vc-extra-root-markers nil)
+             ;; Bypass `project-try-vc' cache so the result can depend on
+             ;; whether we are considering `Cargo.toml' as a root marker.
+             (vc-project (project-try-vc--search dir))
+             (vc-root (and vc-project (project-root vc-project))))
+        (when (and vc-root
+                   (not (file-exists-p (expand-file-name "Cargo.toml" vc-root)))
+                   (not (file-equal-p manifest-dir vc-root)))
+          (let ((project-vc-extra-root-markers '("Cargo.toml")))
+            (project-try-vc--search dir)))))))
+
 (use-package project
   :ensure nil
   :custom
-  (project-vc-extra-root-markers '(".project")))
+  (project-vc-extra-root-markers '(".project"))
+  :config
+  (add-hook 'project-find-functions #'rc/project-try-rust-subcrate))
 
 ;; ----------------------------
 ;; Editing Enhancements

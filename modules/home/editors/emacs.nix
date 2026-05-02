@@ -12,6 +12,7 @@
                 corfu
                 corfu-prescient
                 direnv
+                eat
                 eldoc-box
                 embark
                 embark-consult

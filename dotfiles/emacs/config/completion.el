@@ -61,14 +61,14 @@
 
 ;; Persist minibuffer history across sessions.
 (use-package savehist
-  :init
-  (savehist-mode 1)
   :custom
   (savehist-file (expand-file-name "savehist" rc/state-directory))
   (history-length 1000)
   (history-delete-duplicates t)
   (savehist-autosave-interval 300)
-  (savehist-additional-variables '(extended-command-history)))
+  (savehist-additional-variables '(extended-command-history))
+  :config
+  (savehist-mode 1))
 
 ;; Frequency/recency-based sorting for completion candidates.
 (use-package prescient
