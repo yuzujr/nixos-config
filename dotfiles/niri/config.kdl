@@ -8,7 +8,7 @@ include "profiles/current-outputs.kdl"
 include "profiles/current-startup.kdl"
 include optional=true "local.kdl"
 
-screenshot-path "~/Pictures/Screenshots/Niri-screenshots/%Y-%m-%d %H-%M-%S.png"
+screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
 
 environment {
     QT_QPA_PLATFORM "wayland"

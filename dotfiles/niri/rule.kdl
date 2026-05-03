@@ -13,6 +13,7 @@ window-rule {
 window-rule {
     match app-id="SPlayer"
     match app-id="google-chrome"
+    match app-id="mpv"
     open-maximized true
 }
 
@@ -22,7 +23,6 @@ window-rule {
     match app-id="steam" title="Friends List"
     match app-id="org.pulseaudio.pavucontrol" title="音量控制"
     match app-id="feh"
-    match app-id="mpv"
     match app-id="org.kde.ark"
     open-floating true
 }

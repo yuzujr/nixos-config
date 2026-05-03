@@ -43,7 +43,7 @@ sudo nixos-rebuild switch --flake .#nixos-public
 ### Personal full profile
 
 ```bash
-sudo nixos-rebuild switch --flake .#nixos --override-input secrets path:/path/to/nix-secrets
+sudo nixos-rebuild switch --flake .#nixos --override-input secrets path:/path/to/nixos-secrets
 ```
 
 ## Private profile note

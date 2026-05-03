@@ -1,21 +1,27 @@
 { pkgs, ... }:
 {
     programs.mpv = {
-        enable = false;
+        enable = true;
 
         scripts = with pkgs.mpvScripts; [
             autoload
-            mpv-playlistmanager
+            modernz
+            mpris
             quality-menu
             sponsorblock
             thumbfast
-            uosc
         ];
 
         config = {
             osc = false;
             osd-bar = false;
             ytdl-format = "bestvideo+bestaudio/best";
+        };
+
+        scriptOpts = {
+            modernz = {
+                icon_theme = "material";
+           };
         };
     };
 }

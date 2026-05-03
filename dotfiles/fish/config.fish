@@ -28,7 +28,7 @@ if status is-interactive
         end
 
         nh os $mode --update $argv /home/yuzujr/nixos-config#nixos \
-            -- --override-input secrets path:/home/yuzujr/nix-secrets
+            -- --override-input secrets path:/home/yuzujr/nixos-secrets
     end
 
     function y
