@@ -9,9 +9,9 @@ let
     inherit (vars) username;
 in
 {
-    users.mutableUsers = lib.mkIf config.modules.secrets.enable false;
+    users.mutableUsers = false;
 
-    users.users.root = lib.mkIf config.modules.secrets.enable {
+    users.users.root = {
         hashedPasswordFile = config.sops.secrets."users/root/password-hash".path;
     };
 
@@ -19,6 +19,7 @@ in
         isNormalUser = true;
         description = username;
         shell = pkgs.fish;
+        hashedPasswordFile = config.sops.secrets."users/${username}/password-hash".path;
         extraGroups = [
             "wheel"
             "networkmanager"
@@ -27,11 +28,8 @@ in
             "input"
             "i2c"
         ];
-    }
-    // lib.optionalAttrs config.modules.secrets.enable {
-        hashedPasswordFile = config.sops.secrets."users/${username}/password-hash".path;
     };
 
     # Disable Home Manager auto-activation at boot; run it manually when needed.
-    # systemd.services."home-manager-${username}".wantedBy = lib.mkForce [ ];
+    systemd.services."home-manager-${username}".wantedBy = lib.mkForce [ ];
 }

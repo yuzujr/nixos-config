@@ -27,7 +27,7 @@ if status is-interactive
                 set -e argv[1]
         end
 
-        nh os $mode --update $argv /home/yuzujr/nixos-config#nixos \
+        nh os $mode --update $argv /home/yuzujr/nixos-config#laptop \
             -- --override-input secrets path:/home/yuzujr/nixos-secrets
     end
 

@@ -96,22 +96,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-master": {
-      "locked": {
-        "lastModified": 1777798537,
-        "narHash": "sha256-hY/pzDFcznuHlaJrbc0GME7WrzUY9o44peQryT7xbFI=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "5f49e619c2519edeafbb56a79550fdb6703d4739",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "master",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "ani2xcursor": "ani2xcursor",
@@ -119,7 +103,6 @@
         "drcom-client-cpp": "drcom-client-cpp",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-master": "nixpkgs-master",
         "secrets": "secrets",
         "sops-nix": "sops-nix"
       }
@@ -127,11 +110,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "path": "./modules/secrets/placeholder",
+        "path": "./secrets/placeholder",
         "type": "path"
       },
       "original": {
-        "path": "./modules/secrets/placeholder",
+        "path": "./secrets/placeholder",
         "type": "path"
       },
       "parent": []

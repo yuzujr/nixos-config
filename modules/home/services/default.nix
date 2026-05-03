@@ -8,4 +8,6 @@
         ./sunshine.nix
         ./wl-clip-persist.nix
     ];
+
+    services.mpris-proxy.enable = true;
 }

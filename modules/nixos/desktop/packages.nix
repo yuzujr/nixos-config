@@ -1,8 +1,5 @@
 { pkgs, ... }:
 {
-    programs.fish.enable = true;
-    programs.steam.enable = true;
-
     environment.systemPackages =
         with pkgs;
         let

@@ -1,9 +1,13 @@
 { ... }:
 {
     imports = [
-        ./desktop.nix
+        ./direnv.nix
+        ./emacs.nix
+        ./git.nix
         ./mpv.nix
-        ./themes.nix
+        ./packages.nix
         ./xdg.nix
     ];
+
+    fonts.fontconfig.enable = false;
 }

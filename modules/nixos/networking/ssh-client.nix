@@ -1,10 +1,9 @@
 {
     config,
-    lib,
     ...
 }:
 {
-    programs.ssh.extraConfig = lib.optionalString config.modules.secrets.enable ''
+    programs.ssh.extraConfig = ''
         Host github.com
           User git
           IdentityFile ${config.sops.secrets."ssh/github".path}

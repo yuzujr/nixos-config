@@ -4,22 +4,19 @@ NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps,
 
 ## What this flake provides
 
-- `nixosConfigurations.nixos`
-  - Personal full setup (private profile).
-- `nixosConfigurations.nixos-public`
-  - Public-safe setup intended for sharing/reuse.
+- `nixosConfigurations.laptop`
+  - Personal laptop setup.
 
 ## Repository layout
 
 ```text
 .
 ├── flake.nix                # Inputs, outputs, host variants
-├── hosts/nixos/             # Host entrypoint + generated hardware config
-├── modules/dev/             # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env, python-env, android-studio-env, rust-env)
+├── hosts/laptop/            # Host entrypoint + generated hardware config
 ├── modules/home/            # Home Manager modules
 ├── modules/nixos/           # system modules
-├── modules/secrets/         # sops-nix module + placeholder secrets directory
-├── modules/vars/            # username/hostname/repoRoot
+├── secrets/placeholder/     # Empty placeholder for private secrets input
+├── vars/                    # username/hostname/repoRoot
 └── dotfiles/                # User dotfiles linked by Home Manager
 ```
 
@@ -34,33 +31,19 @@ Adjust `username`, `hostname` and `repoRoot` in `vars/default.nix`.
 
 ## Build and switch
 
-### Public profile
-
 ```bash
-sudo nixos-rebuild switch --flake .#nixos-public
+sudo nixos-rebuild switch --flake .#laptop --override-input secrets path:/path/to/nixos-secrets
 ```
-
-### Personal full profile
-
-```bash
-sudo nixos-rebuild switch --flake .#nixos --override-input secrets path:/path/to/nixos-secrets
-```
-
-## Private profile note
-
-`.#nixos` is my personal profile and depends on private inputs/config.
-For most users, start with `.#nixos-public`.
 
 ## Development shells
 
-- GNU C/C++ environment
+The root flake exposes these shell aliases:
 
-- Clang/LLVM C/C++ environment
-
-- Qt environment (Qt Creator + Qt6 toolchain)
-
-- Python environment (`uv` + Python 3.12)
-
-- Android Studio environment
-
-- Rust environment (`cargo` + `rustc` + tooling)
+```bash
+nix develop .#gcc-cpp-env
+nix develop .#clang-cpp-env
+nix develop .#qt-env
+nix develop .#python-env
+nix develop .#android-studio-env
+nix develop .#rust-env
+```

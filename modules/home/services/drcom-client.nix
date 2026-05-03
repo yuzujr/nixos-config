@@ -1,14 +1,11 @@
 {
     config,
-    osConfig ? { },
     ...
 }:
 {
     systemd.user.services.drcom = {
         Unit = {
             Description = "DRCOM client";
-            After = [ "network-online.target" ];
-            Wants = [ "network-online.target" ];
         };
 
         Service = {

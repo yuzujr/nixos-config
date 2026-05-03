@@ -6,10 +6,6 @@
             url = "github:nixos/nixpkgs/nixos-unstable";
         };
 
-        nixpkgs-master = {
-            url = "github:nixos/nixpkgs/master";
-        };
-
         home-manager = {
             url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -21,7 +17,7 @@
         };
 
         secrets = {
-            url = "path:./modules/secrets/placeholder";
+            url = "path:./secrets/placeholder";
             flake = false;
         };
 
@@ -42,8 +38,7 @@
     };
 
     outputs =
-        inputs@{
-            self,
+        {
             nixpkgs,
             home-manager,
             sops-nix,
@@ -56,49 +51,24 @@
         let
             supportedSystems = [
                 "x86_64-linux"
-                "aarch64-linux"
-                "x86_64-darwin"
-                "aarch64-darwin"
             ];
             forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
-            vars = import ./modules/vars;
-
-            mkNixfmt =
-                pkgs:
-                pkgs.writeShellScriptBin "nixfmt" ''
-                    if [ "$#" -gt 0 ]; then
-                      exec ${pkgs.nixfmt}/bin/nixfmt --indent 4 "$@"
-                    fi
-
-                    root="''${PRJ_ROOT:-$PWD}"
-
-                    exec ${pkgs.fd}/bin/fd \
-                      --type f \
-                      --extension nix \
-                      --hidden \
-                      --exclude .git \
-                      --exclude .direnv \
-                      . "$root" \
-                      -X ${pkgs.nixfmt}/bin/nixfmt --indent 4
-                '';
+            vars = import ./vars;
 
             mkHost =
                 {
                     hostname,
-                    secretsEnabled,
-                    mihomoEnabled,
-                    userSystemdServicesEnabled,
                     system ? "x86_64-linux",
                 }:
                 let
-                    pkgs = nixpkgs.legacyPackages.${system};
                     specialArgs = {
                         inherit
+                            home-manager
+                            hostname
                             vars
                             sops-nix
                             secrets
-                            userSystemdServicesEnabled
                             ;
                         coomerPkg = coomer.packages.${system}.default;
                         drcomClientPkg = drcom-client-cpp.packages.${system}.default;
@@ -108,59 +78,22 @@
                 nixpkgs.lib.nixosSystem {
                     inherit system specialArgs;
                     modules = [
-                        ./hosts/nixos/default.nix
-                        ./modules/secrets/nixos.nix
-
-                        {
-                            networking.hostName = hostname;
-                            modules.secrets.enable = secretsEnabled;
-                            modules.networking.mihomo.enable = mihomoEnabled;
-                        }
-
-                        home-manager.nixosModules.home-manager
-                        {
-                            home-manager.useGlobalPkgs = true;
-                            home-manager.useUserPackages = true;
-                            home-manager.backupFileExtension = "home-manager.backup";
-                            home-manager.extraSpecialArgs = specialArgs;
-                            home-manager.users.${vars.username}.imports = [
-                                ./modules/home
-                            ];
-                        }
+                        ./hosts/laptop/default.nix
                     ];
                 };
+
+            mkDevShells = import ./devShells {
+                inherit nixpkgs;
+            };
         in
         {
-            formatter = forAllSystems (system: mkNixfmt nixpkgs.legacyPackages.${system});
+            formatter = forAllSystems (system: (mkDevShells system).formatter);
 
-            devShells = forAllSystems (
-                system:
-                let
-                    pkgs = nixpkgs.legacyPackages.${system};
-                in
-                {
-                    default = pkgs.mkShellNoCC {
-                        packages = [
-                            pkgs.nixd
-                            (mkNixfmt pkgs)
-                        ];
-                    };
-                }
-            );
+            devShells = forAllSystems (system: (mkDevShells system).devShells);
 
             nixosConfigurations = {
-                nixos = mkHost {
+                laptop = mkHost {
                     hostname = vars.hostname;
-                    secretsEnabled = true;
-                    mihomoEnabled = true;
-                    userSystemdServicesEnabled = true;
-                };
-
-                nixos-public = mkHost {
-                    hostname = vars.hostname;
-                    secretsEnabled = false;
-                    mihomoEnabled = false;
-                    userSystemdServicesEnabled = false;
                 };
             };
         };

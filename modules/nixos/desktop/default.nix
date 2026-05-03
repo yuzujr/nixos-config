@@ -4,12 +4,11 @@
         ./audio.nix
         ./env.nix
         ./fonts.nix
+        ./gaming.nix
         ./greetd.nix
         ./input.nix
-        ./misc.nix
         ./packages.nix
         ./portal.nix
-        ./ssh.nix
         ./wm.nix
     ];
 }

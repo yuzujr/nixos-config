@@ -1,6 +1,6 @@
 rec {
     username = "yuzujr";
-    hostname = "nixos";
+    hostname = "laptop-nixos";
     repoRoot = "/home/yuzujr/nixos-config";
 
     git = {

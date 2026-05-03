@@ -3,8 +3,6 @@
     systemd.user.services.gold-price-watch = {
         Unit = {
             Description = "Gold price watcher (USD/oz)";
-            After = [ "network-online.target" ];
-            Wants = [ "network-online.target" ];
         };
 
         Service = {

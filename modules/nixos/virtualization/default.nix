@@ -1,6 +1,4 @@
 { ... }:
 {
-    imports = [
-        ./vmware.nix
-    ];
+    virtualisation.vmware.host.enable = true;
 }
