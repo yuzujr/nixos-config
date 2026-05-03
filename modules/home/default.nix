@@ -4,9 +4,9 @@
 }:
 {
     imports = [
-        ./desktop
         ./dotfiles
         ./services
+        ./user
     ];
 
     home = {

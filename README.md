@@ -11,6 +11,7 @@ NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps,
 
 ```text
 .
+├── devshells/               # Development shell definitions exposed by the root flake
 ├── flake.nix                # Inputs, outputs, host variants
 ├── hosts/laptop/            # Host entrypoint + generated hardware config
 ├── modules/home/            # Home Manager modules

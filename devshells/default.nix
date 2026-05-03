@@ -36,14 +36,13 @@ in
 {
     formatter = mkNixfmt pkgs;
 
-    devShells =
-        {
-            default = pkgs.mkShellNoCC {
-                packages = [
-                    pkgs.nixd
-                    (mkNixfmt pkgs)
-                ];
-            };
-        }
-        // nixpkgs.lib.optionalAttrs (builtins.elem system linuxSystems) linuxDevShells;
+    devShells = {
+        default = pkgs.mkShellNoCC {
+            packages = [
+                pkgs.nixd
+                (mkNixfmt pkgs)
+            ];
+        };
+    }
+    // nixpkgs.lib.optionalAttrs (builtins.elem system linuxSystems) linuxDevShells;
 }

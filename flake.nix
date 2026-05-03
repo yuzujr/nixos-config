@@ -82,7 +82,7 @@
                     ];
                 };
 
-            mkDevShells = import ./devShells {
+            mkDevShells = import ./devshells {
                 inherit nixpkgs;
             };
         in

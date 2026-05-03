@@ -100,13 +100,5 @@ let
 in
 {
     home.packages =
-        custom
-        ++ development
-        ++ desktop
-        ++ media
-        ++ gaming
-        ++ theming
-        ++ terminal
-        ++ utilities
-        ++ windows;
+        custom ++ development ++ desktop ++ media ++ gaming ++ theming ++ terminal ++ utilities ++ windows;
 }
