@@ -2,13 +2,20 @@
     config,
     lib,
     pkgs,
-    agenix,
+    sops-nix,
     secrets,
     vars,
     ...
 }:
 let
-    hasEncryptedFile = name: builtins.pathExists "${secrets}/${name}";
+    mkSecret =
+        file: key: attrs:
+        {
+            sopsFile = "${secrets}/secrets/${file}";
+            inherit key;
+        }
+        // attrs;
+
     userSecret = {
         mode = "0400";
         owner = vars.username;
@@ -20,63 +27,47 @@ let
 in
 {
     imports = [
-        agenix.nixosModules.default
+        sops-nix.nixosModules.sops
     ];
 
-    options.modules.secrets.enable = lib.mkEnableOption "agenix secret decryption and wiring";
+    options.modules.secrets.enable = lib.mkEnableOption "sops-nix secret decryption and wiring";
 
     config = lib.mkIf config.modules.secrets.enable {
         environment.systemPackages = [
-            agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+            pkgs.age
+            pkgs.sops
         ];
 
-        age.identityPaths = [
-            "/etc/ssh/ssh_host_ed25519_key"
-        ];
+        sops = {
+            age.keyFile = "/home/${vars.username}/.config/sops/age/keys.txt";
 
-        age.secrets = {
-            "ssh-key-github" = {
-                file = "${secrets}/ssh-key-github.age";
-            }
-            // userSecret;
+            secrets = {
+                "ssh/github" = mkSecret "ssh.yaml" "github" userSecret;
+                "ssh/gitee" = mkSecret "ssh.yaml" "gitee" userSecret;
+                "ssh/server" = mkSecret "ssh.yaml" "server" userSecret;
+                "ssh/aur" = mkSecret "ssh.yaml" "aur" userSecret;
 
-            "ssh-key-gitee" = {
-                file = "${secrets}/ssh-key-gitee.age";
-            }
-            // userSecret;
+                "network/mihomo" = mkSecret "network.yaml" "mihomo" rootSecret;
+                "network/drcom-jlu" = mkSecret "network.yaml" "drcom-jlu" userSecret;
 
-            "ssh-key-server" = {
-                file = "${secrets}/ssh-key-server.age";
-            }
-            // userSecret;
+                "apps/gold-price-history" = mkSecret "apps.yaml" "gold-price-history" userSecret;
 
-            "ssh-key-aur" = {
-                file = "${secrets}/ssh-key-aur.age";
-            }
-            // userSecret;
+                "nix/user-conf" = mkSecret "nix.yaml" "user-conf" userSecret;
 
-            "mihomo.yaml" = {
-                file = "${secrets}/mihomo.yaml.age";
-            }
-            // rootSecret;
-        }
-        // lib.optionalAttrs (hasEncryptedFile "drcom-jlu.conf.age") {
-            "drcom-jlu.conf" = {
-                file = "${secrets}/drcom-jlu.conf.age";
-            }
-            // userSecret;
-        }
-        // lib.optionalAttrs (hasEncryptedFile "gold-price-history.conf.age") {
-            "gold-price-history.conf" = {
-                file = "${secrets}/gold-price-history.conf.age";
-            }
-            // userSecret;
-        }
-        // lib.optionalAttrs (hasEncryptedFile "nix.conf.age") {
-            "nix.conf" = {
-                file = "${secrets}/nix.conf.age";
-            }
-            // userSecret;
+                "users/${vars.username}/password-hash" = mkSecret "users.yaml" "${vars.username}-password-hash" (
+                    rootSecret
+                    // {
+                        neededForUsers = true;
+                    }
+                );
+
+                "users/root/password-hash" = mkSecret "users.yaml" "root-password-hash" (
+                    rootSecret
+                    // {
+                        neededForUsers = true;
+                    }
+                );
+            };
         };
     };
 }

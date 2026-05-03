@@ -18,7 +18,7 @@ NixOS + Home Manager flake for my desktop setup (`niri` + Plasma 6), daily apps,
 ├── modules/dev/             # Standalone dev shells (gcc-cpp-env, clang-cpp-env, qt-env, python-env, android-studio-env, rust-env)
 ├── modules/home/            # Home Manager modules
 ├── modules/nixos/           # system modules
-├── modules/secrets/         # agenix module + placeholder secrets directory
+├── modules/secrets/         # sops-nix module + placeholder secrets directory
 ├── modules/vars/            # username/hostname/repoRoot
 └── dotfiles/                # User dotfiles linked by Home Manager
 ```

@@ -15,8 +15,8 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
-        agenix = {
-            url = "github:ryantm/agenix";
+        sops-nix = {
+            url = "github:Mic92/sops-nix";
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
@@ -46,7 +46,7 @@
             self,
             nixpkgs,
             home-manager,
-            agenix,
+            sops-nix,
             secrets,
             coomer,
             drcom-client-cpp,
@@ -96,7 +96,7 @@
                     specialArgs = {
                         inherit
                             vars
-                            agenix
+                            sops-nix
                             secrets
                             userSystemdServicesEnabled
                             ;

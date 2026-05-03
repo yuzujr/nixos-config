@@ -21,7 +21,7 @@
         scriptOpts = {
             modernz = {
                 icon_theme = "material";
-           };
+            };
         };
     };
 }

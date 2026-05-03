@@ -11,7 +11,7 @@ let
     hasSecret =
         name:
         lib.hasAttrByPath [
-            "age"
+            "sops"
             "secrets"
             name
         ] osConfig;
@@ -55,19 +55,19 @@ in
             mkSymlink "${repoRoot}/dotfiles/fcitx5/conf/notifications.conf";
         "fcitx5/conf/rime.conf".source = mkSymlink "${repoRoot}/dotfiles/fcitx5/conf/rime.conf";
     }
-    // lib.optionalAttrs (hasSecret "gold-price-history.conf") {
+    // lib.optionalAttrs (hasSecret "apps/gold-price-history") {
         "gold-price/gold-price-history.conf" = {
-            source = mkSymlink osConfig.age.secrets."gold-price-history.conf".path;
+            source = mkSymlink osConfig.sops.secrets."apps/gold-price-history".path;
         };
     }
-    // lib.optionalAttrs (hasSecret "nix.conf") {
+    // lib.optionalAttrs (hasSecret "nix/user-conf") {
         "nix/nix.conf" = {
-            source = mkSymlink osConfig.age.secrets."nix.conf".path;
+            source = mkSymlink osConfig.sops.secrets."nix/user-conf".path;
         };
     }
-    // lib.optionalAttrs (hasSecret "drcom-jlu.conf") {
+    // lib.optionalAttrs (hasSecret "network/drcom-jlu") {
         "drcom-client-cpp/drcom-jlu.conf" = {
-            source = mkSymlink osConfig.age.secrets."drcom-jlu.conf".path;
+            source = mkSymlink osConfig.sops.secrets."network/drcom-jlu".path;
         };
     };
 

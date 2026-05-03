@@ -12,7 +12,7 @@
             enable = true;
             tunMode = true;
             webui = pkgs.metacubexd;
-            configFile = config.age.secrets."mihomo.yaml".path;
+            configFile = config.sops.secrets."network/mihomo".path;
         };
         # Mihomo's TUN mode can use asymmetric routing that conflicts with
         # NixOS's default strict reverse-path filtering.
