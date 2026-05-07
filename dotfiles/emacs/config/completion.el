@@ -103,12 +103,9 @@
 
 (use-package consult
   :bind (("C-x b" . consult-buffer)
-         ("C-c b" . consult-buffer)
-         ("C-c F" . consult-fd)
          ("C-c s" . consult-ripgrep)
          ("C-c /" . consult-line)
          ("M-g g" . consult-goto-line)
-         ("M-g M-g" . consult-goto-line)
          ("M-y" . consult-yank-pop))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :custom

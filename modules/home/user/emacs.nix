@@ -12,6 +12,7 @@
                 corfu-prescient
                 direnv
                 eat
+                expand-region
                 glsl-mode
                 helpful
                 kdl-mode
@@ -21,6 +22,7 @@
                 move-text
                 multiple-cursors
                 nix-ts-mode
+                olivetti
                 orderless
                 prescient
                 rust-mode

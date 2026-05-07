@@ -10,7 +10,7 @@
 (defcustom rc/font-family "Maple Mono NF CN"
   "Default font family.")
 
-(defcustom rc/font-height 140
+(defcustom rc/font-height 130
   "Default font hei/ght (1/10 pt).")
 
 (defcustom rc/font-weight 'regular
@@ -135,6 +135,14 @@
   (rc/theme-start-portal-monitor))
 
 ;; ----------------------------
+;; Centered Editing
+;; ----------------------------
+(use-package olivetti
+  :hook (prog-mode . olivetti-mode)
+  :custom
+  (olivetti-body-width 100))
+
+;; ----------------------------
 ;; Window Display
 ;; ----------------------------
 ;; Line numbers
@@ -143,7 +151,9 @@
 ;; Smooth scrolling
 (setq scroll-margin 5
       scroll-conservatively 101
-      mouse-wheel-progressive-speed nil)
+      ; mouse-wheel-progressive-speed nil
+      fast-but-imprecise-scrolling t
+      redisplay-skip-fontification-on-input t)
 
 ;; ----------------------------
 ;; Window Splitting Behavior

@@ -28,7 +28,10 @@
 ;; ----------------------------
 (use-package compile
   :ensure nil
-  :bind (("C-c c" . compile)))
+  :bind (("C-c c" . compile))
+  :custom
+  (compilation-auto-jump-to-first-error 'first-known)
+  (compilation-scroll-output 'first-error))
 
 ;; ----------------------------
 ;; Navigation - Project + Dired
@@ -94,6 +97,10 @@ workspaces alone."
 (use-package move-text
   :bind (("M-<up>" . move-text-up)
          ("M-<down>" . move-text-down)))
+
+;; Expand the active region by semantic units.
+(use-package expand-region
+  :bind (("C-=" . er/expand-region)))
 
 ;; Multiple cursors
 (use-package multiple-cursors

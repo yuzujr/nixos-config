@@ -9,7 +9,6 @@
 
 - `C-x b`: `consult-buffer`
 - `C-c f`: `project-find-file`
-- `C-c F`: `consult-fd`
 - `C-c s`: `consult-ripgrep`
 - `C-c /`: `consult-line`
 - `M-g g`: `consult-goto-line`
@@ -49,10 +48,6 @@
 
 `C-c l` 常用：
 - `C-c l f`: `eglot-format-buffer`
-- `C-c l o`: `eglot-code-action-organize-imports`
-- `C-c l i`: `eglot-find-implementation`
-- `C-c l t`: `xref-find-type-definitions`
-- 其他 LSP 子命令直接看 `which-key`
 
 ## 补全 / Minibuffer
 
@@ -73,6 +68,7 @@ Vertico（minibuffer）：
 
 - `M-<up>`: 上移当前行/选区
 - `M-<down>`: 下移当前行/选区
+- `C-=`: 扩大选区
 - `C->`: `mc/mark-next-like-this`
 - `C-<`: `mc/mark-previous-like-this`
 - `C-c m l`: `mc/edit-lines`
