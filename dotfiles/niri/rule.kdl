@@ -27,15 +27,28 @@ window-rule {
     open-floating true
 }
 
-// fuzzel模糊
+// fuzzel
 layer-rule {
     match namespace="^launcher$"
 
-    geometry-corner-radius 20
+    geometry-corner-radius 18
 
     background-effect {
         xray false
         blur true
+    }
+}
+
+// SPlayer桌面歌词
+window-rule {
+    match app-id="SPlayer" title="SPlayer - 桌面歌词"
+    open-floating true
+    open-maximized false
+    open-focused false
+    default-floating-position x=0 y=0 relative-to="top"
+    background-effect {
+        blur false
+        xray false
     }
 }
 

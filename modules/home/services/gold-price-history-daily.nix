@@ -3,6 +3,8 @@
     systemd.user.services.gold-price-history-daily = {
         Unit = {
             Description = "Fetch and store daily gold price history (USD/oz)";
+            After = [ "network-online.target" ];
+            Wants = [ "network-online.target" ];
         };
 
         Service = {

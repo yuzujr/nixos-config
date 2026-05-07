@@ -8,28 +8,27 @@
 ;; Git - Magit
 ;; ----------------------------
 (use-package magit
-  :bind (("C-c g" . magit-status)
-         ("C-c c d" . magit-dispatch)
-         ("C-c c f" . magit-file-dispatch)))
-
-;; ----------------------------
-;; Sudo Edit - Edit as Root
-;; ----------------------------
-(use-package sudo-edit
-  :commands (sudo-edit sudo-edit-find-file))
+  :bind (("C-c g" . magit-status)))
 
 ;; ----------------------------
 ;; Terminal - Eat
 ;; ----------------------------
 (use-package eat
   :commands (eat)
-  :bind (("C-c c t" . eat))
+  :bind (("C-c e" . eat))
   :config
   (dolist (map '(eat-semi-char-mode-map
                  eat-char-mode-map
                  eat-eshell-semi-char-mode-map
                  eat-eshell-char-mode-map))
     (keymap-set (symbol-value map) "M-o" #'ace-window)))
+
+;; ----------------------------
+;; Build - Compile
+;; ----------------------------
+(use-package compile
+  :ensure nil
+  :bind (("C-c c" . compile)))
 
 ;; ----------------------------
 ;; Navigation - Project + Dired
@@ -39,6 +38,17 @@
 (keymap-global-set "C-c t" #'project-dired)
 (keymap-global-set "C-c w" #'project-find-dir)
 (keymap-global-set "C-c o" #'dired-jump)
+
+;; Flash-like in-buffer jump labels.
+(use-package avy
+  :bind (("C-c j" . avy-goto-char-timer)
+         ("C-c J" . avy-goto-line)
+         ("C-c C-j" . avy-resume))
+  :custom
+  (avy-timeout-seconds 0.35)
+  (avy-background t)
+  (avy-all-windows t)
+  (avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (use-package dired
   :ensure nil
@@ -87,11 +97,12 @@ workspaces alone."
 
 ;; Multiple cursors
 (use-package multiple-cursors
-  :bind (("C-S-c C-S-c" . mc/edit-lines)
-         ("C->"         . mc/mark-next-like-this)
-         ("C-<"         . mc/mark-previous-like-this)
-         ("C-c C-<"     . mc/mark-all-dwim)
-         ("C-c C->"     . mc/mark-all-dwim))
+  :bind (("C->"       . mc/mark-next-like-this)
+         ("C-<"       . mc/mark-previous-like-this)
+         ("C-c m l"   . mc/edit-lines)
+         ("C-c m a"   . mc/mark-all-dwim)
+         ("C-c m n"   . mc/mark-next-like-this)
+         ("C-c m p"   . mc/mark-previous-like-this))
   :custom
   (mc/always-run-for-all t))
 
@@ -123,17 +134,21 @@ workspaces alone."
   (which-key-mode)
   (which-key-add-key-based-replacements
     "C-c /" "line-search"
-    "C-c b" "buffers"
-    "C-c c" "extra"
+    "C-c c" "compile"
+    "C-c e" "terminal"
     "C-c f" "project-file"
     "C-c F" "fd"
+    "C-c i" "imenu"
     "C-c l" "lsp-extra"
+    "C-c m" "multi-cursor"
+    "C-c j" "avy-jump"
+    "C-c J" "avy-line"
+    "C-c n" "diagnostics"
     "C-c o" "dired-jump"
     "C-c p" "project-switch"
     "C-c s" "ripgrep"
     "C-c t" "project-dired"
     "C-c w" "project-dir"
-    "C-c y" "snippets"
     "C-c ?" "cheatsheet"))
 
 ;; ----------------------------

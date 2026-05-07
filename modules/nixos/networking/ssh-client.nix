@@ -12,10 +12,10 @@
           User git
           IdentityFile ${config.sops.secrets."ssh/gitee".path}
 
-        Host server
-          HostName 47.94.142.31
-          User root
-          IdentityFile ${config.sops.secrets."ssh/server".path}
+        Host vm
+          HostName 192.168.166.128
+          User yuzujr
+          IdentityFile ${config.sops.secrets."ssh/vm".path}
 
         Host aur.archlinux.org
           User aur

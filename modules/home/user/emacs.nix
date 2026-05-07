@@ -6,16 +6,12 @@
         extraPackages =
             epkgs: with epkgs; [
                 ace-window
-                benchmark-init
+                avy
                 consult
-                consult-dir
                 corfu
                 corfu-prescient
                 direnv
                 eat
-                eldoc-box
-                embark
-                embark-consult
                 glsl-mode
                 helpful
                 kdl-mode
@@ -28,14 +24,14 @@
                 orderless
                 prescient
                 rust-mode
+                sideline
+                sideline-flymake
                 solarized-theme
-                sudo-edit
                 treesit-auto
                 vertico
                 vertico-prescient
                 which-key
                 yasnippet
-                yasnippet-snippets
             ];
     };
 }

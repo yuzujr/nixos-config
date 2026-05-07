@@ -24,16 +24,6 @@
               ("M-DEL" . vertico-directory-delete-word))
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
-(use-package vertico-repeat
-  :ensure nil
-  :demand t
-  :bind (("C-c c v" . vertico-repeat)
-         :map vertico-map
-         ("M-p" . vertico-repeat-previous)
-         ("M-n" . vertico-repeat-next))
-  :config
-  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))
-
 ;; In-buffer completion UI (community mainstream with Eglot).
 (use-package corfu
   :demand t
@@ -111,52 +101,35 @@
   :config
   (marginalia-mode))
 
-;; ----------------------------
-;; Consult - Enhanced Commands
-;; ----------------------------
 (use-package consult
-  :bind (("C-c b" . consult-buffer)
+  :bind (("C-x b" . consult-buffer)
+         ("C-c b" . consult-buffer)
+         ("C-c F" . consult-fd)
          ("C-c s" . consult-ripgrep)
          ("C-c /" . consult-line)
-         ("C-c c g" . consult-goto-line)
-         ("C-c c o" . consult-outline)
-         ("C-c c e" . consult-compile-error)
-         ("C-c c n" . consult-flymake)
-         ("C-c c h" . consult-history)
-         ("C-c c m" . consult-mode-command)
-         ("C-c c k" . consult-kmacro)
-         ("C-c c y" . consult-yank-pop)
-         ("C-c c x" . consult-bookmark))
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+         ("M-y" . consult-yank-pop))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :custom
   (consult-narrow-key "<")
   ;; Avoid default `#` separator prompt in async commands.
   (consult-async-split-style 'semicolon))
 
-;; ----------------------------
-;; Consult-dir - Directory Sources for Minibuffer
-;; ----------------------------
-(use-package consult-dir
-  :after (consult vertico)
-  :bind (:map vertico-map
-         ("M-g" . consult-dir)))
+(use-package consult-flymake
+  :ensure nil
+  :bind (("C-c n" . consult-flymake)))
 
-;; ----------------------------
-;; Embark - Contextual Actions
-;; ----------------------------
-(use-package embark
-  :bind
-  (("C-." . embark-act)
-   ("C-;" . embark-dwim)
-   ("C-h B" . embark-bindings))
-  :custom
-  (prefix-help-command #'embark-prefix-help-command)
-  :config
-  ;; In Embark file actions, use `U` to open the target file via sudo-edit.
-  (keymap-set embark-file-map "U" #'sudo-edit-find-file))
+(use-package consult-imenu
+  :ensure nil
+  :bind (("C-c i" . consult-imenu)))
 
-(use-package embark-consult
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+(use-package consult-xref
+  :ensure nil
+  :commands (consult-xref)
+  :init
+  (with-eval-after-load 'xref
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref)))
 
 ;;; completion.el ends here

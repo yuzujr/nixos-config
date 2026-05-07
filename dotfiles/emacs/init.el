@@ -7,21 +7,11 @@
   (require 'use-package))
 (setq use-package-always-ensure nil)
 
-(use-package benchmark-init
-  :demand t
-  :config
-  ;; Start collecting before the rest of the config loads.
-  (benchmark-init/activate)
-  :hook
-  ;; Stop collecting after startup to avoid runtime overhead.
-  (after-init . benchmark-init/deactivate))
-
 ;; ----------------------------
 ;; Load Configuration Modules
 ;; ----------------------------
 (add-to-list 'load-path (expand-file-name "config" user-emacs-directory))
 
-;; Keep Customize output in a tracked config file.
 (setq custom-file (locate-user-emacs-file "config/custom.el"))
 
 ;; Load modular configuration

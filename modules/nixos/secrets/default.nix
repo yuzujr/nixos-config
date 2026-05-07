@@ -38,7 +38,7 @@ in
         secrets = {
             "ssh/github" = mkSecret "ssh.yaml" "github" userSecret;
             "ssh/gitee" = mkSecret "ssh.yaml" "gitee" userSecret;
-            "ssh/server" = mkSecret "ssh.yaml" "server" userSecret;
+            "ssh/vm" = mkSecret "ssh.yaml" "vm" userSecret;
             "ssh/aur" = mkSecret "ssh.yaml" "aur" userSecret;
 
             "network/mihomo" = mkSecret "network.yaml" "mihomo" rootSecret;
