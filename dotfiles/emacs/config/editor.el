@@ -4,7 +4,6 @@
 
 (defvar rc/cache-directory)
 (defvar rc/state-directory)
-(defvar project-list-file)
 (defvar transient-history-file)
 (defvar transient-levels-file)
 (defvar transient-values-file)
@@ -69,7 +68,6 @@
   (setq backup-directory-alist `(("." . ,backup-dir))
         auto-save-file-name-transforms `((".*" ,autosave-dir t))
         auto-save-list-file-prefix (expand-file-name ".saves-" autosave-list-dir)
-        project-list-file (expand-file-name "projects" rc/state-directory)
         transient-history-file (expand-file-name "history.el" transient-dir)
         transient-levels-file (expand-file-name "levels.el" transient-dir)
         transient-values-file (expand-file-name "values.el" transient-dir)

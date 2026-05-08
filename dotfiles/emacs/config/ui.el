@@ -1,8 +1,6 @@
 ;;; ui.el -*- lexical-binding: t; -*-
 
 (provide 'ui)
-(require 'dbus nil t)
-(require 'subr-x)
 
 ;; ----------------------------
 ;; Font Configuration
@@ -58,7 +56,8 @@
 (defvar rc/theme-dark 'solarized-dark)
 (defvar rc/theme-light 'solarized-light)
 (defvar rc/current-theme nil)
-(defvar rc/theme-monitor nil)
+(defvar rc/initial-color-scheme 'dark
+  "Desktop color scheme captured once during startup.")
 
 (defun rc/theme-apply (theme)
   (unless (eq theme rc/current-theme)
@@ -66,73 +65,15 @@
     (load-theme theme t)
     (setq rc/current-theme theme)))
 
-(defun rc/theme--apply-scheme (scheme)
-  (when scheme
-    (rc/theme-apply (if (eq scheme 'light) rc/theme-light rc/theme-dark))))
-
-(defun rc/theme--scheme-from-value (value)
-  "Extract a portal light/dark value from VALUE."
-  (cond
-   ((eq value 1) 'dark)
-   ((eq value 2) 'light)
-   ((consp value)
-    (or (rc/theme--scheme-from-value (car value))
-        (rc/theme--scheme-from-value (cdr value))))
-   (t nil)))
-
-(defun rc/theme--portal-read-scheme ()
-  "Return the current desktop color scheme, or nil when unavailable."
-  (when (and (display-graphic-p)
-             (featurep 'dbusbind))
-    (condition-case nil
-        (rc/theme--scheme-from-value
-         (dbus-call-method
-          :session
-          "org.freedesktop.portal.Desktop"
-          "/org/freedesktop/portal/desktop"
-          "org.freedesktop.portal.Settings"
-          "Read"
-          "org.freedesktop.appearance"
-          "color-scheme"))
-      (error nil))))
-
-(defun rc/theme--portal-signal-handler (_namespace _key value)
-  "Apply a new theme after a portal SettingChanged signal VALUE."
-  (when-let ((scheme (rc/theme--scheme-from-value value)))
-    (rc/theme--apply-scheme scheme)))
-
-(defun rc/theme-stop-portal-monitor ()
+(defun rc/theme-apply-initial ()
   (interactive)
-  (when rc/theme-monitor
-    (ignore-errors (dbus-unregister-object rc/theme-monitor)))
-  (setq rc/theme-monitor nil))
-
-(add-hook 'kill-emacs-hook #'rc/theme-stop-portal-monitor)
-
-(defun rc/theme-start-portal-monitor ()
-  (interactive)
-  (rc/theme-stop-portal-monitor)
-  (rc/theme-apply rc/theme-dark)
-  (when-let ((scheme (rc/theme--portal-read-scheme)))
-    (rc/theme--apply-scheme scheme))
-  (when (and (display-graphic-p)
-             (featurep 'dbusbind))
-    (setq rc/theme-monitor
-          (condition-case nil
-              (dbus-register-signal
-               :session
-               "org.freedesktop.portal.Desktop"
-               "/org/freedesktop/portal/desktop"
-               "org.freedesktop.portal.Settings"
-               "SettingChanged"
-               #'rc/theme--portal-signal-handler
-               :arg0 "org.freedesktop.appearance"
-               :arg1 "color-scheme")
-            (error nil)))))
+  (rc/theme-apply (if (eq rc/initial-color-scheme 'light)
+                      rc/theme-light
+                    rc/theme-dark)))
 
 (use-package solarized-theme
   :config
-  (rc/theme-start-portal-monitor))
+  (rc/theme-apply-initial))
 
 ;; ----------------------------
 ;; Centered Editing

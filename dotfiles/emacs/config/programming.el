@@ -43,7 +43,8 @@
          ("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode))
   :custom
-  (markdown-command "cmark-gfm")
+  (markdown-command
+   "cmark-gfm -e table -e strikethrough -e autolink -e tagfilter -e tasklist -e footnotes")
   (markdown-live-preview-window-function #'markdown-live-preview-window-eww)
   (markdown-live-preview-delete-export 'delete-on-export)
   :config

@@ -10,6 +10,19 @@
 (use-package magit
   :bind (("C-c g" . magit-status)))
 
+(defun rc/diff-hl-dired-mode ()
+  "Enable `diff-hl-dired-mode' after loading its integration module."
+  (require 'diff-hl-dired)
+  (diff-hl-dired-mode 1))
+
+(use-package diff-hl
+  :hook ((prog-mode . diff-hl-mode)
+         (text-mode . diff-hl-mode)
+         (dired-mode . rc/diff-hl-dired-mode))
+  :config
+  (with-eval-after-load 'magit
+    (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)))
+
 ;; ----------------------------
 ;; Terminal - Eat
 ;; ----------------------------
@@ -28,7 +41,6 @@
 ;; ----------------------------
 (use-package compile
   :ensure nil
-  :bind (("C-c c" . compile))
   :custom
   (compilation-auto-jump-to-first-error 'first-known)
   (compilation-scroll-output 'first-error))
@@ -36,11 +48,23 @@
 ;; ----------------------------
 ;; Navigation - Project + Dired
 ;; ----------------------------
-(keymap-global-set "C-c f" #'project-find-file)
-(keymap-global-set "C-c p" #'project-switch-project)
-(keymap-global-set "C-c t" #'project-dired)
-(keymap-global-set "C-c w" #'project-find-dir)
-(keymap-global-set "C-c o" #'dired-jump)
+(use-package projectile
+  :demand t
+  :bind-keymap ("C-c p" . projectile-command-map)
+  :bind (("C-c f" . projectile-find-file)
+         ("C-c o" . projectile-switch-project)
+         ("C-c w" . projectile-dired)
+         ("C-c c" . projectile-compile-project)
+         ("C-c R" . projectile-run-project))
+  :custom
+  (projectile-cache-file (expand-file-name "projectile.cache" rc/state-directory))
+  (projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" rc/state-directory))
+  (projectile-completion-system 'default)
+  (projectile-enable-caching t)
+  (projectile-indexing-method 'alien)
+  (projectile-switch-project-action #'projectile-dired)
+  :config
+  (projectile-mode 1))
 
 ;; Flash-like in-buffer jump labels.
 (use-package avy
@@ -48,7 +72,7 @@
          ("C-c J" . avy-goto-line)
          ("C-c C-j" . avy-resume))
   :custom
-  (avy-timeout-seconds 0.35)
+  (avy-timeout-seconds 0.3)
   (avy-background t)
   (avy-all-windows t)
   (avy-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
@@ -63,32 +87,6 @@
 
 (use-package dired-x
   :ensure nil)
-
-(defun rc/project-try-rust-subcrate (dir)
-  "Treat nested Rust crates as projects when the VC root is not a Cargo workspace.
-
-This keeps a Git repository without a top-level `Cargo.toml' from
-being used as the Rust project root, while leaving real Cargo
-workspaces alone."
-  (let ((manifest-dir (locate-dominating-file dir "Cargo.toml")))
-    (when manifest-dir
-      (let* ((project-vc-extra-root-markers nil)
-             ;; Bypass `project-try-vc' cache so the result can depend on
-             ;; whether we are considering `Cargo.toml' as a root marker.
-             (vc-project (project-try-vc--search dir))
-             (vc-root (and vc-project (project-root vc-project))))
-        (when (and vc-root
-                   (not (file-exists-p (expand-file-name "Cargo.toml" vc-root)))
-                   (not (file-equal-p manifest-dir vc-root)))
-          (let ((project-vc-extra-root-markers '("Cargo.toml")))
-            (project-try-vc--search dir)))))))
-
-(use-package project
-  :ensure nil
-  :custom
-  (project-vc-extra-root-markers '(".project"))
-  :config
-  (add-hook 'project-find-functions #'rc/project-try-rust-subcrate))
 
 ;; ----------------------------
 ;; Editing Enhancements
@@ -141,21 +139,21 @@ workspaces alone."
   (which-key-mode)
   (which-key-add-key-based-replacements
     "C-c /" "line-search"
-    "C-c c" "compile"
+    "C-c c" "project-compile"
     "C-c e" "terminal"
     "C-c f" "project-file"
-    "C-c F" "fd"
     "C-c i" "imenu"
-    "C-c l" "lsp-extra"
+    "C-c l" "lsp"
     "C-c m" "multi-cursor"
     "C-c j" "avy-jump"
     "C-c J" "avy-line"
     "C-c n" "diagnostics"
-    "C-c o" "dired-jump"
-    "C-c p" "project-switch"
-    "C-c s" "ripgrep"
-    "C-c t" "project-dired"
-    "C-c w" "project-dir"
+    "C-c o" "project-switch"
+    "C-c p" "projectile"
+    "C-c s" "consult-ripgrep"
+    "C-c w" "project-dired"
+    "C-c b" "consult-project-buffer"
+    "C-c R" "project-run"
     "C-c ?" "cheatsheet"))
 
 ;; ----------------------------

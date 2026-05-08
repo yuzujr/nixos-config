@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+    home.packages = [ pkgs.cmark-gfm ];
+
     programs.emacs = {
         enable = true;
         package = pkgs.emacs-pgtk;
@@ -11,6 +13,7 @@
                 corfu
                 corfu-prescient
                 direnv
+                diff-hl
                 eat
                 expand-region
                 glsl-mode
@@ -25,6 +28,7 @@
                 olivetti
                 orderless
                 prescient
+                projectile
                 rust-mode
                 sideline
                 sideline-flymake

@@ -101,14 +101,21 @@
   :config
   (marginalia-mode))
 
+(defun rc/consult-project-root (&optional _may-prompt)
+  "Return the Projectile project root for Consult."
+  (when (fboundp 'projectile-project-root)
+    (ignore-errors (projectile-project-root))))
+
 (use-package consult
   :bind (("C-x b" . consult-buffer)
          ("C-c s" . consult-ripgrep)
          ("C-c /" . consult-line)
+         ("C-c b" . consult-project-buffer)
          ("M-g g" . consult-goto-line)
          ("M-y" . consult-yank-pop))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :custom
+  (consult-project-function #'rc/consult-project-root)
   (consult-narrow-key "<")
   ;; Avoid default `#` separator prompt in async commands.
   (consult-async-split-style 'semicolon))

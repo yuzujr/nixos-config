@@ -94,9 +94,13 @@
            (t nil)))
       (error nil))))
 
+(defvar rc/initial-color-scheme
+  (or (rc/early-portal-color-scheme) 'dark)
+  "Desktop color scheme captured once during startup.")
+
 (defun rc/apply-initial-frame-colors ()
   "Apply frame colors that match the later Solarized theme selection."
-  (let ((colors (if (eq (rc/early-portal-color-scheme) 'light)
+  (let ((colors (if (eq rc/initial-color-scheme 'light)
                     rc/solarized-light-frame-colors
                   rc/solarized-dark-frame-colors)))
     (dolist (param colors)
