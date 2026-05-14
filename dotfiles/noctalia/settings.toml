@@ -8,7 +8,8 @@ order = [ "default" ]
     margin_edge = 0
     margin_ends = 0
     radius = 0
-    shadow = false
+    shadow = true
+    thickness = 40
     start = [ "workspaces", "active_window", "media" ]
 
 [brightness]
@@ -43,8 +44,8 @@ polkit_agent = true
 settings_show_advanced = false
 clipboard_auto_paste = "off"
 
-[shell.shadow]
-blur = 0
+    [shell.shadow]
+    blur = 14
 
 [system.monitor]
 enabled = false
@@ -74,9 +75,16 @@ directory = "/home/yuzujr/Pictures/Wallpapers"
 auto_locate = true
 
 [widget.active_window]
-icon_size = 20.0
-max_length = 199.0
+icon_size = 18.0
+min_length = 0.0
+max_length = 200.0
 title_scroll = "on_hover"
+
+[widget.media]
+title_scroll = "on_hover"
+
+[widget.tray]
+drawer = true
 
 [widget.brightness]
 show_label = false

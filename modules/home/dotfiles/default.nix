@@ -26,7 +26,7 @@ in
         "starship.toml".source = mkSymlink "${repoRoot}/dotfiles/starship.toml";
 
         "niri".source = mkSymlink "${repoRoot}/dotfiles/niri/";
-        "noctalia".source = mkSymlink "${repoRoot}/dotfiles/noctalia/config";
+        "noctalia".source = mkSymlink "${repoRoot}/dotfiles/noctalia";
         "kitty".source = mkSymlink "${repoRoot}/dotfiles/kitty";
         "fuzzel".source = mkSymlink "${repoRoot}/dotfiles/fuzzel";
         "fastfetch".source = mkSymlink "${repoRoot}/dotfiles/fastfetch";
