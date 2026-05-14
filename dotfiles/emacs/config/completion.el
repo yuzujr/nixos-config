@@ -79,6 +79,9 @@
 
 (use-package corfu-prescient
   :after (corfu prescient)
+  :custom
+  (corfu-prescient-enable-filtering nil)
+  (corfu-prescient-override-sorting t)
   :config
   (corfu-prescient-mode 1))
 

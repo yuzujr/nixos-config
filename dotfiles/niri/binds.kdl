@@ -1,20 +1,20 @@
 binds {
     // #"应用启动"
-    Mod+Shift+Slash hotkey-overlay-title="切换快捷键速查面板" { spawn "noctalia-shell" "ipc" "call" "plugin:keybind-cheatsheet" "toggle"; }
+    Mod+Shift+Slash hotkey-overlay-title="切换快捷键速查面板" { show-hotkey-overlay; }
     Mod+Return hotkey-overlay-title="终端（Kitty）" { spawn "kitty" "--single-instance"; }
     Mod+E hotkey-overlay-title="文件管理器（Dolphin）" { spawn "dolphin"; }
     Mod+B hotkey-overlay-title="浏览器（Chrome）" { spawn "google-chrome"; }
     Alt+Shift+W hotkey-overlay-title="Coomer聚焦" { spawn "coomer" "--overlay" "--monitor" "all"; }
     Alt+Space hotkey-overlay-title="应用启动器" { spawn-sh "pkill fuzzel || fuzzel"; }
     Super+Shift+F23 hotkey-overlay-title="Copy a lot" { spawn-sh "pkill fuzzel || fuzzel"; }
-    Mod+Alt+V hotkey-overlay-title="剪贴板" { spawn "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
+    Mod+Alt+V hotkey-overlay-title="剪贴板" { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
 
     // #"截图与录屏"
     Ctrl+F1 hotkey-overlay-title="选取区域截图" { screenshot; }
     Mod+Shift+S hotkey-overlay-title="选取区域截图" { screenshot; }
     Mod+Alt+S hotkey-overlay-title="当前窗口截图" { screenshot-window; }
     Print hotkey-overlay-title="全屏截图" { screenshot-screen; }
-    Alt+R hotkey-overlay-title="开始/停止录屏" { spawn "noctalia-shell" "ipc" "call" "plugin:screen-recorder" "toggle"; }
+    Alt+R hotkey-overlay-title="开始/停止录屏" { spawn "noctalia" "msg" "scripted-widget" "screen_recorder" "focused" "toggle"; }
 
     // #"系统"
     Pause hotkey-overlay-title="播放/暂停" { spawn "playerctl" "play-pause"; }
@@ -22,8 +22,8 @@ binds {
     Mod+Alt+I hotkey-overlay-title="切换输入法主题预设" { spawn "~/.local/bin/fcitx5-theme-toggle"; }
 
     // #"壁纸"
-    Mod+Ctrl+W hotkey-overlay-title="打开壁纸选择" { spawn "noctalia-shell" "ipc" "call" "wallpaper" "toggle"; }
-    Mod+Shift+W hotkey-overlay-title="随机切换壁纸" { spawn "noctalia-shell" "ipc" "call" "wallpaper" "random" "all"; }
+    Mod+Ctrl+W hotkey-overlay-title="打开壁纸选择" { spawn "noctalia" "msg" "panel-toggle" "wallpaper"; }
+    Mod+Shift+W hotkey-overlay-title="随机切换壁纸" { spawn "noctalia" "msg" "wallpaper-random"; }
 
     // #"窗口与概览"
     Mod+G repeat=false hotkey-overlay-title="切换概览" { toggle-overview; }

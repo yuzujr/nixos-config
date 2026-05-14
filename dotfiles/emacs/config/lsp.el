@@ -79,6 +79,16 @@
   :after sideline
   :commands (sideline-flymake))
 
+(defun rc/eglot-format-buffer-on-save ()
+  "Format current buffer with Eglot before saving when supported."
+  (when (and (eglot-managed-p)
+             (eglot-server-capable :documentFormattingProvider))
+    (eglot-format-buffer)))
+
+(defun rc/eglot-enable-format-on-save ()
+  "Enable Eglot formatting before saving in the current buffer."
+  (add-hook 'before-save-hook #'rc/eglot-format-buffer-on-save nil t))
+
 (use-package eglot
   :ensure nil
   :hook ((python-ts-mode . eglot-ensure)
@@ -86,7 +96,8 @@
          (c++-ts-mode . eglot-ensure)
          (rust-ts-mode . eglot-ensure)
          (rust-mode . eglot-ensure)
-         (nix-ts-mode . eglot-ensure))
+         (nix-ts-mode . eglot-ensure)
+         (eglot-managed-mode . rc/eglot-enable-format-on-save))
   :bind (("C-c a" . eglot-code-actions)
          ("C-c r" . eglot-rename)
          ("M-n" . flymake-goto-next-error)

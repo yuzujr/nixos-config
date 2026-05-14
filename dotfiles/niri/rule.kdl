@@ -1,6 +1,6 @@
 // 整体设置
 window-rule {
-    geometry-corner-radius 18
+    geometry-corner-radius 8
     clip-to-geometry true
     opacity 1.0
     background-effect {
@@ -24,6 +24,7 @@ window-rule {
     match app-id="org.pulseaudio.pavucontrol" title="音量控制"
     match app-id="feh"
     match app-id="org.kde.ark"
+    match app-id="dev.noctalia.Noctalia.Settings"
     open-floating true
 }
 
@@ -31,12 +32,19 @@ window-rule {
 layer-rule {
     match namespace="^launcher$"
 
-    geometry-corner-radius 18
+    geometry-corner-radius 8
 
     background-effect {
         xray false
         blur true
     }
+}
+
+// noctalia设置页固定大小
+window-rule {
+  match app-id="dev.noctalia.Noctalia.Settings"
+  default-column-width { fixed 1080; }
+  default-window-height { fixed 920; }
 }
 
 // SPlayer桌面歌词

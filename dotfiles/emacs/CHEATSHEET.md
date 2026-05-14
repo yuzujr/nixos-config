@@ -183,6 +183,8 @@
 - `rust-mode`
 - `nix-ts-mode`，服务器配置为 `nixd`
 
+保存行为：Eglot 管理的 buffer 会在 LSP server 支持 `textDocument/formatting` 时，保存前运行 `eglot-format-buffer`。
+
 | 键位 | 命令 |
 | --- | --- |
 | `C-c l s` | `eglot` |
@@ -242,7 +244,7 @@
 | 透明度 | `rc/frame-opacity = 100` |
 | 主题 | `solarized-dark` / `solarized-light` |
 | 明暗切换 | 启动时读取一次 XDG Desktop Portal color-scheme |
-| 居中编辑 | `olivetti-mode` 在 `prog-mode` 开启，宽度 `100` |
+| 居中编辑 | `olivetti-mode` 在 `prog-mode` 开启，宽度 `120` |
 | 行号 | `global-display-line-numbers-mode` 开启 |
 | 分屏 | 单窗口优先右分；多窗口优先在最右列向下堆叠 |
 | 滚动 | `scroll-margin = 5`，偏向平滑和低延迟 |
@@ -357,7 +359,7 @@ XDG 目录：
 | `consult-imenu` | `C-c i` |
 | `consult-xref` | Xref 结果自动改用 Consult |
 | `solarized-theme` | 启动时按系统明暗加载 Solarized |
-| `olivetti` | `prog-mode` 自动居中，宽度 `100` |
+| `olivetti` | `prog-mode` 自动居中，宽度 `120` |
 | `yasnippet` | `prog-mode` 自动开启，`C-c & C-s/n/v` |
 | `xref` | `C-c d`、`C-c u` |
 | `flymake` | Eglot/语言后端诊断，`M-n`、`M-p` |

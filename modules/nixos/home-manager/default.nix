@@ -3,6 +3,7 @@
     coomerPkg,
     drcomClientPkg,
     home-manager,
+    noctaliaPkg,
     vars,
     ...
 }:
@@ -20,6 +21,7 @@
                 ani2xcursorPkg
                 coomerPkg
                 drcomClientPkg
+                noctaliaPkg
                 vars
                 ;
         };

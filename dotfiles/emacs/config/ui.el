@@ -81,7 +81,7 @@
 (use-package olivetti
   :hook (prog-mode . olivetti-mode)
   :custom
-  (olivetti-body-width 100))
+  (olivetti-body-width 120))
 
 ;; ----------------------------
 ;; Window Display

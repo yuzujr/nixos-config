@@ -43,6 +43,7 @@
   :ensure nil
   :custom
   (compilation-auto-jump-to-first-error 'first-known)
+  (compilation-skip-threshold 2)
   (compilation-scroll-output 'first-error))
 
 ;; ----------------------------

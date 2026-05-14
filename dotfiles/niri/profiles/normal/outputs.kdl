@@ -1,8 +1,8 @@
 // school
 output "BOE NE160QDM-NZL Unknown" { 
-   off
+   // off
    mode "2560x1600@240.000"
-   scale 1.25
+   scale 1.4
 }
 output "SKYDATA S.P.A. F27G10U F27G10U07158"{
    // off

@@ -6,7 +6,6 @@ include "animation.kdl"
 include "profiles/current-config.kdl"
 include "profiles/current-outputs.kdl"
 include "profiles/current-startup.kdl"
-include optional=true "local.kdl"
 
 screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
 
@@ -34,7 +33,7 @@ blur {
 }
 
 switch-events {
-    lid-close { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+    lid-close { spawn "noctalia" "msg" "screen-lock"; }
 }
  
 recent-windows {
@@ -44,7 +43,7 @@ recent-windows {
 
     highlight {
         padding 20
-        corner-radius 18
+        corner-radius 8
     }
 
     previews {

@@ -35,6 +35,11 @@
             url = "github:yuzujr/ani2xcursor";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+
+        noctalia = {
+            url = "github:noctalia-dev/noctalia-shell/v5";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
     outputs =
@@ -46,6 +51,7 @@
             coomer,
             drcom-client-cpp,
             ani2xcursor,
+            noctalia,
             ...
         }:
         let
@@ -73,6 +79,7 @@
                         coomerPkg = coomer.packages.${system}.default;
                         drcomClientPkg = drcom-client-cpp.packages.${system}.default;
                         ani2xcursorPkg = ani2xcursor.packages.${system}.default;
+                        noctaliaPkg = noctalia.packages.${system}.default;
                     };
                 in
                 nixpkgs.lib.nixosSystem {

@@ -3,6 +3,7 @@
     coomerPkg,
     drcomClientPkg,
     ani2xcursorPkg,
+    noctaliaPkg,
     ...
 }:
 let
@@ -10,6 +11,7 @@ let
         coomerPkg
         drcomClientPkg
         ani2xcursorPkg
+        noctaliaPkg
     ];
 
     development = with pkgs; [
@@ -33,7 +35,6 @@ let
         libnotify
         libreoffice-fresh
         networkmanagerapplet
-        noctalia-shell
         pavucontrol
         qq
         seahorse
@@ -85,6 +86,7 @@ let
     ];
 
     utilities = with pkgs; [
+        appimage-run
         cliphist
         file
         unrar

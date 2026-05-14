@@ -1,0 +1,109 @@
+[bar]
+order = [ "default" ]
+
+    [bar.default]
+    background_opacity = 0.93000000715255737
+    capsule = true
+    end = [ "screen_recorder", "tray", "network", "bluetooth", "notifications", "volume", "brightness", "battery", "control-center" ]
+    margin_edge = 0
+    margin_ends = 0
+    radius = 0
+    shadow = false
+    start = [ "workspaces", "active_window", "media" ]
+
+[brightness]
+enable_ddcutil = true
+
+[desktop_widgets]
+enabled = false
+
+[idle]
+behavior_order = [ "lock", "screen-off", "suspend" ]
+
+    [idle.behavior.lock]
+    action = "lock"
+    enabled = true
+    timeout = 600
+
+    [idle.behavior.screen-off]
+    action = "screen_off"
+    enabled = true
+    timeout = 660
+
+    [idle.behavior.suspend]
+    action = "suspend"
+    enabled = false
+    lock_before_suspend = true
+    timeout = 900
+
+[shell]
+avatar_path = "/home/yuzujr/Pictures/Beluga.webp"
+font_family = "Maple Mono NF CN Light"
+polkit_agent = true
+settings_show_advanced = false
+clipboard_auto_paste = "off"
+
+[shell.shadow]
+blur = 0
+
+[system.monitor]
+enabled = false
+
+[theme]
+community_palette = "Solarized"
+mode = "auto"
+source = "community"
+
+    [theme.templates]
+    builtin_ids = [ "gtk3", "gtk4", "kcolorscheme", "btop", "qt" ]
+    community_ids = [ "fuzzel", "yazi" ]
+
+[wallpaper]
+directory = "/home/yuzujr/Pictures/Wallpapers"
+
+    [wallpaper.default]
+    path = "/home/yuzujr/Pictures/Wallpapers/7.png"
+
+    [wallpaper.last]
+    path = "/home/yuzujr/Pictures/Wallpapers/7.png"
+
+    [wallpaper.monitors.eDP-1]
+    path = "/home/yuzujr/Pictures/Wallpapers/7.png"
+
+[weather]
+auto_locate = true
+
+[widget.active_window]
+icon_size = 20.0
+max_length = 199.0
+title_scroll = "on_hover"
+
+[widget.brightness]
+show_label = false
+
+[widget.network]
+show_label = false
+
+[widget.screen_recorder]
+type = "scripted"
+script = "scripts/screen_recorder.lua"
+directory        = ""
+filename_pattern = "recording_%Y%m%d_%H%M%S"
+video_source     = "portal"
+video_codec      = "h264"
+audio_codec      = "opus"
+audio_source     = "default_output"
+quality          = "very_high"
+frame_rate       = 60
+color_range      = "limited"
+resolution       = "original"
+show_cursor      = true
+copy_to_clipboard = false
+restore_portal   = false
+replay_enabled   = false
+replay_duration  = 30
+replay_storage   = "ram"
+hide_inactive    = false
+
+[widget.volume]
+show_label = false
