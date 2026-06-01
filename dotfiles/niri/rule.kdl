@@ -35,16 +35,16 @@ layer-rule {
     geometry-corner-radius 8
 
     background-effect {
-        xray false
         blur true
+        xray false
     }
 }
 
 // noctalia设置页固定大小
 window-rule {
-  match app-id="dev.noctalia.Noctalia.Settings"
-  default-column-width { fixed 1080; }
-  default-window-height { fixed 920; }
+    match app-id="dev.noctalia.Noctalia.Settings"
+    default-column-width { fixed 1080; }
+    default-window-height { fixed 920; }
 }
 
 // SPlayer桌面歌词

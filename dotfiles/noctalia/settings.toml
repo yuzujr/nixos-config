@@ -4,7 +4,7 @@ order = [ "default" ]
     [bar.default]
     margin_edge = 10
     margin_ends = 10
-    radius = 18
+    radius = 20
     background_opacity = 0.93000000715255737
     capsule = true
     end = [ "screen_recorder", "tray", "network", "bluetooth", "notifications", "volume", "brightness", "battery", "control-center" ]
