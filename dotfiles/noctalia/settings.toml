@@ -2,12 +2,12 @@
 order = [ "default" ]
 
     [bar.default]
+    margin_edge = 10
+    margin_ends = 10
+    radius = 18
     background_opacity = 0.93000000715255737
     capsule = true
     end = [ "screen_recorder", "tray", "network", "bluetooth", "notifications", "volume", "brightness", "battery", "control-center" ]
-    margin_edge = 0
-    margin_ends = 0
-    radius = 0
     shadow = true
     thickness = 40
     start = [ "workspaces", "active_window", "media" ]
@@ -19,6 +19,7 @@ enable_ddcutil = true
 enabled = false
 
 [idle]
+pre_action_fade_seconds = 5
 behavior_order = [ "lock", "screen-off", "suspend" ]
 
     [idle.behavior.lock]
@@ -39,13 +40,17 @@ behavior_order = [ "lock", "screen-off", "suspend" ]
 
 [shell]
 avatar_path = "/home/yuzujr/Pictures/Beluga.webp"
-font_family = "Maple Mono NF CN Light"
+font_family = "Noto Sans CJK SC"
 polkit_agent = true
 settings_show_advanced = false
 clipboard_auto_paste = "off"
-
+    
+    [shell.panel]
+    clipboard_placement = "attached"
+    open_near_click_control_center = true
+    
     [shell.shadow]
-    blur = 14
+    blur = 12
 
 [system.monitor]
 enabled = false
@@ -72,7 +77,13 @@ directory = "/home/yuzujr/Pictures/Wallpapers"
     path = "/home/yuzujr/Pictures/Wallpapers/7.png"
 
 [weather]
+enabled = false
 auto_locate = true
+
+[widget.workspaces]
+display = "none"
+empty_color = "on_surface"
+occupied_color = "on_surface"
 
 [widget.active_window]
 icon_size = 18.0

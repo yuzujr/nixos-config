@@ -60,14 +60,3 @@ window-rule {
     }
 }
 
-// steam通知
-window-rule {
-    match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
-    default-floating-position x=10 y=10 relative-to="bottom-right"
-}
-
-// steam好友列表
-window-rule {
-    match title="好友列表"
-     max-width 450
-}

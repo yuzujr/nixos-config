@@ -138,11 +138,11 @@ Name=noctalia
 XftAntialias=true
 XftHintStyle=hintslight
 XftSubPixel=vbgr
-fixed=Hack,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
-font=Noto Sans CJK SC,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
-menuFont=Noto Sans CJK SC,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
-smallestReadableFont=Noto Sans CJK SC,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
-toolBarFont=Noto Sans CJK SC,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+fixed=Hack,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+font=Noto Sans CJK SC,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+menuFont=Noto Sans CJK SC,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+smallestReadableFont=Noto Sans CJK SC,9,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
+toolBarFont=Noto Sans CJK SC,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
 
 [Icons]
 Theme=Tela-circle
@@ -171,7 +171,7 @@ View Style=DetailTree
 [WM]
 activeBackground=77,58,0
 activeBlend=255,243,204
-activeFont=Noto Sans CJK SC,12,-1,5,400,0,0,0,0,0,0,0,0,0,0,1
+activeFont=Noto Sans CJK SC,11,-1,5,400,0,0,0,0,0,0,0,0,0,0,1,,0,0
 activeForeground=255,243,204
 inactiveBackground=0,43,54
 inactiveBlend=101,123,131

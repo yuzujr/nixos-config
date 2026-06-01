@@ -14,5 +14,5 @@ binds {
     XF86AudioMicMute allow-when-locked=true hotkey-overlay-title="静音麦克风" { spawn "noctalia" "msg" "mic-mute"; }
     XF86MonBrightnessUp allow-when-locked=true hotkey-overlay-title="亮度提高" { spawn "noctalia" "msg" "brightness-up"; }
     XF86MonBrightnessDown allow-when-locked=true hotkey-overlay-title="亮度降低" { spawn "noctalia" "msg" "brightness-down"; }
-    Mod+Alt+L hotkey-overlay-title="锁屏" { spawn "noctalia" "msg" "screen-lock"; }
+    Mod+Alt+L hotkey-overlay-title="锁屏" { spawn "noctalia" "msg" "session" "lock"; }
 }
