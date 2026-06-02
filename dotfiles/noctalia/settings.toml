@@ -56,12 +56,12 @@ clipboard_auto_paste = "off"
 enabled = false
 
 [theme]
-community_palette = "Solarized"
-mode = "auto"
-source = "community"
+builtin = "Rosé Pine"
+mode = "light"
+source = "builtin"
 
     [theme.templates]
-    builtin_ids = [ "gtk3", "gtk4", "kcolorscheme", "btop", "qt" ]
+    builtin_ids = [ "btop", "gtk3", "gtk4", "kcolorscheme", "kitty", "niri", "qt" ]
     community_ids = [ "fuzzel", "yazi" ]
 
 [wallpaper]
@@ -77,8 +77,9 @@ directory = "/home/yuzujr/Pictures/Wallpapers"
     path = "/home/yuzujr/Pictures/Wallpapers/7.png"
 
 [weather]
-enabled = false
-auto_locate = true
+enabled = true
+auto_locate = false
+address = "Changchun, CN"
 
 [widget.workspaces]
 display = "none"
@@ -126,3 +127,24 @@ hide_inactive    = false
 
 [widget.volume]
 show_label = false
+
+[[control_center.shortcuts]]
+type = "wifi"
+
+[[control_center.shortcuts]]
+type = "bluetooth"
+
+[[control_center.shortcuts]]
+type = "caffeine"
+
+[[control_center.shortcuts]]
+type = "power_profile"
+
+[[control_center.shortcuts]]
+type = "notification"
+
+[[control_center.shortcuts]]
+type = "dark_mode"
+
+[backdrop]
+enabled = true

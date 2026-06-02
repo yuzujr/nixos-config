@@ -1,7 +1,7 @@
 include "binds.kdl"
 include "rule.kdl"
 include "layout.kdl"
-include "color.kdl"
+include "noctalia.kdl"
 include "animation.kdl"
 include "profiles/current-config.kdl"
 include "profiles/current-outputs.kdl"
@@ -132,3 +132,4 @@ hotkey-overlay {
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
 prefer-no-csd
+

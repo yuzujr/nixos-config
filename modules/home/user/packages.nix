@@ -17,6 +17,7 @@ let
     development = with pkgs; [
         binutils
         codex
+        antigravity-cli
         gcc
         gnumake
         neovim
@@ -52,12 +53,6 @@ let
         gpu-screen-recorder
         (obs-studio.override { browserSupport = false; })
         playerctl
-    ];
-
-    gaming = with pkgs; [
-        gamescope
-        gamemode
-        mangohud
     ];
 
     theming = with pkgs; [
@@ -102,5 +97,5 @@ let
 in
 {
     home.packages =
-        custom ++ development ++ desktop ++ media ++ gaming ++ theming ++ terminal ++ utilities ++ windows;
+        custom ++ development ++ desktop ++ media ++ theming ++ terminal ++ utilities ++ windows;
 }
