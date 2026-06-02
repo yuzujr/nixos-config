@@ -2,7 +2,7 @@ local M = {}
 
 local specs = {
   -- Core UX
-  { src = "https://github.com/maxmx03/solarized.nvim" },
+  { src = "https://github.com/rose-pine/neovim" },
   { src = "https://github.com/folke/which-key.nvim" },
   { src = "https://github.com/folke/snacks.nvim" },
   { src = "https://github.com/rcarriga/nvim-notify" },

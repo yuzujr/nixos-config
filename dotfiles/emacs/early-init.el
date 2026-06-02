@@ -56,22 +56,22 @@
 (when (boundp 'pgtk-wait-for-event-timeout)
   (setq-default pgtk-wait-for-event-timeout 0))
 
-;; Seed the initial frame with Solarized colors before the theme package loads.
+;; Seed the initial frame with Rosé Pine colors before the theme package loads.
 (require 'dbus nil t)
 
-(defconst rc/solarized-dark-frame-colors
-  '((background-color . "#002b36")
-    (foreground-color . "#839496")
-    (cursor-color . "#93a1a1")
+(defconst rc/rose-pine-dark-frame-colors
+  '((background-color . "#191724") ;; Base
+    (foreground-color . "#e0def4") ;; Text
+    (cursor-color . "#524f67")     ;; Highlight High
     (background-mode . dark))
-  "Frame parameters matching Solarized Dark.")
+  "Frame parameters matching Rosé Pine (Dark).")
 
-(defconst rc/solarized-light-frame-colors
-  '((background-color . "#fdf6e3")
-    (foreground-color . "#657b83")
-    (cursor-color . "#586e75")
+(defconst rc/rose-pine-dawn-frame-colors
+  '((background-color . "#faf4ed") ;; Base
+    (foreground-color . "#575279") ;; Text
+    (cursor-color . "#cecacd")     ;; Highlight High
     (background-mode . light))
-  "Frame parameters matching Solarized Light.")
+  "Frame parameters matching Rosé Pine Dawn (Light).")
 
 (defun rc/early-portal-color-scheme ()
   "Return the current portal color scheme, or nil when unavailable."
@@ -99,10 +99,10 @@
   "Desktop color scheme captured once during startup.")
 
 (defun rc/apply-initial-frame-colors ()
-  "Apply frame colors that match the later Solarized theme selection."
+  "Apply frame colors that match the later Rosé Pine theme selection."
   (let ((colors (if (eq rc/initial-color-scheme 'light)
-                    rc/solarized-light-frame-colors
-                  rc/solarized-dark-frame-colors)))
+                    rc/rose-pine-dawn-frame-colors
+                  rc/rose-pine-dark-frame-colors)))
     (dolist (param colors)
       (add-to-list 'default-frame-alist param))
     (dolist (param colors)

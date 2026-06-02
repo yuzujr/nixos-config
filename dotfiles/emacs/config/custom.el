@@ -4,7 +4,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(package-selected-packages
+   '(ace-window consult corfu-prescient diff-hl direnv eat
+                expand-region flymake glsl-mode helpful kdl-mode magit
+                marginalia markdown-mode move-text multiple-cursors
+                nix-ts-mode olivetti orderless projectile
+                rose-pine-emacs rust-mode sideline-flymake
+                treesit-auto vertico-prescient which-key yasnippet))
+ '(package-vc-selected-packages
+   '((rose-pine-emacs :url "https://github.com/thongpv87/rose-pine-emacs"
+                      :branch "master"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

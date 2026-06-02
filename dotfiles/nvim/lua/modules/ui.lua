@@ -1,14 +1,18 @@
 local M = {}
 
 local function setup_colorscheme()
-  local ok, solarized = pcall(require, "solarized")
+  local ok, rose_pine = pcall(require, "rose-pine")
   if not ok then
-    vim.notify("solarized.nvim is not installed yet.", vim.log.levels.WARN)
+    vim.notify("rose-pine is not installed yet.", vim.log.levels.WARN)
     return
   end
 
-  solarized.setup({})
-  pcall(vim.cmd.colorscheme, "solarized")
+  rose_pine.setup({
+    styles = {
+        italic = false,
+    },
+  })
+  pcall(vim.cmd.colorscheme, "rose-pine")
   require("core.theme.portal").setup()
 end
 

@@ -242,7 +242,7 @@
 | --- | --- |
 | 字体 | `Maple Mono NF CN`，高度 `130`，regular |
 | 透明度 | `rc/frame-opacity = 100` |
-| 主题 | `solarized-dark` / `solarized-light` |
+| 主题 | `doom-rose-pine` / `doom-rose-pine-dawn` |
 | 明暗切换 | 启动时读取一次 XDG Desktop Portal color-scheme |
 | 居中编辑 | `olivetti-mode` 在 `prog-mode` 开启，宽度 `120` |
 | 行号 | `global-display-line-numbers-mode` 开启 |
@@ -358,7 +358,7 @@ XDG 目录：
 | `consult-flymake` | `C-c n` |
 | `consult-imenu` | `C-c i` |
 | `consult-xref` | Xref 结果自动改用 Consult |
-| `solarized-theme` | 启动时按系统明暗加载 Solarized |
+| `doom-themes` | 用于加载doom-rose-pine |
 | `olivetti` | `prog-mode` 自动居中，宽度 `120` |
 | `yasnippet` | `prog-mode` 自动开启，`C-c & C-s/n/v` |
 | `xref` | `C-c d`、`C-c u` |

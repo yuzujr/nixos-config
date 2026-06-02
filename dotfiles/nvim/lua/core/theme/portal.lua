@@ -16,13 +16,13 @@ local function apply(bg)
   if not bg then
     return
   end
-  if vim.o.background == bg and vim.g.colors_name == "solarized" then
+  if vim.o.background == bg and vim.g.colors_name == "rose-pine" then
     return
   end
 
   vim.o.termguicolors = true
   vim.o.background = bg
-  pcall(vim.cmd.colorscheme, "solarized")
+  pcall(vim.cmd.colorscheme, "rose-pine")
 end
 
 local function read_scheme_once()

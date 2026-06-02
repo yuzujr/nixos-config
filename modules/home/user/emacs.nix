@@ -14,6 +14,7 @@
                 corfu-prescient
                 direnv
                 diff-hl
+                doom-themes
                 eat
                 expand-region
                 glsl-mode
@@ -32,7 +33,6 @@
                 rust-mode
                 sideline
                 sideline-flymake
-                solarized-theme
                 treesit-auto
                 vertico
                 vertico-prescient

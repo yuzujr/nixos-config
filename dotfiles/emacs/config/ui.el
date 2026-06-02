@@ -8,7 +8,7 @@
 (defcustom rc/font-family "Maple Mono NF CN"
   "Default font family.")
 
-(defcustom rc/font-height 120
+(defcustom rc/font-height 130
   "Default font hei/ght (1/10 pt).")
 
 (defcustom rc/font-weight 'regular
@@ -16,10 +16,6 @@
 
 (defcustom rc/font-slant 'normal
   "Default font slant.")
-
-(defcustom rc/frame-opacity 100
-  "Default frame opacity percentage."
-  :type 'integer)
 
 (defun rc/set-default-frame-parameter (parameter value)
   "Set default frame PARAMETER to VALUE for current and future frames."
@@ -35,29 +31,17 @@
                         :weight rc/font-weight
                         :slant rc/font-slant)))
 
-(defun rc/apply-frame-opacity (&optional frame)
-  "Apply configured opacity to FRAME."
-  (let ((frame (or frame (selected-frame)))
-        (alpha `(,rc/frame-opacity . ,rc/frame-opacity)))
-    (when (display-graphic-p frame)
-      (rc/set-default-frame-parameter 'alpha-background rc/frame-opacity)
-      (rc/set-default-frame-parameter 'alpha alpha)
-      (set-frame-parameter frame 'alpha-background rc/frame-opacity)
-      (set-frame-parameter frame 'alpha alpha))))
-
 (add-hook 'after-make-frame-functions #'rc/apply-fonts)
-(add-hook 'after-make-frame-functions #'rc/apply-frame-opacity)
 (rc/apply-fonts)
-(rc/apply-frame-opacity)
 
 ;; ----------------------------
-;; Theme (solarized)
+;; Theme
 ;; ----------------------------
-(defvar rc/theme-dark 'solarized-dark)
-(defvar rc/theme-light 'solarized-light)
+(defvar rc/doom-rose-pine-dir (expand-file-name "elpa/rose-pine-doom-emacs" user-emacs-directory))
+(defvar rc/theme-dark 'doom-rose-pine)
+(defvar rc/theme-light 'doom-rose-pine-dawn)
 (defvar rc/current-theme nil)
-(defvar rc/initial-color-scheme 'dark
-  "Desktop color scheme captured once during startup.")
+(defvar rc/initial-color-scheme 'dark)
 
 (defun rc/theme-apply (theme)
   (unless (eq theme rc/current-theme)
@@ -71,9 +55,11 @@
                       rc/theme-light
                     rc/theme-dark)))
 
-(use-package solarized-theme
-  :config
-  (rc/theme-apply-initial))
+(unless (file-exists-p rc/doom-rose-pine-dir)
+  (message "Downloading Doom Rosé Pine theme...")
+  (call-process "git" nil nil nil "clone" "https://github.com/donniebreve/rose-pine-doom-emacs.git" rc/doom-rose-pine-dir))
+(add-to-list 'custom-theme-load-path rc/doom-rose-pine-dir)
+(rc/theme-apply-initial)
 
 ;; ----------------------------
 ;; Centered Editing
