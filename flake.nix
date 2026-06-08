@@ -38,7 +38,11 @@
 
         noctalia = {
             url = "github:noctalia-dev/noctalia-shell/v5";
-            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
+        rose-pine-doom-emacs = {
+            url = "github:donniebreve/rose-pine-doom-emacs";
+            flake = false;
         };
     };
 
@@ -52,6 +56,7 @@
             drcom-client-cpp,
             ani2xcursor,
             noctalia,
+            rose-pine-doom-emacs,
             ...
         }:
         let
@@ -80,6 +85,7 @@
                         drcomClientPkg = drcom-client-cpp.packages.${system}.default;
                         ani2xcursorPkg = ani2xcursor.packages.${system}.default;
                         noctaliaPkg = noctalia.packages.${system}.default;
+                        rosePineDoomEmacsSrc = rose-pine-doom-emacs;
                     };
                 in
                 nixpkgs.lib.nixosSystem {

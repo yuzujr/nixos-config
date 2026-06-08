@@ -4,6 +4,7 @@
     drcomClientPkg,
     home-manager,
     noctaliaPkg,
+    rosePineDoomEmacsSrc,
     vars,
     ...
 }:
@@ -22,6 +23,7 @@
                 coomerPkg
                 drcomClientPkg
                 noctaliaPkg
+                rosePineDoomEmacsSrc
                 vars
                 ;
         };

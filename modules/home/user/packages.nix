@@ -16,8 +16,10 @@ let
 
     development = with pkgs; [
         binutils
+        cc-switch
         codex
         antigravity-cli
+        claude-code
         gcc
         gnumake
         neovim
@@ -58,6 +60,7 @@ let
     theming = with pkgs; [
         adw-gtk3
         bibata-cursors
+        rose-pine-cursor
         kdePackages.qt6ct
         nwg-look
         tela-circle-icon-theme

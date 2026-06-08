@@ -20,16 +20,16 @@ debug {
 }
 
 cursor {
-    xcursor-theme "Bibata-Modern-Ice"
-    xcursor-size 28
+    xcursor-theme "BreezeX-RosePineDawn-Linux"
+    xcursor-size 32
     hide-after-inactive-ms 15000
 }
 
 blur {
-    passes 3
-    offset 3
-    noise 0.02
-    saturation 1.5
+    passes 4
+    offset 5.0
+    noise 0.05
+    saturation 1.2
 }
 
 switch-events {
@@ -132,4 +132,3 @@ hotkey-overlay {
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
 prefer-no-csd
-

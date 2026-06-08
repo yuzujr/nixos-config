@@ -57,7 +57,7 @@ enabled = false
 
 [theme]
 builtin = "Rosé Pine"
-mode = "light"
+mode = "auto"
 source = "builtin"
 
     [theme.templates]
@@ -78,8 +78,6 @@ directory = "/home/yuzujr/Pictures/Wallpapers"
 
 [weather]
 enabled = true
-auto_locate = false
-address = "Changchun, CN"
 
 [widget.workspaces]
 display = "none"
@@ -148,3 +146,14 @@ type = "dark_mode"
 
 [backdrop]
 enabled = true
+
+[location]
+address = "Changchun, CN"
+
+[notification]
+background_opacity = 0.93
+
+[osd]
+background_opacity = 0.93
+lock_keys = false
+position = "top_right"

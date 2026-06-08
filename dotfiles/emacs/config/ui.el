@@ -37,16 +37,33 @@
 ;; ----------------------------
 ;; Theme
 ;; ----------------------------
-(defvar rc/doom-rose-pine-dir (expand-file-name "elpa/rose-pine-doom-emacs" user-emacs-directory))
+(defvar rc/data-directory)
+(defvar rc/theme-directory
+  (expand-file-name "themes/rose-pine-doom-emacs/" rc/data-directory))
 (defvar rc/theme-dark 'doom-rose-pine)
 (defvar rc/theme-light 'doom-rose-pine-dawn)
 (defvar rc/current-theme nil)
 (defvar rc/initial-color-scheme 'dark)
+(defvar rc/theme-non-italic-faces
+  '(font-lock-comment-face
+    font-lock-doc-face
+    font-lock-type-face
+    font-lock-builtin-face)
+  "Faces that should remain non-italic after loading the theme.")
+
+(defun rc/theme-disable-italics ()
+  "Disable italics introduced by theme face definitions."
+  (dolist (face rc/theme-non-italic-faces)
+    (when (facep face)
+      (set-face-attribute face nil :slant 'normal))))
+
+(add-to-list 'custom-theme-load-path rc/theme-directory)
 
 (defun rc/theme-apply (theme)
   (unless (eq theme rc/current-theme)
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme theme t)
+    (rc/theme-disable-italics)
     (setq rc/current-theme theme)))
 
 (defun rc/theme-apply-initial ()
@@ -55,10 +72,6 @@
                       rc/theme-light
                     rc/theme-dark)))
 
-(unless (file-exists-p rc/doom-rose-pine-dir)
-  (message "Downloading Doom Rosé Pine theme...")
-  (call-process "git" nil nil nil "clone" "https://github.com/donniebreve/rose-pine-doom-emacs.git" rc/doom-rose-pine-dir))
-(add-to-list 'custom-theme-load-path rc/doom-rose-pine-dir)
 (rc/theme-apply-initial)
 
 ;; ----------------------------

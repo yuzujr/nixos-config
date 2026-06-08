@@ -49,6 +49,11 @@
 ;; ----------------------------
 ;; Navigation - Project + Dired
 ;; ----------------------------
+(use-package project
+  :ensure nil
+  :custom
+  (project-list-file (expand-file-name "projects" rc/state-directory)))
+
 (use-package projectile
   :demand t
   :bind-keymap ("C-c p" . projectile-command-map)
@@ -134,7 +139,8 @@
 (use-package which-key
   :demand t
   :custom
-  (which-key-idle-delay 0.5)
+  (which-key-idle-delay 0.25)
+  (which-key-idle-secondary-delay 0.05)
   (which-key-sort-order 'which-key-key-order-alpha)
   :config
   (which-key-mode)

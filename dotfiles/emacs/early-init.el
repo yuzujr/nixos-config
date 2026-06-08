@@ -56,22 +56,8 @@
 (when (boundp 'pgtk-wait-for-event-timeout)
   (setq-default pgtk-wait-for-event-timeout 0))
 
-;; Seed the initial frame with Rosé Pine colors before the theme package loads.
+;; Detect color scheme
 (require 'dbus nil t)
-
-(defconst rc/rose-pine-dark-frame-colors
-  '((background-color . "#191724") ;; Base
-    (foreground-color . "#e0def4") ;; Text
-    (cursor-color . "#524f67")     ;; Highlight High
-    (background-mode . dark))
-  "Frame parameters matching Rosé Pine (Dark).")
-
-(defconst rc/rose-pine-dawn-frame-colors
-  '((background-color . "#faf4ed") ;; Base
-    (foreground-color . "#575279") ;; Text
-    (cursor-color . "#cecacd")     ;; Highlight High
-    (background-mode . light))
-  "Frame parameters matching Rosé Pine Dawn (Light).")
 
 (defun rc/early-portal-color-scheme ()
   "Return the current portal color scheme, or nil when unavailable."
@@ -98,26 +84,13 @@
   (or (rc/early-portal-color-scheme) 'dark)
   "Desktop color scheme captured once during startup.")
 
-(defun rc/apply-initial-frame-colors ()
-  "Apply frame colors that match the later Rosé Pine theme selection."
-  (let ((colors (if (eq rc/initial-color-scheme 'light)
-                    rc/rose-pine-dawn-frame-colors
-                  rc/rose-pine-dark-frame-colors)))
-    (dolist (param colors)
-      (add-to-list 'default-frame-alist param))
-    (dolist (param colors)
-      (add-to-list 'initial-frame-alist param))
-    (setq frame-background-mode (cdr (assq 'background-mode colors)))
-    (set-face-attribute 'default nil
-                        :background (cdr (assq 'background-color colors))
-                        :foreground (cdr (assq 'foreground-color colors)))))
-
-(rc/apply-initial-frame-colors)
-
 ;; ----------------------------
 ;; Package Activation
 ;; ----------------------------
-(setq package-enable-at-startup nil)
+(setq package-enable-at-startup nil
+      package-user-dir (expand-file-name "elpa/" rc/data-directory)
+      package-gnupghome-dir (expand-file-name "package-gnupg/" rc/state-directory)
+      package-quickstart-file (expand-file-name "package-quickstart.el" rc/cache-directory))
 
 (when (fboundp 'startup-redirect-eln-cache)
   (startup-redirect-eln-cache

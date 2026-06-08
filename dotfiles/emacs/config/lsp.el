@@ -22,7 +22,17 @@
          ("C-c u" . xref-find-references)))
 
 (use-package flymake
-  :ensure nil)
+  :ensure nil
+  :custom
+  (flymake-no-changes-timeout 0.2))
+
+;; Eglot piggybacks same-symbol highlighting on Eldoc hover requests.
+;; Keep this low enough to feel responsive, but not zero; too small a value
+;; creates extra LSP traffic while moving point.
+(use-package eldoc
+  :ensure nil
+  :custom
+  (eldoc-idle-delay 0.15))
 
 (defun rc/sideline-flymake-diagnostic-text (diag)
   "Return a short displayable string for Flymake diagnostic DIAG."
@@ -113,8 +123,10 @@
   :custom
   (eglot-autoshutdown t)
   (eglot-sync-connect nil)
-  (eglot-send-changes-idle-time 0.1)
+  (eglot-send-changes-idle-time 0.05)
   (eglot-events-buffer-size 0)
+  ;; Uncomment to disable same-symbol highlighting entirely.
+  ;; (eglot-ignored-server-capabilities '(:documentHighlightProvider))
   :config
   (add-to-list 'eglot-server-programs '((nix-ts-mode) . ("nixd"))))
 

@@ -1,6 +1,12 @@
-{ pkgs, ... }:
+{
+    pkgs,
+    rosePineDoomEmacsSrc,
+    ...
+}:
 {
     home.packages = [ pkgs.cmark-gfm ];
+
+    xdg.dataFile."emacs/themes/rose-pine-doom-emacs".source = rosePineDoomEmacsSrc;
 
     programs.emacs = {
         enable = true;

@@ -9,11 +9,8 @@
                 expand-region flymake glsl-mode helpful kdl-mode magit
                 marginalia markdown-mode move-text multiple-cursors
                 nix-ts-mode olivetti orderless projectile
-                rose-pine-emacs rust-mode sideline-flymake
-                treesit-auto vertico-prescient which-key yasnippet))
- '(package-vc-selected-packages
-   '((rose-pine-emacs :url "https://github.com/thongpv87/rose-pine-emacs"
-                      :branch "master"))))
+                rust-mode sideline-flymake treesit-auto
+                vertico-prescient which-key yasnippet)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

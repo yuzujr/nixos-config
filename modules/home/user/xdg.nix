@@ -1,4 +1,14 @@
-{ pkgs, ... }:
+{ ... }:
+let
+    defaultTo =
+        desktopFile: mimeTypes:
+        builtins.listToAttrs (
+            map (mimeType: {
+                name = mimeType;
+                value = desktopFile;
+            }) mimeTypes
+        );
+in
 {
     xdg.configFile = {
         "autostart/nm-applet.desktop".text = ''
@@ -64,20 +74,106 @@
 
     xdg.mimeApps = {
         enable = true;
-        defaultApplicationPackages = with pkgs; [
-            feh
-            kdePackages.dolphin
-            typora
-            zathura
-        ];
 
-        defaultApplications = {
-            "text/html" = "google-chrome.desktop";
-            "x-scheme-handler/http" = "google-chrome.desktop";
-            "x-scheme-handler/https" = "google-chrome.desktop";
-            "x-scheme-handler/about" = "google-chrome.desktop";
-            "x-scheme-handler/unknown" = "google-chrome.desktop";
-        };
+        defaultApplications =
+            defaultTo "google-chrome.desktop" [
+                "text/html"
+                "application/xhtml+xml"
+                "image/svg+xml"
+                "x-scheme-handler/http"
+                "x-scheme-handler/https"
+                "x-scheme-handler/about"
+                "x-scheme-handler/unknown"
+            ]
+            // defaultTo "org.kde.dolphin.desktop" [
+                "inode/directory"
+            ]
+            // defaultTo "feh.desktop" [
+                "image/bmp"
+                "image/gif"
+                "image/heic"
+                "image/jpeg"
+                "image/jpg"
+                "image/pjpeg"
+                "image/png"
+                "image/tiff"
+                "image/webp"
+                "image/x-bmp"
+                "image/x-pcx"
+                "image/x-png"
+                "image/x-portable-anymap"
+                "image/x-portable-bitmap"
+                "image/x-portable-graymap"
+                "image/x-portable-pixmap"
+                "image/x-tga"
+                "image/x-xbitmap"
+            ]
+            // defaultTo "typora.desktop" [
+                "text/markdown"
+                "text/x-markdown"
+            ]
+            // defaultTo "org.pwmt.zathura-pdf-mupdf.desktop" [
+                "application/epub+zip"
+                "application/oxps"
+                "application/pdf"
+                "application/x-fictionbook"
+                "application/x-mobipocket-ebook"
+            ]
+            // defaultTo "org.pwmt.zathura-djvu.desktop" [
+                "image/vnd.djvu"
+                "image/vnd.djvu+multipage"
+            ]
+            // defaultTo "org.pwmt.zathura-ps.desktop" [
+                "application/eps"
+                "application/postscript"
+                "application/x-eps"
+                "image/eps"
+                "image/x-eps"
+            ]
+            // defaultTo "org.kde.ark.desktop" [
+                "application/arj"
+                "application/gzip"
+                "application/vnd.ms-cab-compressed"
+                "application/vnd.rar"
+                "application/x-7z-compressed"
+                "application/x-archive"
+                "application/x-arj"
+                "application/x-bzip"
+                "application/x-bzip-compressed-tar"
+                "application/x-bzip2"
+                "application/x-bzip2-compressed-tar"
+                "application/x-compress"
+                "application/x-compressed-tar"
+                "application/x-cpio"
+                "application/x-gzip"
+                "application/x-lha"
+                "application/x-lrzip"
+                "application/x-lrzip-compressed-tar"
+                "application/x-lz4"
+                "application/x-lz4-compressed-tar"
+                "application/x-lzip"
+                "application/x-lzip-compressed-tar"
+                "application/x-lzma"
+                "application/x-lzma-compressed-tar"
+                "application/x-lzop"
+                "application/x-rar"
+                "application/x-stuffit"
+                "application/x-tar"
+                "application/x-tarz"
+                "application/x-tzo"
+                "application/x-xz"
+                "application/x-xz-compressed-tar"
+                "application/x-zstd-compressed-tar"
+                "application/zip"
+                "application/zlib"
+                "application/zstd"
+            ]
+            // defaultTo "org.pwmt.zathura-cb.desktop" [
+                "application/x-cb7"
+                "application/x-cbr"
+                "application/x-cbt"
+                "application/x-cbz"
+            ];
     };
 
     xdg.userDirs = {

@@ -2,10 +2,9 @@
 window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
-    opacity 1.0
     background-effect {
         blur true
-        xray false
+        xray true
     }
 }
 
@@ -20,7 +19,6 @@ window-rule {
 // 浮动打开
 window-rule {
     match app-id="nm-connection-editor"
-    match app-id="steam" title="Friends List"
     match app-id="org.pulseaudio.pavucontrol" title="音量控制"
     match app-id="feh"
     match app-id="org.kde.ark"
